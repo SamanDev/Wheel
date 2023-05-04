@@ -286,7 +286,7 @@ function MNyWheel(prop) {
 
   useEffect(() => {
     setBalance(user?.balance2);
-  }, [user.balance2s]);
+  }, [user?.balance2]);
   useEffect(() => {
     var bet = prop.bet;
     var nextbet = bet;
