@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 const URL =
   process.env.NODE_ENV === "production"
     ? undefined
-    : "https://api.charkheshans.com/wheel";
+    : "https://sock.charkheshans.com/wheel";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
