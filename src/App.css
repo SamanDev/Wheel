@@ -1,0 +1,349 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #fff200;
+  --color-secondary: #f49b90;
+  --color-tertiary: #f28b7d;
+  --color-quaternary: #f07a6a;
+  --color-quinary: #5252eefb;
+  
+}
+#root {
+  height: 100vh;
+
+  overflow: hidden;
+  background: rgb(34, 193, 195);
+  background: linear-gradient(
+    0deg,
+    rgba(34, 193, 195, 1) 0%,
+    rgb(0, 0, 0) 100%
+  );
+}
+.loadarea {
+  display: inline-table;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+  width: 100vw;
+  transition: all 0.5s ease-in;
+  height: 100vh;
+  float: left;
+  overflow: hidden;
+  position: relative;
+}
+.loadarea.ui.segment {
+  border: none !important;
+}
+.countdown-item {
+  position: absolute;
+  font-size: 100px;
+  color: #fff;
+}
+
+.mywhell .betarea {
+  position: absolute;
+  width: 80vw;
+  max-width: 445px;
+  height: 80vw;
+
+  object-fit: contain;
+  flex-shrink: 0;
+
+  z-index: 200;
+}
+.mywhell .betarea .button {
+ 
+  width: 50px;
+  line-height: 50px;
+  z-index: 99999;
+  display: block;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 100%;
+  left: 50%;
+  top: 0;
+
+  transform: translateX(-20px) scale(.8);
+  transition: all .5s ease-in;
+  box-shadow: 0 0  20px 10px rgba(12, 12, 0, 0.5);
+}
+.mywhell .betarea .button {
+
+ 
+  cursor: default;
+ 
+}
+.mywhell.mytrue .betarea .button.b0:not(.active) ,.mywhell .betarea .button.b0:not(.active) {
+  background: rgb(0, 0, 0,.1) !important;
+ 
+  cursor: default;
+  color: rgba(255, 255, 255, .6) !important;
+}
+.mywhell .betarea .button.active  {
+  box-shadow: 0 0  20px 10px rgba(222, 238, 0, 0.5);
+}
+.mywhell:not(.mytrue) .betarea .button.noactive  {
+  background: rgb(0, 0, 0,1) !important;
+ opacity: .4;
+  cursor: default;
+  color: rgba(255, 255, 255, 1) !important;
+  box-shadow: 0 0  5px 0px rgba(251, 255, 32, 0.5);
+}
+.lsec * {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.lsec {
+  display: inline-table;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  transition: all 0.5s ease-in;
+  height: 100vh;
+  float: left;
+  overflow: hidden;
+  position: relative;
+}
+.mywhell {
+  transition: transform 1.5s ease-in;
+  transform: scale(1.2);
+  transform-origin: top left;
+  margin: auto;
+  height: 50vh;
+  overflow: hidden;
+  padding-top: 30px;
+  position: relative;
+}
+.mywhell canvas {
+ 
+  filter: drop-shadow(2px 4px 26px black) ;
+}
+
+
+.mywhell .bhdLno canvas {
+  transition: transform 0s ease-in-out;
+ 
+}
+
+.mywhell.mytrue {
+  transform: scale(1.5);
+}
+.mywhell im2g {
+  display: none;
+}
+.res .mywhell{
+  transform: scale(0.9);
+}
+
+ .tablelist {
+  height: 38vh;
+  margin: 0 !important;
+  overflow: auto;
+  position: relative;
+  z-index: 2;
+}
+.rsec.table {
+  margin: 0 !important;
+ 
+  height: 40vh;
+  position: relative;
+  z-index: 2;
+
+}
+.rsec.table .lasttable tbody {
+  display: grid;
+  width: 100%;
+  position: relative;
+  height: 300px;
+  overflow: auto;
+}
+.rsec.table .lasttable tr{
+  display: inline-table;
+  
+}
+.rsec.table tr,.rsec.table td{
+  position: relative;
+}
+.rsec.table .button {
+ position: absolute;
+ top: 0;
+ bottom: 0;
+ left: 0;right: 0;
+ opacity: 0;
+}
+.rsec .statistic {
+  width: 20% !important;
+  margin: 0 !important;
+}
+.res .statistic {
+  width: 40% !important;
+
+}
+.rsec.table td .statistic > .label {
+  font-size: 7px !important;
+}
+.rsec.table .statistic > .value {
+  font-size: 14px !important;
+}
+.rsec.table .statistic.small> .value {
+  font-size: 24px !important;
+  position: relative;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  top: 10px;
+  opacity: .6;
+}
+
+
+
+.content {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.text-shadows {
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 3px 3px 0 var(--color-secondary), 6px 6px 0 var(--color-tertiary),
+    9px 9px var(--color-quaternary), 12px 12px 0 var(--color-quinary),
+    0 0 10px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 1),
+    0 0 15px rgba(0, 0, 0, 1);
+  font-family: bungee, sans-serif;
+  font-weight: 900;
+
+  font-size: calc(2rem + 5vw);
+  text-align: center;
+  margin: 0;
+  color: var(--color-primary);
+  animation-duration: 1s !important;
+  letter-spacing: 0.4rem;
+  line-height: 400px;
+}
+.lsec > .segment,
+.rsec > .segment {
+  margin: 0px 10px;
+}
+.chiparea {
+  position: absolute;
+  left: 30px;
+  bottom:0px;
+  z-index: 1000;
+  
+}
+.chiparea .chips {
+  position: relative;
+  text-align: center;
+  
+  transform: scale(.8) translateX(35px);
+  transition: all 0.5s ease;
+  cursor: pointer;
+  z-index: 1;
+  filter: drop-shadow(0px 0px 31px black)  !important;
+}
+.betarea .chips {
+  position: absolute;
+  top: 0;
+  left: 60px;
+  
+  transform: scale(0.6);
+  transform-origin: top left;
+  cursor: default;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(1px 1px 1px rgb(0, 0, 0)) !important;
+
+}
+.chiparea .chips.active {
+  filter: drop-shadow(1px 1px 20px rgb(255, 0, 0)) !important;
+  transform: scale(1)  translateX(10px);
+  z-index: 2;
+ 
+}
+.chips p {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  z-index: 2;
+  line-height: 69px;
+  
+}
+.chips p small {
+
+  font-size: 10px;
+
+  
+}
+
+.info p{
+  margin: 0 !important;
+  font-size: 12px !important;
+  text-shadow: 0px 0px 1px  rgba(0, 0, 0, 1);
+}
+.info h3{
+  margin: 0 !important;
+  font-size: 18px !important;
+  text-shadow: 0px 0px 2px  rgba(0, 0, 0, 1);
+}
+.info small.header{
+  display: inline-block !important;
+  font-size: 10px !important;
+  margin: 0 5px !important;
+  text-shadow: 0px 0px 1px   rgba(0, 0, 0, 1);
+}
+.betbtnarea{
+  width: 80px;
+  height: 500px;
+  transform-origin: top left !important;
+  transform: scale(.7);
+  position: absolute;
+  z-index: 10;
+  top: 0px;
+  right:0;
+}
+.betlist{
+  
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+@media (max-width: 768px) {
+ 
+  .lsec > .segment,
+  .rsec > .segment {
+    margin: 0px;
+  }
+  .mywhell .betarea {
+    transform: scale(0.75);
+    transform-origin: top center;
+  }
+  .mywhell {
+
+    transform-origin: top right;
+   
+
+  }
+
+}
