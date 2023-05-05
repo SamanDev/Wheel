@@ -258,7 +258,7 @@ const sumOfMyBet = (bets) => {
 var _l = [];
 var timer, timer2;
 function MNyWheel(prop) {
-  const [time, setTime] = useState(-1);
+  const [time, setTime] = useState(0);
   const [sec, setSec] = useState(0);
   const online = prop.online;
   const socket = prop.socket;
@@ -346,23 +346,21 @@ function MNyWheel(prop) {
     var Seconds_from_T1_to_T2 = dif / 1000;
     var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
     var bagh = 30 - (Seconds_Between_Dates % 30);
-    clearTimeout(timer);
+    var mysec = users.serverSec;
     if (users.status == "Pending") {
+      clearTimeout(timer);
       timer = setTimeout(() => {
+        mysec = (t1.getSeconds() + Seconds_Between_Dates) % 60;
+
+        setSec(parseInt(mysec));
         setTime(parseInt(bagh));
       }, 1000);
     }
-    var mysec = users.serverSec;
-
-    if (users.status == "Pending") {
-      mysec = (t1.getSeconds() + Seconds_Between_Dates) % 60;
-    }
-    setSec(parseInt(mysec));
 
     return () => {
       clearTimeout(timer);
     };
-  }, [users.date, time]);
+  }, [users.status, time, sec]);
 
   return (
     <>
@@ -395,89 +393,13 @@ function MNyWheel(prop) {
             <>{users?._id}</>
           )}
           <br />
-          <small className="text-muted">Server Code: </small>
-          <Header as="p" inverted color="blue" style={{ display: "inline" }}>
-            {users?.serverCode}
-          </Header>
-          <br style={{ clear: "both" }} />
-          <small className="text-muted">Start Number: </small>
-          <Header as="p" inverted style={{ display: "inline" }} color="purple">
-            {users?.startNum}
-          </Header>
-          <br style={{ clear: "both" }} />
-          <small className="text-muted">Start Second: </small>
-          <Header as="p" inverted color="green" style={{ display: "inline" }}>
-            {sec}
-          </Header>
-
-          <br style={{ clear: "both" }} />
-          <small className="text-muted">Formula:</small>
-          <br />
-
-          <Header as="p" inverted floated="left" color="blue">
-            {users?.serverCode}
-          </Header>
-          <Header as="small" inverted floated="left" color="grey">
-            x
-          </Header>
-          <Header as="p" inverted floated="left" color="purple">
-            {users?.startNum}
-          </Header>
-          <Header as="small" inverted floated="left" color="grey">
-            +
-          </Header>
-          <br style={{ clear: "both" }} />
-
-          <Header as="p" inverted floated="left" color="blue">
-            {users?.serverCode}
-          </Header>
-          <Header as="small" inverted floated="left" color="grey">
-            x
-          </Header>
-
-          <Header as="p" inverted floated="left" color="green">
-            {sec}
-          </Header>
-          <Header as="small" inverted floated="left" color="grey">
-            =
-          </Header>
-          <br style={{ clear: "both" }} />
-          <Header as="p" inverted floated="left" color="red">
-            {getPrizePos(users, sec) + users?.serverCode * sec}
-          </Header>
-          <br style={{ clear: "both" }} />
-          <small className="text-muted">Formula Final:</small>
-          <br />
-          <Header as="p" inverted floated="left" color="red">
-            {getPrizePos(users, sec) + users?.serverCode * sec}
-          </Header>
-
-          <Header as="small" inverted floated="left" color="grey">
-            %
-          </Header>
-          <Header as="p" inverted floated="left" color="green">
-            {segments?.length}
-          </Header>
-          <Header as="small" floated="left" inverted color="grey">
-            =
-          </Header>
-          <br style={{ clear: "both" }} />
-          <Header as="h3" inverted color="green">
-            {(getPrizePos(users, sec) + users?.serverCode * sec) %
-              segments?.length}
-          </Header>
-          <small className="text-muted">Final:</small>
-          <Header as="h3" inverted color="green">
-            {users?.number}
-          </Header>
         </>
       </div>
 
       <div
         className={
-          users?.status != "Pending" &&
-          parseInt(time) <= 3 &&
-          parseInt(time) >= 0
+          (parseInt(time) <= 3 && parseInt(time) >= 0) ||
+          users?.status == "Spin"
             ? "mainwheel mywhell mytrue"
             : "mainwheel mywhell"
         }

@@ -179,10 +179,6 @@ function App(prop) {
   });
   const [user, setUser] = useState(prop.currentUser);
 
-  const [lastList, setLastList] = useState([]);
-  const [winList, setWinList] = useState([]);
-  const [myList, setMyList] = useState([]);
-
   useEffect(() => {
     function onConnect() {
       if (users.status == "Pen") {
@@ -205,22 +201,6 @@ function App(prop) {
         if (command == "online") {
           setOnline(data);
         }
-        if (command == "lastList") {
-          panes = [];
-          var _data = JSON.stringify(data);
-          _data = _data.replace(/wheelusers/g, "users");
-          setLastList(JSON.parse(_data));
-        }
-        if (command == "winList") {
-          var _data = JSON.stringify(data);
-          _data = _data.replace(/wheelusers/g, "users");
-          setWinList(JSON.parse(_data));
-        }
-        if (command == "myList") {
-          var _data = JSON.stringify(data);
-          _data = _data.replace(/wheelusers/g, "users");
-          setMyList(JSON.parse(_data));
-        }
 
         if (command == "disconnect") {
           socket.disconnect();
@@ -232,7 +212,7 @@ function App(prop) {
       setLoading("nologin");
     }
 
-    socket.once("connect", onConnect);
+    socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 
     return () => {
@@ -241,7 +221,11 @@ function App(prop) {
     };
   }, []);
   useEffect(() => {
-    socket.connect();
+    if (user) {
+      socket.connect();
+    } else {
+      window.location = "/login";
+    }
 
     // no-op if the socket is already connected
 
@@ -251,7 +235,7 @@ function App(prop) {
   }, []);
   useEffect(() => {
     if (users.status == "Spin") {
-      var ubet = userBet(users.users, user.username);
+      var ubet = userBet(users.users, user?.username);
       if (ubet.length > 0) {
         localStorage.setItem("lastbet", JSON.stringify(ubet));
       }
@@ -334,7 +318,7 @@ function App(prop) {
       </Segment>
     );
   }
-  if (loading) {
+  if (loading || users.status == "Pen") {
     return (
       <Segment className="loadarea">
         <Dimmer active>
@@ -367,7 +351,6 @@ function App(prop) {
         render: () => (
           <LastList
             segments={segments}
-            lastList={lastList}
             getcolortext={getcolortext}
             getcolor={getcolor}
             size="mini"
@@ -375,7 +358,6 @@ function App(prop) {
             loginToken={user}
             socket={socket}
             command="lastList"
-            sort={{ date: -1 }}
           />
         ),
       },
@@ -385,7 +367,6 @@ function App(prop) {
         render: () => (
           <LastList
             segments={segments}
-            lastList={winList}
             getcolortext={getcolortext}
             getcolor={getcolor}
             size="mini"
@@ -393,7 +374,6 @@ function App(prop) {
             loginToken={user}
             socket={socket}
             command="winList"
-            sort={{ net: -1 }}
           />
         ),
       },
@@ -402,15 +382,13 @@ function App(prop) {
         render: () => (
           <LastList
             segments={segments}
-            lastList={myList}
             getcolortext={getcolortext}
             getcolor={getcolor}
             size="mini"
             getPrize={getPrize}
             loginToken={user}
             socket={socket}
-            command="myList"
-            sort={{ win: -1 }}
+            command={"myList&u=" + user?.username}
           />
         ),
       },

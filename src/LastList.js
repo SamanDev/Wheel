@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Statistic, Label } from "semantic-ui-react";
 import Mod from "./modal";
+import ListService from "./services/list.service";
 const userBet = (wheel, username) => {
   var bets = 0;
   var net = 0;
@@ -16,16 +17,21 @@ const userBet = (wheel, username) => {
 };
 const TableExampleSingleLine = (prop) => {
   const [loading, setLoading] = useState(false);
-  const [sort, setSort] = useState("");
+  const [lastList, setlastList] = useState([]);
 
   const socket = prop.socket;
   const segments = prop.segments;
   useEffect(() => {
-    socket.emit("getlist", {
+    ListService.getPublicContent({
       command: prop.command,
-
-      sorting: prop.sort,
+    }).then((response) => {
+      var _data = JSON.stringify(response.data);
+      _data = _data.replace(/wheelusers/g, "users");
+      setlastList(JSON.parse(_data));
     });
+    return () => {
+      setlastList([]);
+    };
   }, [prop.command]);
 
   return (
@@ -37,7 +43,7 @@ const TableExampleSingleLine = (prop) => {
       style={{ marginTop: 0 }}
     >
       <Table.Body>
-        {prop.lastList.map((item) => {
+        {lastList.map((item) => {
           var userBets = userBet(item, prop.loginToken.username);
           return (
             <Table.Row key={item._id}>
