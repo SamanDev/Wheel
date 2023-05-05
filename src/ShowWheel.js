@@ -229,7 +229,7 @@ function MNyWheel(prop) {
 
           lineHeight: "15px",
           padding: 10,
-
+          display: "none",
           background:
             "linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)",
         }}

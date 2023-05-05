@@ -13,7 +13,7 @@
   
 }
 #root {
-  height: 100vh;
+  height: 180vh;
 
   overflow: hidden;
   background: rgb(34, 193, 195);
@@ -115,9 +115,8 @@
   text-align: center;
   width: 100%;
   transition: all 0.5s ease-in;
-  height: 100vh;
-  float: left;
-  overflow: hidden;
+  height: 180vh;
+ 
   position: relative;
 }
 .mywhell {
@@ -125,8 +124,8 @@
   transform: scale(1.2);
   transform-origin: top left;
   margin: auto;
-  height: 50vh;
-  overflow: hidden;
+  height: 60vh;
+  
   padding-top: 30px;
   position: relative;
 }
@@ -325,6 +324,7 @@
 .betlist{
   
   position: absolute !important;
+  top:90vh;
   bottom: 0;
   left: 0;
   right: 0;
@@ -335,15 +335,24 @@
   .rsec > .segment {
     margin: 0px;
   }
-  .mywhell .betarea {
-    transform: scale(0.75);
-    transform-origin: top center;
-  }
+ 
+  
   .mywhell {
-
-    transform-origin: top right;
+    transform: scale(1);
+  
    
 
   }
+  .modals .animate_rollIn >div {
+    transform: scale(.7);
+  
+   
 
+  }
+  .mywhell.mytrue {
+    transform: scale(1.1);
+    
+   
+
+  }
 }

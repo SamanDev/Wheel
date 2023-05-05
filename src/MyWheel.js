@@ -360,7 +360,7 @@ function MNyWheel(prop) {
     return () => {
       clearTimeout(timer);
     };
-  }, [users.status, time, sec]);
+  }, [users.status, time]);
 
   return (
     <>
