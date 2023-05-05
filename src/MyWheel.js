@@ -358,9 +358,9 @@ function MNyWheel(prop) {
     }
 
     return () => {
-      clearTimeout(timer);
+      //clearTimeout(timer);
     };
-  }, [users.status, time]);
+  }, [users.status, users.date, time]);
 
   return (
     <>
