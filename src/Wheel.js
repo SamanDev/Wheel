@@ -162,8 +162,7 @@ function App(prop) {
   const [bet, setBet] = useState(
     localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 1
   );
-  const [sec, setSec] = useState(0);
-  const [time, setTime] = useState(-1);
+
   const [users, setUsers] = useState({
     status: "Pen",
     number: 27,
@@ -187,10 +186,7 @@ function App(prop) {
       }
       socket.on("msg", ({ command, data }) => {
         if (command == "update") {
-          if (users != data) {
-            panes = [];
-            setUsers(data);
-          }
+          setUsers(data);
         }
         if (command == "user") {
           var userold = JSON.parse(localStorage.getItem("user"));
@@ -328,7 +324,7 @@ function App(prop) {
     );
   }
 
-  if (panes.length == 0) {
+  if (panes.length == 0 || 1 == 1) {
     panes = [
       {
         menuItem: "Live",
@@ -413,8 +409,6 @@ function App(prop) {
           loginToken={user}
           socket={socket}
           online={online}
-          time={time}
-          sec={sec}
         />
 
         <Segment color="black" inverted size="mini" className="betlist">
