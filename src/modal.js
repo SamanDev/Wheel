@@ -21,7 +21,7 @@ function groupBySingleField(data, field) {
 const userBet = (wheel, username) => {
   var bets = 0;
   var net = 0;
-  var userArr = wheel.users
+  var userArr = wheel.wheelusers
     .filter((user) => user.username == username)
     .map((item, i) => {
       net = net + item.win;

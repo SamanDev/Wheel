@@ -13,7 +13,7 @@
   
 }
 #root {
-  height: 180vh;
+  height: 100vh;
 
   overflow: hidden;
   background: rgb(34, 193, 195);
@@ -115,7 +115,7 @@
   text-align: center;
   width: 100%;
   transition: all 0.5s ease-in;
-  height: 180vh;
+  height: 100vh;
  
   position: relative;
 }
@@ -324,7 +324,7 @@
 .betlist{
   
   position: absolute !important;
-  top:90vh;
+  top:50vh;
   bottom: 0;
   left: 0;
   right: 0;

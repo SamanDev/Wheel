@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
+const { data } = require("jquery");
 const User = db.user;
 const Role = db.role;
+const Wheel = db.Wheel;
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -20,6 +22,31 @@ verifyToken = (req, res, next) => {
   });
 };
 
+getUser = (req, res, next) => {
+  User.findById(req.userId).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    req.userdata = user;
+    next();
+  });
+};
+getWhell = (req, res, next) => {
+  Wheel.findOne()
+    .sort({ date: -1 })
+
+    .exec((err, wheel) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      req.wheel = wheel;
+
+      next();
+    });
+};
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -29,7 +56,7 @@ isAdmin = (req, res, next) => {
 
     Role.find(
       {
-        _id: { $in: user.roles }
+        _id: { $in: user.roles },
       },
       (err, roles) => {
         if (err) {
@@ -60,7 +87,7 @@ isModerator = (req, res, next) => {
 
     Role.find(
       {
-        _id: { $in: user.roles }
+        _id: { $in: user.roles },
       },
       (err, roles) => {
         if (err) {
@@ -84,7 +111,9 @@ isModerator = (req, res, next) => {
 
 const authJwt = {
   verifyToken,
+  getUser,
+  getWhell,
   isAdmin,
-  isModerator
+  isModerator,
 };
 module.exports = authJwt;

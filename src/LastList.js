@@ -5,7 +5,7 @@ import ListService from "./services/list.service";
 const userBet = (wheel, username) => {
   var bets = 0;
   var net = 0;
-  var userArr = wheel.users
+  var userArr = wheel.wheelusers
     .filter((user) => user.username == username)
     .map((item, i) => {
       net = net + item.win;
@@ -25,9 +25,7 @@ const TableExampleSingleLine = (prop) => {
     ListService.getPublicContent({
       command: prop.command,
     }).then((response) => {
-      var _data = JSON.stringify(response.data);
-      _data = _data.replace(/wheelusers/g, "users");
-      setlastList(JSON.parse(_data));
+      setlastList(response.data);
     });
     return () => {
       setlastList([]);

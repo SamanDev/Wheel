@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const User = mongoose.model(
+const UserWheel = mongoose.model(
   "userWheel",
   new mongoose.Schema({
     username: { type: String },
@@ -10,8 +10,7 @@ const User = mongoose.model(
     position: { type: Number, default: 0 },
     bet: { type: Number, default: 0 },
     win: { type: Number, default: -1 },
-    date: { type: Date, default: Date.now },
   })
 );
 
-module.exports = User;
+module.exports = UserWheel;

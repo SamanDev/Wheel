@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
 import { Button, Header } from "semantic-ui-react";
 import GetChip from "./getChips";
-import EventBus from "./common/EventBus";
 import $ from "jquery";
 const segments = [
   "2",
@@ -268,9 +267,8 @@ function MNyWheel(prop) {
     : [];
   const user = prop.loginToken;
   const [balance, setBalance] = useState(0);
-  const users = prop.users;
   const [list, setList] = useState([]);
-  const [userbets, setuserbets] = useState([]);
+  const users = prop.users;
   const segments = prop.segments;
 
   if (_l.length == 0) {
@@ -314,8 +312,8 @@ function MNyWheel(prop) {
   useEffect(() => {
     var stat = [];
 
-    if (userbets.length > 0) {
-      var _gmode = groupByMultipleFields(userbets, "username", "position");
+    if (users?.users.length > 0) {
+      var _gmode = groupByMultipleFields(users?.users, "username", "position");
       for (const property in _gmode) {
         for (const pos in _gmode[property]) {
           stat.push({
@@ -338,7 +336,7 @@ function MNyWheel(prop) {
     return () => {
       setList([]);
     };
-  }, [userbets]);
+  }, [users?.users]);
 
   useEffect(() => {
     var t1 = new Date(users.date);
@@ -363,21 +361,7 @@ function MNyWheel(prop) {
       //clearTimeout(timer);
     };
   }, [users.status, users.date, time]);
-  useEffect(() => {
-    EventBus.on("users", (data) => {
-      if (data != []) {
-        setuserbets((current) => [...current, data]);
-      }
-    });
-    EventBus.on("resetusers", (data) => {
-      setuserbets([]);
-    });
 
-    return () => {
-      EventBus.remove("users");
-      EventBus.remove("resetusers");
-    };
-  }, []);
   return (
     <>
       <div
@@ -429,7 +413,7 @@ function MNyWheel(prop) {
             </div>
           </>
         )}
-        <div className="betarea" style={{ right: 70, width: 0 }}>
+        <div className="betarea" style={{ left: 500 }}>
           {betBtn(
             "2x",
             prop.bet,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
@@ -15,22 +15,28 @@ const Profile = () => {
         <h3>
           <strong>{currentUser.username}</strong> Profile
         </h3>
+        <p>
+          <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
+          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+        </p>
+        <p>
+          <strong>Id:</strong> {currentUser.id}
+        </p>
+        <p>
+          <strong>Email:</strong> {currentUser.email}
+        </p>
+        <p>
+          <strong>Balance:</strong> {currentUser.balance}
+        </p>
+        <p>
+          <strong>Balance2:</strong> {currentUser.balance2}
+        </p>
+        <strong>Authorities:</strong>
+        <ul>
+          {currentUser.roles &&
+            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+        </ul>
       </header>
-      <p>
-        <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
-        {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-      </p>
-      <p>
-        <strong>Id:</strong> {currentUser.id}
-      </p>
-      <p>
-        <strong>Email:</strong> {currentUser.email}
-      </p>
-      <strong>Authorities:</strong>
-      <ul>
-        {currentUser.roles &&
-          currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-      </ul>
     </div>
   );
 };

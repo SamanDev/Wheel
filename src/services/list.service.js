@@ -1,7 +1,10 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "https://api.charkheshans.com/lastlist";
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.charkheshans.com/lastlist"
+    : "http://localhost:8080/lastlist";
 
 const getPublicContent = (data) => {
   return axios.get(API_URL + "?l=" + data.command);

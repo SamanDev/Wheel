@@ -53,8 +53,7 @@ const Login = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       dispatch(login(username, password))
         .then(() => {
-          navigate("/home");
-          window.location.reload();
+          window.location.href = "/";
         })
         .catch(() => {
           setLoading(false);
@@ -63,9 +62,9 @@ const Login = (props) => {
       setLoading(false);
     }
   };
-
+  //localStorage.removeItem("user");
   if (isLoggedIn) {
-    return <Navigate to="/profile" />;
+    //return <Navigate to="/profile" />;
   }
 
   return (

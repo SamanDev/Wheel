@@ -1,8 +1,10 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "https://api.charkheshans.com/api/test/";
-
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.charkheshans.com/api/test/"
+    : "http://localhost:8080/api/test/";
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };

@@ -1,13 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const dbConfig = require("./app/config/db.config");
 
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: [
+    "https://www.charkheshans.com",
+    "http://www.charkheshans.com",
+    "http://localhost:3000",
+  ],
 };
-
+const serverPort = process.env.NODE_ENV === "production" ? 2083 : 8080;
+const soocketPort = process.env.NODE_ENV === "production" ? 2087 : 8484;
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -16,7 +20,23 @@ app.use(express.json());
 const db = require("./app/models");
 const Role = db.role;
 const User = db.user;
-
+const Wheel = db.Wheel;
+function groupBySingleField(data, field) {
+  return data.reduce((acc, val) => {
+    const rest = Object.keys(val).reduce((newObj, key) => {
+      if (key !== field) {
+        newObj[key] = val[key];
+      }
+      return newObj;
+    }, {});
+    if (acc[val[field]]) {
+      acc[val[field]].push(rest);
+    } else {
+      acc[val[field]] = [rest];
+    }
+    return acc;
+  }, {});
+}
 db.mongoose
   .connect(`mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelof`, {
     useNewUrlParser: true,
@@ -24,7 +44,6 @@ db.mongoose
   })
   .then(() => {
     console.log("Successfully connect to MongoDB.");
-    initial();
   })
   .catch((err) => {
     console.error("Connection error", err);
@@ -32,13 +51,38 @@ db.mongoose
   });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+app.get("/lastlist", async (req, res) => {
+  var sortig = { date: -1 };
+  if (req.query.l != "myList") {
+    if (req.query.l == "winList") {
+      sortig = { net: -1 };
+    }
+    var users2 = await Wheel.find({ status: "Done" })
+      .limit(25)
+      .sort(sortig)
+      .populate("wheelusers");
+  } else {
+    var udata = [];
+    const userswin = await db.userWheel
+      .find({ username: req.query.u }, { pid: 1 })
+      .limit(20)
+      .sort({ win: -1 });
+
+    var userlist = groupBySingleField(userswin, "pid");
+
+    Object.keys(userlist).forEach((key) => {
+      udata.push({ _id: key });
+    });
+
+    var users2 = await Wheel.find({ $or: udata })
+      .sort({ net: -1 })
+      .populate("wheelusers");
+  }
+  res.json(users2);
 });
 
 // routes
-require("./app/routes/auth.routes")(app);
-require("./app/routes/user.routes")(app);
+
 let segments = [
   "2",
   "4",
@@ -70,8 +114,11 @@ let segments = [
   "0",
   "10",
 ];
-let wheel = {
-  status: "Pending",
+const d = new Date();
+var wheel = {
+  status: "Done",
+  startNum: 1,
+  wheelusers: [],
   number: 0,
   total: 0,
   net: 0,
@@ -79,21 +126,34 @@ let wheel = {
   aveBetx: 0,
   serverCode: Math.floor(Math.random() * 9999),
   serverSec: 0,
-  startNum: 1,
-  date: new Date(),
-  users: [],
+  date: d,
 };
-let timeSpin = 45;
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
-const { Server } = require("socket.io");
+var wheelusers = [];
 
-const io = new Server(2020, {
+const createWheel = function (startNum) {
+  const d = new Date();
+  let seconds = d.getSeconds();
+  return Wheel.create({
+    status: "Pending",
+    number: 0,
+    total: 0,
+    net: 0,
+    avex: 0,
+    aveBetx: 0,
+    serverCode: Math.floor(Math.random() * 9999),
+    serverSec: seconds,
+    startNum: startNum,
+    wheelusers: [],
+    date: d,
+  }).then((wheel) => {
+    return wheel;
+  });
+};
+
+const { Server } = require("socket.io");
+const io = new Server(soocketPort, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: corsOptions,
     // or with an array of origins
     // origin: ["https://my-frontend.com", "https://my-other-frontend.com", "http://localhost:3000"],
   },
@@ -102,7 +162,7 @@ const wheelNamespace = io.of("/wheel");
 wheelNamespace.use((socket, next) => {
   const user = socket.handshake.auth;
 
-  if (socket.user != user.username || 1 == 1) {
+  if (socket.user != user.username) {
     socket.userdata = user;
     socket.user = user.username;
   } else {
@@ -125,162 +185,65 @@ wheelNamespace.on("disconnect", (reason) => {
   console.log(reason); // else the socket will automatically try to reconnect
 });
 wheelNamespace.on("connection", (socket) => {
-  socket.on("getwheel", () => {
-    wheelNamespace
-      .in(socket.user)
-      .emit("msg", { command: "update", data: wheel });
-    wheelNamespace.in(socket.user).emit("msg", {
-      command: "user",
-      data: socket.userdata,
-    });
-    wheelNamespace.in(socket.user).emit("msg", {
-      command: "online",
-      data: wheelNamespace.sockets.size,
-    });
+  wheelNamespace.emit("msg", {
+    command: "online",
+    data: wheelNamespace.sockets.size,
   });
-
+  socket.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
+  socket.emit("msg", { command: "users", data: wheelusers });
   socket.on("addBet", (data) => {
     if (wheel.status == "Pending") {
-      data.date = new Date();
       data.win = -1;
       data.username = socket.user;
-      wheel.users.push(data);
 
       wheel.total = wheel.total + data.bet;
 
-      wheelNamespace.emit("msg", { command: "update", data: wheel });
-    }
-  });
-  socket.on("getlist", async (data) => {
-    if (data.sorting.win) {
-      var udata = [];
-      const userswin = await db.userWheel
-        .find({ username: socket.user }, { pid: 1 })
-        .limit(20)
-        .sort(data.sorting);
+      let fu = wheelusers.filter(
+        (user) =>
+          user.username == data.username && user.position == data.position
+      );
+      if (fu.length > 0) {
+        const newProjects = wheelusers.map((user) =>
+          user.username == data.username && user.position == data.position
+            ? { ...user, bet: user.bet + data.bet }
+            : user
+        );
 
-      var userlist = groupBySingleField(userswin, "pid");
-
-      Object.keys(userlist).forEach((key) => {
-        udata.push({ _id: key });
-      });
-
-      const wh = await db.Wheel.find({ $or: udata })
-        .sort({ net: -1 })
-        .populate("wheelusers");
-      wheelNamespace
-        .in(socket.user)
-        .emit("msg", { command: data.command, data: wh });
-    } else {
-      const users2 = await db.Wheel.find({ status: "Done" })
-        .limit(25)
-        .sort(data.sorting)
-        .populate("wheelusers");
-      wheelNamespace.emit("msg", { command: data.command, data: users2 });
+        wheelusers = newProjects;
+      } else {
+        wheelusers.push(data);
+      }
+      console.log(wheelusers);
+      wheelNamespace.emit("msg", { command: "users", data: data });
     }
   });
 
   // getLast(socket);
 });
-function initial() {
+const initial = async () => {
   console.log("initial");
-  const createWheelData = () => {
-    const d = new Date();
-    let seconds = d.getSeconds();
-    let newwheel = {
-      status: "Pending",
-      number: 0,
-      total: 0,
-      net: 0,
-      serverCode: Math.floor(Math.random() * 9999),
-      avex: 0,
-      aveBetx: 0,
-      serverSec: seconds,
-      startNum: wheel.number,
-      date: d,
-      users: [],
-    };
+  var defwheel = null;
+  try {
+    defwheel = await Wheel.findOne().sort({ date: -1 });
+  } catch (error) {
+    //createWheelData();
+  }
 
-    wheel = newwheel;
+  if (defwheel == null || defwheel?.status == "Done") {
+    createWheelData();
+  } else if (defwheel?.status == "Pending") {
+    wheel = defwheel;
 
-    wheelNamespace.emit("msg", {
-      command: "update",
-      data: wheel,
-    });
+    spin();
+  } else if (defwheel?.status == "Spin") {
     setTimeout(() => {
-      spin();
-    }, 30000);
-  };
-  const spin = () => {
-    const d = new Date();
-    let seconds = d.getSeconds();
+      //spinstop();
+    }, 3000);
+  }
 
-    wheel.serverSec = seconds;
-    let newPrizeNumber = getPrizePos(wheel);
-    wheel.number = newPrizeNumber;
-
-    wheel.status = "Spin";
-    wheelNamespace.emit("msg", {
-      command: "update",
-      data: wheel,
-    });
-    setTimeout(() => {
-      spinstop();
-    }, 10000);
-    if (wheel.users.length > 0) {
-      dec();
-    }
-  };
-  const spinstop = () => {
-    var _time = 1000;
-    wheel.status = "Spining";
-    var _tot = 0;
-    var _net = 0;
-    if (wheel.users.length > 0) {
-      wheel.users.forEach((item) => {
-        item.win = item.bet * getPrize(segments[wheel.number], item.position);
-        _tot = _tot + item.bet;
-        _net = _net + item.win;
-      });
-    }
-    wheel.total = _tot;
-    wheel.net = _net;
-    wheelNamespace.emit("msg", {
-      command: "update",
-      data: wheel,
-    });
-    if (wheel.users.length > 0) {
-      _time = 2000;
-      inc();
-    }
-
-    setTimeout(() => {
-      doneWheel();
-    }, _time);
-  };
-  const doneWheel = async () => {
-    var _time = 1000;
-    wheel.status = "Done";
-    wheelNamespace.emit("msg", {
-      command: "update",
-      data: wheel,
-    });
-    if (wheel.total > 0) {
-      _time = 3000;
-      let wu = wheel.users;
-      var wheeldb = await createWheel(wheel);
-
-      wu.forEach(async (item) => {
-        item.pid = wheeldb._id;
-        var user = await createUser(wheeldb._id, item);
-      });
-    }
-
-    setTimeout(() => {
-      createWheelData();
-    }, _time);
-  };
-  createWheelData();
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({
@@ -314,8 +277,103 @@ function initial() {
       });
     }
   });
-}
+};
+const createWheelData = async () => {
+  var wheeldb = await createWheel(wheel?.number);
 
+  wheel = wheeldb;
+  wheelNamespace.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
+  wheelusers = [];
+  wheelNamespace.emit("msg", { command: "resetusers" });
+
+  setTimeout(() => {
+    spin();
+  }, 30000);
+};
+const spin = async () => {
+  const d = new Date();
+  let seconds = d.getSeconds();
+
+  wheel.serverSec = seconds;
+  let newPrizeNumbern = getPrizePos(wheel);
+  wheel.number = newPrizeNumbern;
+
+  wheel.status = "Spin";
+  wheelNamespace.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
+
+  setTimeout(() => {
+    spinstop();
+  }, 10000);
+  var dd = await Wheel.findByIdAndUpdate(wheel._id, {
+    status: "Spin",
+    serverSec: seconds,
+    number: newPrizeNumbern,
+  });
+  if (wheelusers.length > 0) {
+    dec();
+  }
+};
+const spinstop = async () => {
+  var _time = 2000;
+  wheel.status = "Spining";
+  var _tot = 0;
+  var _net = 0;
+  if (wheelusers.length > 0) {
+    wheelusers.forEach((item) => {
+      item.win = item.bet * getPrize(segments[wheel.number], item.position);
+      _tot = _tot + item.bet;
+      _net = _net + item.win;
+    });
+  }
+  wheel.total = _tot;
+  wheel.net = _net;
+  wheelNamespace.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
+  var dd = await Wheel.findByIdAndUpdate(wheel._id, {
+    status: "Spining",
+    total: _tot,
+    net: _net,
+  });
+  if (wheelusers.length > 0) {
+    _time = 3000;
+    inc();
+  }
+
+  setTimeout(() => {
+    doneWheel();
+  }, _time);
+};
+const doneWheel = async () => {
+  var _time = 1000;
+  wheel.status = "Done";
+  wheelNamespace.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
+  var dd = await Wheel.findByIdAndUpdate(wheel._id, { status: "Done" });
+  if (wheelusers.length > 0) {
+    _time = 3000;
+
+    wheelusers.forEach(async (item) => {
+      item.pid = wheel._id;
+      var user = await createUser(wheel._id, item);
+    });
+
+    createWheelData();
+  } else {
+    setTimeout(() => {
+      createWheelData();
+    }, _time);
+  }
+};
 const getPrize = (newPrizeNumber, pos) => {
   var num = 0;
   if (parseInt(newPrizeNumber.replace("x", "")) == parseInt(pos)) {
@@ -324,89 +382,16 @@ const getPrize = (newPrizeNumber, pos) => {
 
   return num;
 };
-function groupByMultipleFields(data, ...fields) {
-  if (fields.length === 0) return;
-  let newData = {};
-  const [field] = fields;
-  newData = groupBySingleField(data, field);
-  const remainingFields = fields.slice(1);
-  if (remainingFields.length > 0) {
-    Object.keys(newData).forEach((key) => {
-      newData[key] = groupByMultipleFields(newData[key], ...remainingFields);
-    });
-  }
-  return newData;
-}
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
-const getPrizePos = (users) => {
-  var newPrizeNumber = users.serverCode * users?.startNum;
 
-  newPrizeNumber = newPrizeNumber + users.serverCode * users?.serverSec;
+const getPrizePos = (users) => {
+  var newPrizeNumber = users?.serverCode * users?.startNum;
+
+  newPrizeNumber = newPrizeNumber + users?.serverCode * users?.serverSec;
   newPrizeNumber = newPrizeNumber % segments.length;
 
   return newPrizeNumber;
 };
-const getPrizeAve = (wheel, pos) => {
-  var newPrizeNumber = wheel.number;
-  try {
-    if (pos) {
-      var newData = groupBySingleField(wheel.users, "position");
-      var num = 0;
-      var numtot = 0;
 
-      for (const property in newData) {
-        numtot = numtot + 1;
-        num =
-          num +
-          parseFloat(getPrize(segments[newPrizeNumber], parseInt(property)));
-      }
-      num = parseFloat(num / numtot).toFixed(2);
-    } else {
-      var num = parseFloat(getPrize(segments[newPrizeNumber], 2));
-      num = num + parseFloat(getPrize(segments[newPrizeNumber], 4));
-      num = num + parseFloat(getPrize(segments[newPrizeNumber], 8));
-      num = num + parseFloat(getPrize(segments[newPrizeNumber], 10));
-      num = num + parseFloat(getPrize(segments[newPrizeNumber], 20));
-      num = num + parseFloat(getPrize(segments[newPrizeNumber], 25));
-
-      num = parseFloat(num / 6).toFixed(2);
-    }
-  } catch (error) {}
-
-  return num;
-};
-
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
 const sumOfBet = (array) => {
   return array.reduce((sum, currentValue) => {
     var _am = currentValue.bet;
@@ -420,7 +405,7 @@ const sumOfWin = (array) => {
   }, 0);
 };
 const dec = async () => {
-  var newData = groupBySingleField(wheel.users, "username");
+  var newData = groupBySingleField(wheelusers, "username");
 
   for (const property in newData) {
     var newuser = await User.findOneAndUpdate(
@@ -441,7 +426,7 @@ const dec = async () => {
   // if (blnupdate) wheelNamespace.emit("msg", { command: "update", data: wheel });
 };
 const inc = () => {
-  var newDatainc = groupBySingleField(wheel.users, "username");
+  var newDatainc = groupBySingleField(wheelusers, "username");
 
   for (const property in newDatainc) {
     if (sumOfWin(newDatainc[property]) > 0) {
@@ -463,12 +448,6 @@ const inc = () => {
   }
 };
 
-const createWheel = function (tutorial) {
-  tutorial.users = [];
-  return db.Wheel.create(tutorial).then((docTutorial) => {
-    return docTutorial;
-  });
-};
 const createUser = function (wheelId, comment) {
   return db.userWheel.create(comment).then((docComment) => {
     return db.Wheel.findByIdAndUpdate(
@@ -478,3 +457,10 @@ const createUser = function (wheelId, comment) {
     );
   });
 };
+require("./app/routes/auth.routes")(app);
+require("./app/routes/user.routes")(app, wheel);
+
+app.listen(serverPort, () => {
+  console.log(`Server is running on port ${serverPort}.`);
+  initial();
+});

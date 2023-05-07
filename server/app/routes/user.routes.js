@@ -1,8 +1,8 @@
 const { authJwt } = require("../middlewares");
 const controller = require("../controllers/user.controller");
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
+module.exports = function (app) {
+  app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
@@ -10,9 +10,20 @@ module.exports = function(app) {
     next();
   });
 
-  app.get("/api/test/all", controller.allAccess);
+  app.get("/api/test/all", (req, res) => {
+    res.status(200).send();
+  });
 
-  app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
+  app.get(
+    "/api/test/user",
+    [authJwt.verifyToken, authJwt.getUser, authJwt.getWhell],
+    (req, res) => {
+      res.status(200).send({
+        user: req.userdata,
+        wheel: req.wheel,
+      });
+    }
+  );
 
   app.get(
     "/api/test/mod",

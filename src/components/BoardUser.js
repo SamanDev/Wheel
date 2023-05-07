@@ -20,16 +20,17 @@ const BoardUser = () => {
           error.message ||
           error.toString();
 
-        setContent(_content);
-
-        if (error.response && error.response.status === 401) {
+        if (error.response.status === 403) {
           EventBus.dispatch("logout");
+          window.location.href = "/login";
         }
       }
     );
   }, []);
-
-  return <Mywhell currentUser={currentUser} />;
+  if (content == "") {
+    return null;
+  }
+  return <Mywhell currentUser={content.user} wheel={content.wheel} />;
 };
 
 export default BoardUser;

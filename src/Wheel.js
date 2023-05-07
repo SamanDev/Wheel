@@ -7,6 +7,7 @@ import LastList from "./LastList";
 import Mywhell from "./MyWheel";
 import $ from "jquery";
 import { socket } from "./socket";
+import eventBus from "./common/EventBus";
 export const apiPath = "";
 
 const segments = [
@@ -142,7 +143,7 @@ const userBet = (bets, username) => {
     for (const pos in _gmode[property]) {
       stat.push({
         bet: sumOfBet(_gmode[property][pos]),
-        status: _gmode[property].status,
+
         position: parseInt(pos),
         username: property,
         win: sumOfWin(_gmode[property][pos]),
@@ -163,36 +164,23 @@ function App(prop) {
     localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 1
   );
 
-  const [users, setUsers] = useState({
-    status: "Pen",
-    number: 27,
-    total: 0,
-    net: 0,
-    avex: 0,
-    aveBetx: 0,
-    serverCode: 33333,
-    serverSec: 0,
-    startNum: 10,
-    date: new Date(),
-    users: [],
-  });
+  const [users, setUsers] = useState(prop.wheel);
   const [user, setUser] = useState(prop.currentUser);
 
   useEffect(() => {
     function onConnect() {
-      if (users.status == "Pen") {
-        socket.emit("getwheel");
-        setLoading(false);
-      }
       socket.on("msg", ({ command, data }) => {
         if (command == "update") {
           setUsers(data);
         }
+        if (command == "users") {
+          eventBus.dispatch("users", data);
+        }
+        if (command == "resetusers") {
+          eventBus.dispatch("resetusers");
+        }
         if (command == "user") {
-          var userold = JSON.parse(localStorage.getItem("user"));
-          userold.balance2 = data.balance2;
-          localStorage.setItem("user", JSON.stringify(userold));
-          setUser(userold);
+          setUser(data);
         }
         if (command == "online") {
           setOnline(data);
@@ -230,75 +218,68 @@ function App(prop) {
     };
   }, []);
   useEffect(() => {
-    if (users.status == "Spin") {
-      var ubet = userBet(users.users, user?.username);
-      if (ubet.length > 0) {
-        localStorage.setItem("lastbet", JSON.stringify(ubet));
+    if (users) {
+      if (users.status == "Spin") {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          var t1 = new Date(users.date);
+          var t2 = new Date();
+          var dif = t1.getTime() - t2.getTime();
+
+          var Seconds_from_T1_to_T2 = dif / 1000;
+          var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+          console.log(39 - Seconds_Between_Dates);
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(users.number) * (360 / segments.length) +
+                  (32 - Seconds_Between_Dates) * 360
+              ) +
+              "deg)",
+            transition:
+              "transform " + (39 - Seconds_Between_Dates) + "s ease-in-out",
+          });
+        }, 10);
       }
-
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        var t1 = new Date(users.date);
-        var t2 = new Date();
-        var dif = t1.getTime() - t2.getTime();
-
-        var Seconds_from_T1_to_T2 = dif / 1000;
-        var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
-        console.log(39 - Seconds_Between_Dates);
+      if (users.status == "Spining") {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
+            $(".mainwheel .bhdLno canvas").css({
+              transform:
+                "rotate(-" +
+                parseFloat(parseInt(users.number) * (360 / segments.length)) +
+                "deg)",
+              transition: "transform 1s ease-in-out",
+            });
+          }
+        }, 100);
+      }
+      if (users.status == "Done") {
         $(".mainwheel .bhdLno canvas").css({
           transform:
             "rotate(-" +
-            parseFloat(
-              parseInt(users.number) * (360 / segments.length) +
-                (39 - Seconds_Between_Dates) * 360
-            ) +
+            parseFloat(parseInt(users.number) * (360 / segments.length)) +
             "deg)",
-          transition:
-            "transform " + (39 - Seconds_Between_Dates) + "s ease-in-out",
+          transition: "transform 0s ease-in-out",
         });
-      }, 10);
+      }
+      if (users.status == "Pending") {
+        clearTimeout(timer2);
+        timer2 = setTimeout(() => {
+          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
+            $(".mainwheel .bhdLno canvas").css({
+              transform:
+                "rotate(-" +
+                parseFloat(parseInt(users.startNum) * (360 / segments.length)) +
+                "deg)",
+              transition: "transform 0s ease-in-out",
+            });
+          }
+        }, 100);
+      }
     }
-    if (users.status == "Spining") {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        if (!$(".mainwheel .bhdLno canvas").attr("style")) {
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(parseInt(users.number) * (360 / segments.length)) +
-              "deg)",
-            transition: "transform 1s ease-in-out",
-          });
-        }
-      }, 100);
-    }
-    if (users.status == "Done") {
-      $(".mainwheel .bhdLno canvas").css({
-        transform:
-          "rotate(-" +
-          parseFloat(parseInt(users.number) * (360 / segments.length)) +
-          "deg)",
-        transition: "transform 0s ease-in-out",
-      });
-    }
-    if (users.status == "Pending") {
-      clearTimeout(timer2);
-      timer2 = setTimeout(() => {
-        if (!$(".mainwheel .bhdLno canvas").attr("style")) {
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(parseInt(users.startNum) * (360 / segments.length)) +
-              "deg)",
-            transition: "transform 0s ease-in-out",
-          });
-        }
-      }, 100);
-    }
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(timer2);
-    };
   }, [users.status]);
 
   useEffect(() => {
@@ -314,7 +295,7 @@ function App(prop) {
       </Segment>
     );
   }
-  if (loading || users.status == "Pen") {
+  if (loading || !users) {
     return (
       <Segment className="loadarea">
         <Dimmer active>

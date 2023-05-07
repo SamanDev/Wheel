@@ -143,8 +143,12 @@ function MNyWheel(prop) {
   }
   useEffect(() => {
     var stat = [];
-    if (users?.users.length > 0) {
-      var _gmode = groupByMultipleFields(users?.users, "username", "position");
+    if (users.wheelusers.length > 0) {
+      var _gmode = groupByMultipleFields(
+        users.wheelusers,
+        "username",
+        "position"
+      );
       for (const property in _gmode) {
         for (const pos in _gmode[property]) {
           stat.push({
@@ -185,11 +189,13 @@ function MNyWheel(prop) {
           className={
             parseInt(ps.replace("x", "")) == parseInt(segments[users.number])
               ? "active b" +
-                users.users.filter((u) => parseInt(u.position) == parseInt(ps))
-                  .length
+                users.wheelusers.filter(
+                  (u) => parseInt(u.position) == parseInt(ps)
+                ).length
               : "noactive b" +
-                users.users.filter((u) => parseInt(u.position) == parseInt(ps))
-                  .length
+                users.wheelusers.filter(
+                  (u) => parseInt(u.position) == parseInt(ps)
+                ).length
           }
           style={{
             background: getcolor(ps.replace("x", "")),

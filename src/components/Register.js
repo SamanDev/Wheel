@@ -6,7 +6,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
-import { register } from "../actions/auth";
+import { register, login } from "../actions/auth";
 
 const required = (value) => {
   if (!value) {
@@ -57,7 +57,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
 
-  const { message } = useSelector(state => state.message);
+  const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
   const onChangeUsername = (e) => {
@@ -75,6 +75,13 @@ const Register = () => {
     setPassword(password);
   };
 
+  const handleLogin = (username, password) => {
+    dispatch(login(username, password))
+      .then(() => {
+        window.location.href = "/";
+      })
+      .catch(() => {});
+  };
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -85,6 +92,7 @@ const Register = () => {
     if (checkBtn.current.context._errors.length === 0) {
       dispatch(register(username, email, password))
         .then(() => {
+          handleLogin(username, password);
           setSuccessful(true);
         })
         .catch(() => {
@@ -149,7 +157,12 @@ const Register = () => {
 
           {message && (
             <div className="form-group">
-              <div className={ successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+              <div
+                className={
+                  successful ? "alert alert-success" : "alert alert-danger"
+                }
+                role="alert"
+              >
                 {message}
               </div>
             </div>
