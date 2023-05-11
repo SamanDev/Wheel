@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-
+import AdsComponent from "../adsComponent";
 import { login } from "../actions/auth";
 
 const required = (value) => {
@@ -75,7 +75,7 @@ const Login = (props) => {
           alt="profile-img"
           className="profile-img-card"
         />
-
+        <AdsComponent dataAdSlot="X2XXXXXXXX" />
         <Form onSubmit={handleLogin} ref={form}>
           <div className="form-group">
             <label htmlFor="username">Username</label>
