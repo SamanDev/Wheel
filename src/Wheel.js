@@ -8,7 +8,7 @@ import Mywhell from "./MyWheel";
 import $ from "jquery";
 import { socket } from "./socket";
 import EventBus from "./common/EventBus";
-import AdsComponent from "./AdsComponent";
+import AdsComponent from "./adsComponent";
 export const apiPath = "";
 
 const segments = [
