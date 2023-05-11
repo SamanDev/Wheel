@@ -16,10 +16,8 @@ const userBet = (wheel, username) => {
   return [bets, net];
 };
 const TableExampleSingleLine = (prop) => {
-  const [loading, setLoading] = useState(false);
   const [lastList, setlastList] = useState([]);
 
-  const socket = prop.socket;
   const segments = prop.segments;
   useEffect(() => {
     ListService.getPublicContent({
@@ -113,7 +111,7 @@ const TableExampleSingleLine = (prop) => {
                 </Statistic>
 
                 <Mod
-                  users={item}
+                  wheel={item}
                   loginToken={prop.loginToken}
                   segments={prop.segments}
                   getPrize={prop.getPrize}

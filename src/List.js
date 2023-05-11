@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Label } from "semantic-ui-react";
 import EventBus from "./common/EventBus";
+import ListService from "./services/list.service";
 function groupBySingleField(data, field) {
   return data.reduce((acc, val) => {
     const rest = Object.keys(val).reduce((newObj, key) => {
@@ -52,14 +53,25 @@ function count(obj) {
   return count;
 }
 const TableExampleSingleLine = (prop) => {
-  const wheel = prop.users;
-  const [userbets, setuserbets] = useState(wheel.wheelusers);
+  const [wheel, setWheel] = useState(prop.wheel);
+  const [userbets, setuserbets] = useState(wheel?.wheelusers);
   const [list, setList] = useState([]);
-
+  useEffect(() => {
+    if (!prop.last) {
+      ListService.getPublicContent({
+        command: "users",
+      }).then((response) => {
+        setuserbets(response.data);
+      });
+    }
+    return () => {
+      setuserbets([]);
+    };
+  }, [prop.command]);
   useEffect(() => {
     var stat = [];
 
-    if (userbets.length > 0) {
+    if (userbets?.length > 0) {
       var _gmode = groupByMultipleFields(userbets, "username", "position");
       for (const property in _gmode) {
         for (const pos in _gmode[property]) {
@@ -73,13 +85,40 @@ const TableExampleSingleLine = (prop) => {
         }
       }
       stat.sort((a, b) => (a.bet < b.bet ? 1 : -1));
-      if (wheel.status == "Spining" || wheel.status == "Done") {
+      if (wheel?.status == "Spining" || wheel?.status == "Done") {
         stat.sort((a, b) => (a.win < b.win ? 1 : -1));
       }
     }
     setList(stat);
   }, [userbets]);
-
+  useEffect(() => {
+    if (!prop.last) {
+      EventBus.on("wheel", (data) => {
+        if (data?.status) {
+          setWheel(data);
+        }
+      });
+      EventBus.on("users", (data) => {
+        setuserbets(data);
+      });
+      EventBus.on("bets", (data) => {
+        if (data != []) {
+          setuserbets((current) => [...current, data]);
+        }
+      });
+      EventBus.on("resetusers", (data) => {
+        setuserbets([]);
+      });
+    }
+    return () => {
+      if (!prop.last) {
+        EventBus.remove("resetusers");
+        EventBus.remove("users");
+        EventBus.remove("bets");
+        EventBus.remove("wheel");
+      }
+    };
+  }, []);
   return (
     <>
       <Table
@@ -94,14 +133,14 @@ const TableExampleSingleLine = (prop) => {
           <Table.Row>
             <Table.HeaderCell>
               Users{" "}
-              {userbets.length > 0 &&
+              {userbets?.length > 0 &&
                 count(groupBySingleField(userbets, "username")) > 0 && (
                   <>{count(groupBySingleField(userbets, "username"))}</>
                 )}
             </Table.HeaderCell>
             <Table.HeaderCell>
               Bet{" "}
-              {userbets.length > 0 && wheel.total > 0 && <>${wheel.total}</>}
+              {userbets?.length > 0 && wheel?.total > 0 && <>${wheel?.total}</>}
             </Table.HeaderCell>
 
             <Table.HeaderCell>Win</Table.HeaderCell>
@@ -111,7 +150,7 @@ const TableExampleSingleLine = (prop) => {
       <div className="tablelist">
         <Table unstackable inverted color="black" fixed>
           <Table.Body>
-            {userbets.length > 0 && (
+            {userbets?.length > 0 && (
               <>
                 {list.map((item, i) => (
                   <Table.Row key={item.username + i}>
@@ -142,7 +181,7 @@ const TableExampleSingleLine = (prop) => {
                     </Table.Cell>
 
                     <Table.Cell>
-                      {wheel.status == "Spining" || wheel.status == "Done" ? (
+                      {wheel?.status == "Spining" || wheel?.status == "Done" ? (
                         <>
                           <Label
                             style={{

@@ -273,6 +273,12 @@
   filter: drop-shadow(1px 1px 1px rgb(0, 0, 0)) !important;
 
 }
+.betarea.res .chips {
+
+  left: 10px;
+
+
+}
 .chiparea .chips.active {
   filter: drop-shadow(1px 1px 20px rgb(255, 0, 0)) !important;
   transform: scale(1)  translateX(10px);

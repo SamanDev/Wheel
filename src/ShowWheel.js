@@ -51,22 +51,6 @@ const PrintBet = (prop) => {
   }
   return (
     <div key={i + "-" + prop.chip}>
-      {users?.status == "Pending" && (
-        <div
-          className="animate__fadeOutUp animate__animated  animate__delay-1s animate__slower"
-          style={{
-            position: "absolute",
-            top: -30,
-            right: 0,
-            left: 0,
-            textAlign: "center",
-            textShadow: "0px 0px 2px black",
-          }}
-        >
-          {item.username}
-        </div>
-      )}
-
       <GetChip {...prop} style={_s} className={_c} />
     </div>
   );
@@ -125,7 +109,7 @@ function MNyWheel(prop) {
   const user = prop.loginToken;
 
   const [list, setList] = useState([]);
-  const users = prop.users;
+  const users = prop.wheel;
   const segments = prop.segments;
 
   var _sec = users?.serverSec;
@@ -321,15 +305,13 @@ function MNyWheel(prop) {
           </Header>
         </>
       </div>
-
-      <div className={"mywhell"}>
+      <div
+        className=" mywhell"
+        style={{ position: "absolute", right: 30, width: 0, zIndex: 1000 }}
+      >
         <div
-          className="betarea"
-          style={{
-            left: 500,
-            transform: "scale(.8)",
-            transformOrigin: "top left",
-          }}
+          className="betarea res"
+          style={{ position: "relative", right: 70, width: 0 }}
         >
           {betBtn(
             "2x",
@@ -368,6 +350,8 @@ function MNyWheel(prop) {
             prop.getcolortext
           )}
         </div>
+      </div>
+      <div className={"mywhell"}>
         <div className="animate__animated  animate__rollIn">
           <Wheel
             prizeNumber={users?.number}

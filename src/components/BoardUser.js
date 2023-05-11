@@ -10,6 +10,8 @@ const BoardUser = () => {
   useEffect(() => {
     UserService.getUserBoard().then(
       (response) => {
+        EventBus.dispatch("wheel", response.data.wheel);
+        EventBus.dispatch("user", response.data.user);
         setContent(response.data);
       },
       (error) => {

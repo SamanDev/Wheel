@@ -33,8 +33,9 @@ const userBet = (wheel, username) => {
 };
 function ModalExampleModal(prop) {
   const [open, setOpen] = React.useState(false);
-  const users = prop.users;
-  const item = prop.users;
+  const users = prop.wheel;
+  const item = prop.wheel;
+  console.log(users);
   var userBets = userBet(users, prop.loginToken.username);
   return (
     <Modal

@@ -257,7 +257,7 @@ const sumOfMyBet = (bets) => {
   }, 0);
 };
 var _l = [];
-var timer, timer2;
+var maintimer, timer, timer2;
 function MNyWheel(prop) {
   const [time, setTime] = useState(0);
   const [sec, setSec] = useState(0);
@@ -266,11 +266,13 @@ function MNyWheel(prop) {
   const bets = localStorage.getItem("lastbet")
     ? JSON.parse(localStorage.getItem("lastbet"))
     : [];
-  const user = prop.loginToken;
+
   const [balance, setBalance] = useState(0);
-  const users = prop.users;
-  const [list, setList] = useState([]);
+
   const [userbets, setuserbets] = useState([]);
+  const [wheel, setWheel] = useState(prop.wheel);
+  const [list, setList] = useState([]);
+  const [user, setUser] = useState(prop.loginToken);
   const segments = prop.segments;
 
   if (_l.length == 0) {
@@ -328,7 +330,7 @@ function MNyWheel(prop) {
         }
       }
 
-      if (users.status == "Spining" || users.status == "Done") {
+      if (wheel.status == "Spining" || wheel.status == "Done") {
         stat.sort((a, b) => (a.win < b.win ? 1 : -1));
       } else {
         stat.sort((a, b) => (a.bet < b.bet ? 1 : -1));
@@ -341,30 +343,40 @@ function MNyWheel(prop) {
   }, [userbets]);
 
   useEffect(() => {
-    var t1 = new Date(users.date);
-    var t2 = new Date();
-    var dif = t1.getTime() - t2.getTime();
+    if (wheel?.status) {
+      if (wheel?.status == "Pending") {
+        timer = setInterval(() => {
+          var t1 = new Date(wheel?.date);
+          var t2 = new Date();
+          var dif = t1.getTime() - t2.getTime();
 
-    var Seconds_from_T1_to_T2 = dif / 1000;
-    var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-    var bagh = 30 - (Seconds_Between_Dates % 30);
-    var mysec = users.serverSec;
-    if (users.status == "Pending") {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        mysec = (t1.getSeconds() + Seconds_Between_Dates) % 60;
+          var Seconds_from_T1_to_T2 = dif / 1000;
+          var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
+          var bagh = 30 - (Seconds_Between_Dates % 30);
+          var mysec = wheel?.serverSec;
+          mysec = (t1.getSeconds() + Seconds_Between_Dates) % 60;
 
-        setSec(parseInt(mysec));
-        setTime(parseInt(bagh));
-      }, 1000);
+          setSec(parseInt(mysec));
+          setTime(parseInt(bagh));
+        }, 1000);
+      } else {
+        clearInterval(timer);
+      }
     }
-
     return () => {
       //clearTimeout(timer);
     };
-  }, [users.status, users.date, time]);
+  }, [wheel]);
   useEffect(() => {
+    EventBus.on("wheel", (data) => {
+      if (data?.status) {
+        setWheel(data);
+      }
+    });
     EventBus.on("users", (data) => {
+      setuserbets(data);
+    });
+    EventBus.on("bets", (data) => {
       if (data != []) {
         setuserbets((current) => [...current, data]);
       }
@@ -372,12 +384,82 @@ function MNyWheel(prop) {
     EventBus.on("resetusers", (data) => {
       setuserbets([]);
     });
+    EventBus.on("user", (data) => {
+      setUser(data);
+    });
 
     return () => {
-      EventBus.remove("users");
+      EventBus.remove("bets");
       EventBus.remove("resetusers");
+      EventBus.remove("users");
+      EventBus.remove("user");
+      EventBus.remove("wheel");
     };
   }, []);
+  useEffect(() => {
+    if (wheel?.status) {
+      if (wheel.status == "Spin") {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          var t1 = new Date(wheel.date);
+          var t2 = new Date();
+          var dif = t1.getTime() - t2.getTime();
+
+          var Seconds_from_T1_to_T2 = dif / 1000;
+          var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.number) * (360 / segments.length) +
+                  (39 - Seconds_Between_Dates) * 360
+              ) +
+              "deg)",
+            transition:
+              "transform " + (39 - Seconds_Between_Dates) + "s ease-in-out",
+          });
+        }, 100);
+      }
+      if (wheel.status == "Spining") {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
+            $(".mainwheel .bhdLno canvas").css({
+              transform:
+                "rotate(-" +
+                parseFloat(parseInt(wheel.number) * (360 / segments.length)) +
+                "deg)",
+              transition: "transform 1s ease-in-out",
+            });
+          }
+        }, 100);
+      }
+      if (wheel.status == "Done") {
+        $(".mainwheel .bhdLno canvas").css({
+          transform:
+            "rotate(-" +
+            parseFloat(parseInt(wheel.number) * (360 / segments.length)) +
+            "deg)",
+          transition: "transform 0s ease-in-out",
+        });
+      }
+      if (wheel.status == "Pending") {
+        clearTimeout(timer2);
+        timer2 = setTimeout(() => {
+          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
+            $(".mainwheel .bhdLno canvas").css({
+              transform:
+                "rotate(-" +
+                parseFloat(parseInt(wheel.startNum) * (360 / segments.length)) +
+                "deg)",
+              transition: "transform 0s ease-in-out",
+            });
+          }
+        }, 100);
+      }
+    }
+  }, [wheel?.status]);
   return (
     <>
       <div
@@ -396,44 +478,20 @@ function MNyWheel(prop) {
             "linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)",
         }}
       >
-        <>
-          {!prop.last ? (
-            <>
-              {user?.username}
-              <br /> ${balance}
-              <br />
-              Online: {online}
-              <br />
-            </>
-          ) : (
-            <>{users?._id}</>
-          )}
-          <br />
-        </>
+        {user?.username}
+        <br /> ${balance}
+        <br />
+        Online: {online}
       </div>
-
       <div
-        className={
-          (parseInt(time) <= 3 && parseInt(time) >= 0) ||
-          users?.status == "Spin"
-            ? "mainwheel mywhell mytrue"
-            : "mainwheel mywhell"
-        }
+        className="mainwheel mywhell"
+        style={{ position: "absolute", right: 0, width: 0, zIndex: 1000 }}
       >
-        {users?.status == "Pending" && time > 0 && (
-          <>
-            <div className="betarea">
-              <h2 className="text-shadows animate__animated  animate__bounceIn">
-                {time}
-              </h2>
-            </div>
-          </>
-        )}
         <div className="betarea" style={{ right: 70, width: 0 }}>
           {betBtn(
             "2x",
             prop.bet,
-            users,
+            wheel,
 
             socket,
             balance,
@@ -446,7 +504,7 @@ function MNyWheel(prop) {
           {betBtn(
             "4x",
             prop.bet,
-            users,
+            wheel,
 
             socket,
             balance,
@@ -459,7 +517,7 @@ function MNyWheel(prop) {
           {betBtn(
             "8x",
             prop.bet,
-            users,
+            wheel,
 
             socket,
             balance,
@@ -472,7 +530,7 @@ function MNyWheel(prop) {
           {betBtn(
             "10x",
             prop.bet,
-            users,
+            wheel,
 
             socket,
             balance,
@@ -485,7 +543,7 @@ function MNyWheel(prop) {
           {betBtn(
             "20x",
             prop.bet,
-            users,
+            wheel,
 
             socket,
             balance,
@@ -498,7 +556,7 @@ function MNyWheel(prop) {
           {betBtn(
             "25x",
             prop.bet,
-            users,
+            wheel,
 
             socket,
             balance,
@@ -509,6 +567,25 @@ function MNyWheel(prop) {
             prop.getcolortext
           )}
         </div>
+      </div>
+      <div
+        className={
+          (parseInt(time) <= 3 && parseInt(time) >= 0) ||
+          wheel?.status == "Spin"
+            ? "mainwheel mywhell mytrue"
+            : "mainwheel mywhell"
+        }
+      >
+        {wheel?.status == "Pending" && time > 0 && (
+          <>
+            <div className="betarea">
+              <h2 className="text-shadows animate__animated  animate__bounceIn">
+                {time}
+              </h2>
+            </div>
+          </>
+        )}
+
         <div className="animate__animated  animate__rollIn">
           <Wheel
             startingOptionIndex={0}
@@ -533,66 +610,65 @@ function MNyWheel(prop) {
           />
         </div>
       </div>
-      {!users?._id && (
-        <div className="betbtnarea">
-          <div
-            className={
-              users?.status != "Pending" ||
-              (parseInt(time) <= 3 && parseInt(time) >= 0)
-                ? "chiparea animate__animated animate__flipOutX"
-                : "chiparea animate__animated animate__flipInY"
-            }
-          >
+
+      <div className="betbtnarea">
+        <div
+          className={
+            wheel?.status != "Pending" ||
+            (parseInt(time) <= 3 && parseInt(time) >= 0)
+              ? "chiparea animate__animated animate__flipOutX"
+              : "chiparea animate__animated animate__flipInY"
+          }
+        >
+          <GetChip
+            chip={1}
+            handleBet={addBet}
+            bet={prop.bet}
+            setBet={prop.setBet}
+          />
+          <div style={balance >= 5 ? {} : { opacity: 0.5 }}>
             <GetChip
-              chip={1}
+              chip={5}
               handleBet={addBet}
               bet={prop.bet}
               setBet={prop.setBet}
             />
-            <div style={balance >= 5 ? {} : { opacity: 0.5 }}>
-              <GetChip
-                chip={5}
-                handleBet={addBet}
-                bet={prop.bet}
-                setBet={prop.setBet}
-              />
-            </div>
-            <div style={balance >= 10 ? {} : { opacity: 0.5 }}>
-              <GetChip
-                chip={10}
-                handleBet={addBet}
-                bet={prop.bet}
-                setBet={prop.setBet}
-              />
-            </div>
-            <div style={balance >= 25 ? {} : { opacity: 0.5 }}>
-              <GetChip
-                chip={25}
-                handleBet={addBet}
-                bet={prop.bet}
-                setBet={prop.setBet}
-              />
-            </div>
-            <div style={balance >= 50 ? {} : { opacity: 0.5 }}>
-              <GetChip
-                chip={50}
-                handleBet={addBet}
-                bet={prop.bet}
-                setBet={prop.setBet}
-              />
-            </div>
-            {bets?.length > 0 && balance >= sumOfMyBet(bets) && (
-              <Button
-                onClick={() => rebet(bets, users, socket, balance, setBalance)}
-                style={{ marginTop: 50 }}
-                size="large"
-              >
-                Rebet ${sumOfMyBet(bets)}
-              </Button>
-            )}
           </div>
+          <div style={balance >= 10 ? {} : { opacity: 0.5 }}>
+            <GetChip
+              chip={10}
+              handleBet={addBet}
+              bet={prop.bet}
+              setBet={prop.setBet}
+            />
+          </div>
+          <div style={balance >= 25 ? {} : { opacity: 0.5 }}>
+            <GetChip
+              chip={25}
+              handleBet={addBet}
+              bet={prop.bet}
+              setBet={prop.setBet}
+            />
+          </div>
+          <div style={balance >= 50 ? {} : { opacity: 0.5 }}>
+            <GetChip
+              chip={50}
+              handleBet={addBet}
+              bet={prop.bet}
+              setBet={prop.setBet}
+            />
+          </div>
+          {bets?.length > 0 && balance >= sumOfMyBet(bets) && (
+            <Button
+              onClick={() => rebet(bets, wheel, socket, balance, setBalance)}
+              style={{ marginTop: 50 }}
+              size="large"
+            >
+              Rebet ${sumOfMyBet(bets)}
+            </Button>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 }

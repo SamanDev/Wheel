@@ -51,37 +51,42 @@ db.mongoose
   });
 
 // simple route
-app.get("/lastlist", async (req, res) => {
-  var sortig = { date: -1 };
-  if (req.query.l != "myList") {
-    if (req.query.l == "winList") {
-      sortig = { net: -1 };
-    }
-    var users2 = await Wheel.find({ status: "Done" })
-      .limit(25)
-      .sort(sortig)
-      .populate("wheelusers");
-  } else {
-    var udata = [];
-    const userswin = await db.userWheel
-      .find({ username: req.query.u }, { pid: 1 })
-      .limit(20)
-      .sort({ win: -1 });
-
-    var userlist = groupBySingleField(userswin, "pid");
-
-    Object.keys(userlist).forEach((key) => {
-      udata.push({ _id: key });
-    });
-
-    var users2 = await Wheel.find({ $or: udata })
-      .sort({ net: -1 })
-      .populate("wheelusers");
-  }
-  res.json(users2);
-});
 
 // routes
+
+app.get("/lastlist", async (req, res) => {
+  if (req.query.l == "users") {
+    res.json(wheelusers);
+  } else {
+    var sortig = { date: -1 };
+    if (req.query.l != "myList") {
+      if (req.query.l == "winList") {
+        sortig = { net: -1 };
+      }
+      var users2 = await Wheel.find({ status: "Done" })
+        .limit(25)
+        .sort(sortig)
+        .populate("wheelusers");
+    } else {
+      var udata = [];
+      const userswin = await db.userWheel
+        .find({ username: req.query.u }, { pid: 1 })
+        .limit(20)
+        .sort({ win: -1 });
+
+      var userlist = groupBySingleField(userswin, "pid");
+
+      Object.keys(userlist).forEach((key) => {
+        udata.push({ _id: key });
+      });
+
+      var users2 = await Wheel.find({ $or: udata })
+        .sort({ net: -1 })
+        .populate("wheelusers");
+    }
+    res.json(users2);
+  }
+});
 
 let segments = [
   "2",
@@ -117,7 +122,7 @@ let segments = [
 const d = new Date();
 var wheel = {
   status: "Done",
-  startNum: 1,
+  startNum: 0,
   wheelusers: [],
   number: 0,
   total: 0,
@@ -189,10 +194,6 @@ wheelNamespace.on("connection", (socket) => {
     command: "online",
     data: wheelNamespace.sockets.size,
   });
-  socket.emit("msg", {
-    command: "update",
-    data: wheel,
-  });
   socket.emit("msg", { command: "users", data: wheelusers });
   socket.on("addBet", (data) => {
     if (wheel.status == "Pending") {
@@ -216,8 +217,8 @@ wheelNamespace.on("connection", (socket) => {
       } else {
         wheelusers.push(data);
       }
-      console.log(wheelusers);
-      wheelNamespace.emit("msg", { command: "users", data: data });
+
+      wheelNamespace.emit("msg", { command: "bets", data: data });
     }
   });
 
@@ -331,12 +332,14 @@ const spinstop = async () => {
       _net = _net + item.win;
     });
   }
+
   wheel.total = _tot;
   wheel.net = _net;
   wheelNamespace.emit("msg", {
     command: "update",
     data: wheel,
   });
+  wheelNamespace.emit("msg", { command: "users", data: wheelusers });
   var dd = await Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spining",
     total: _tot,

@@ -7,7 +7,8 @@ import LastList from "./LastList";
 import Mywhell from "./MyWheel";
 import $ from "jquery";
 import { socket } from "./socket";
-import eventBus from "./common/EventBus";
+import EventBus from "./common/EventBus";
+import AdsComponent from "./AdsComponent";
 export const apiPath = "";
 
 const segments = [
@@ -89,71 +90,7 @@ const getPrize = (newPrizeNumber, pos) => {
 
   return num;
 };
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
-function groupByMultipleFields(data, ...fields) {
-  if (fields.length === 0) return;
-  let newData = {};
-  const [field] = fields;
-  newData = groupBySingleField(data, field);
-  const remainingFields = fields.slice(1);
-  if (remainingFields.length > 0) {
-    Object.keys(newData).forEach((key) => {
-      newData[key] = groupByMultipleFields(newData[key], ...remainingFields);
-    });
-  }
-  return newData;
-}
-const sumOfBet = (array) => {
-  return array.reduce((sum, currentValue) => {
-    var _am = currentValue.bet;
-    return sum + _am;
-  }, 0);
-};
 
-const sumOfWin = (array) => {
-  return array.reduce((sum, currentValue) => {
-    var _am = currentValue.win;
-    return sum + _am;
-  }, 0);
-};
-const userBet = (bets, username) => {
-  var stat = [];
-
-  var _gmode = groupByMultipleFields(
-    bets?.filter((u) => u.username == username),
-    "username",
-    "position"
-  );
-  for (const property in _gmode) {
-    for (const pos in _gmode[property]) {
-      stat.push({
-        bet: sumOfBet(_gmode[property][pos]),
-
-        position: parseInt(pos),
-        username: property,
-        win: sumOfWin(_gmode[property][pos]),
-      });
-    }
-  }
-  stat.sort((a, b) => (a.bet < b.bet ? 1 : -1));
-
-  return stat;
-};
 var panes = [];
 var timer, timer2, timer3;
 function App(prop) {
@@ -164,23 +101,29 @@ function App(prop) {
     localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 1
   );
 
-  const [users, setUsers] = useState(prop.wheel);
+  const [wheel, setWheel] = useState(prop.wheel);
   const [user, setUser] = useState(prop.currentUser);
 
   useEffect(() => {
     function onConnect() {
       socket.on("msg", ({ command, data }) => {
         if (command == "update") {
-          setUsers(data);
+          setWheel(data);
+          EventBus.dispatch("wheel", data);
         }
         if (command == "users") {
-          eventBus.dispatch("users", data);
+          EventBus.dispatch("users", data);
+        }
+        if (command == "bets") {
+          EventBus.dispatch("bets", data);
         }
         if (command == "resetusers") {
-          eventBus.dispatch("resetusers");
+          EventBus.dispatch("resetusers");
         }
         if (command == "user") {
           setUser(data);
+          //console.log(data);
+          EventBus.dispatch("user", data);
         }
         if (command == "online") {
           setOnline(data);
@@ -204,6 +147,7 @@ function App(prop) {
       socket.off("disconnect", onDisconnect);
     };
   }, []);
+
   useEffect(() => {
     if (user) {
       socket.connect();
@@ -217,70 +161,6 @@ function App(prop) {
       socket.disconnect();
     };
   }, []);
-  useEffect(() => {
-    if (users) {
-      if (users.status == "Spin") {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          var t1 = new Date(users.date);
-          var t2 = new Date();
-          var dif = t1.getTime() - t2.getTime();
-
-          var Seconds_from_T1_to_T2 = dif / 1000;
-          var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
-          console.log(39 - Seconds_Between_Dates);
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(
-                parseInt(users.number) * (360 / segments.length) +
-                  (32 - Seconds_Between_Dates) * 360
-              ) +
-              "deg)",
-            transition:
-              "transform " + (39 - Seconds_Between_Dates) + "s ease-in-out",
-          });
-        }, 10);
-      }
-      if (users.status == "Spining") {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
-            $(".mainwheel .bhdLno canvas").css({
-              transform:
-                "rotate(-" +
-                parseFloat(parseInt(users.number) * (360 / segments.length)) +
-                "deg)",
-              transition: "transform 1s ease-in-out",
-            });
-          }
-        }, 100);
-      }
-      if (users.status == "Done") {
-        $(".mainwheel .bhdLno canvas").css({
-          transform:
-            "rotate(-" +
-            parseFloat(parseInt(users.number) * (360 / segments.length)) +
-            "deg)",
-          transition: "transform 0s ease-in-out",
-        });
-      }
-      if (users.status == "Pending") {
-        clearTimeout(timer2);
-        timer2 = setTimeout(() => {
-          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
-            $(".mainwheel .bhdLno canvas").css({
-              transform:
-                "rotate(-" +
-                parseFloat(parseInt(users.startNum) * (360 / segments.length)) +
-                "deg)",
-              transition: "transform 0s ease-in-out",
-            });
-          }
-        }, 100);
-      }
-    }
-  }, [users.status]);
 
   useEffect(() => {
     localStorage.setItem("setbet", bet);
@@ -295,7 +175,7 @@ function App(prop) {
       </Segment>
     );
   }
-  if (loading || !users) {
+  if (loading) {
     return (
       <Segment className="loadarea">
         <Dimmer active>
@@ -305,7 +185,7 @@ function App(prop) {
     );
   }
 
-  if (panes.length == 0 || 1 == 1) {
+  if (panes.length == 0) {
     panes = [
       {
         menuItem: "Live",
@@ -315,7 +195,7 @@ function App(prop) {
               segments={segments}
               getcolortext={getcolortext}
               getcolor={getcolor}
-              users={users}
+              users={wheel}
               size="mini"
               loginToken={user}
               getPrize={getPrize}
@@ -380,8 +260,9 @@ function App(prop) {
           backgroundColor: "rgba(255,255,255,0)",
         }}
       >
+        <AdsComponent dataAdSlot="X2XXXXXXXX" />
         <Mywhell
-          users={users}
+          wheel={wheel}
           bet={bet}
           setBet={setBet}
           getcolor={getcolor}
@@ -392,7 +273,7 @@ function App(prop) {
           online={online}
         />
 
-        <Segment color="black" inverted size="mini" className="betlist">
+        <Segment color="black" inverted size="mini" className="betl3ist">
           <div className="table rsec">
             <Tab
               color="black"
