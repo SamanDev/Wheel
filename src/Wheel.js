@@ -260,7 +260,6 @@ function App(prop) {
           backgroundColor: "rgba(255,255,255,0)",
         }}
       >
-        <AdsComponent dataAdSlot="X2XXXXXXXX" />
         <Mywhell
           wheel={wheel}
           bet={bet}
@@ -272,8 +271,8 @@ function App(prop) {
           socket={socket}
           online={online}
         />
-
-        <Segment color="black" inverted size="mini" className="betl3ist">
+        <AdsComponent dataAdSlot="X2XXXXXXXX" />
+        <Segment color="black" inverted size="mini" className="betlist">
           <div className="table rsec">
             <Tab
               color="black"
