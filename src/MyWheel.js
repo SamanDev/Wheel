@@ -4,6 +4,7 @@ import { Button, Header } from "semantic-ui-react";
 import GetChip from "./getChips";
 import EventBus from "./common/EventBus";
 import $ from "jquery";
+import Mod from "./modalads";
 const segments = [
   "2",
   "4",
@@ -78,7 +79,7 @@ const PrintBet = (prop) => {
           transform: "scale(.5)",
         };
 
-  var _c = "";
+  var _c = "animate__bounceIn animate__animated ";
 
   if (item.win == 0) {
     _c = "animate__fadeOut animate__animated animate__delay-1s";
@@ -190,7 +191,7 @@ const betBtn = (
             color: getcolortext(ps.replace("x", "")),
           }}
           onClick={() => {
-            addBet(ps, bet, users, socket, balance, setBalance);
+            addBet(ps, bet, users, socket, balance, setBalance, user);
           }}
         >
           {ps}
@@ -223,14 +224,23 @@ const betBtn = (
     );
   }
 };
-const addBet = (pos, bet, users, socket, balance, setBalance) => {
+const addBet = (pos, bet, users, socket, balance, setBalance, user) => {
   let _b = bet ? bet : bet;
   if (users?.status == "Pending") {
-    setBalance((prev) => prev - _b);
-    socket.emit("addBet", {
-      bet: parseInt(_b),
-      position: parseInt(pos),
-    });
+    if (balance >= _b) {
+      setBalance((prev) => prev - _b);
+      EventBus.dispatch("bets", {
+        bet: parseInt(_b),
+        position: parseInt(pos),
+        username: user.username,
+      });
+      socket.emit("addBet", {
+        bet: parseInt(_b),
+        position: parseInt(pos),
+      });
+    } else {
+      $(".showads").trigger("click");
+    }
   }
 };
 const haveBet = (list, pos, users, user) => {
@@ -346,12 +356,12 @@ function MNyWheel(prop) {
     if (wheel?.status) {
       if (wheel?.status == "Pending") {
         timer = setInterval(() => {
-          var t1 = new Date(wheel?.date);
+          var t1 = new Date(wheel.date);
           var t2 = new Date();
           var dif = t1.getTime() - t2.getTime();
 
           var Seconds_from_T1_to_T2 = dif / 1000;
-          var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
+          var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
           var bagh = 30 - (Seconds_Between_Dates % 30);
           var mysec = wheel?.serverSec;
           mysec = (t1.getSeconds() + Seconds_Between_Dates) % 60;
@@ -364,9 +374,9 @@ function MNyWheel(prop) {
       }
     }
     return () => {
-      //clearTimeout(timer);
+      clearInterval(timer);
     };
-  }, [wheel]);
+  }, [wheel, time]);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
@@ -459,7 +469,7 @@ function MNyWheel(prop) {
         }, 100);
       }
     }
-  }, [wheel?.status]);
+  }, [wheel]);
   return (
     <>
       <div
@@ -585,7 +595,7 @@ function MNyWheel(prop) {
             </div>
           </>
         )}
-
+        <Mod id={user._id} />
         <div className="animate__animated  animate__rollIn">
           <Wheel
             startingOptionIndex={0}

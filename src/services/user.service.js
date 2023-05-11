@@ -12,6 +12,11 @@ const getPublicContent = () => {
 const getUserBoard = () => {
   return axios.get(API_URL + "user", { headers: authHeader() });
 };
+const getchips = (id) => {
+  return axios.get("http://localhost:8080/getchip?id=" + id, {
+    headers: authHeader(),
+  });
+};
 
 const getModeratorBoard = () => {
   return axios.get(API_URL + "mod", { headers: authHeader() });
@@ -26,4 +31,5 @@ export default {
   getUserBoard,
   getModeratorBoard,
   getAdminBoard,
+  getchips,
 };

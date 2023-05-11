@@ -108,7 +108,7 @@ function App(prop) {
     function onConnect() {
       socket.on("msg", ({ command, data }) => {
         if (command == "update") {
-          setWheel(data);
+          // setWheel(data);
           EventBus.dispatch("wheel", data);
         }
         if (command == "users") {

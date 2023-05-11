@@ -87,6 +87,22 @@ app.get("/lastlist", async (req, res) => {
     res.json(users2);
   }
 });
+app.get("/getchip", async (req, res) => {
+  var newuserinc = User.findByIdAndUpdate(req.query.id, {
+    $inc: { balance2: 100 },
+  }).then((res) => {
+    if (res?.username) {
+      var _d = res;
+      _d.balance2 = _d.balance2 + 100;
+
+      wheelNamespace.in(res.username).emit("msg", {
+        command: "user",
+        data: _d,
+      });
+    }
+  });
+  res.json(newuserinc);
+});
 
 let segments = [
   "2",
@@ -218,7 +234,7 @@ wheelNamespace.on("connection", (socket) => {
         wheelusers.push(data);
       }
 
-      wheelNamespace.emit("msg", { command: "bets", data: data });
+      socket.broadcast.emit("msg", { command: "bets", data: data });
     }
   });
 
@@ -369,8 +385,9 @@ const doneWheel = async () => {
       item.pid = wheel._id;
       var user = await createUser(wheel._id, item);
     });
-
-    createWheelData();
+    setTimeout(() => {
+      createWheelData();
+    }, _time);
   } else {
     setTimeout(() => {
       createWheelData();
