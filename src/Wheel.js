@@ -46,35 +46,41 @@ const getcolor = (item) => {
   var def = "#000000";
 
   if (item == 25) {
-    def = "darkred";
+    def = "#F71BBF";
   }
   if (item == 20) {
-    def = "#d44130";
+    def = "#FF3B19";
   }
   if (item == 10) {
-    def = "#f3d949";
+    def = "#8523E8";
   }
   if (item == 8) {
-    def = "#4f92f8";
+    def = "#F5C218";
   }
   if (item == 2) {
-    def = "#6cca56";
+    def = "#2CF501";
   }
   if (item == 4) {
-    def = "#b233f3";
+    def = "#19CFFF";
   }
 
   return def;
 };
 const getcolortext = (item) => {
-  var def = "#ffffff";
+  var def = "#eeeeee";
 
   if (item == 10) {
-    def = "#000000";
+    def = "#eeeeee";
   }
 
+  if (item == 8) {
+    def = "#666666";
+  }
+  if (item == 4) {
+    def = "#eeeeee";
+  }
   if (item == 2) {
-    def = "#000000";
+    def = "#666666";
   }
   if (item == 0) {
     def = "#555555";

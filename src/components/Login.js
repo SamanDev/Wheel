@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import AdsComponent from "../adsComponent";
+import AdsComponent from "../google";
 import { login } from "../actions/auth";
 
 const required = (value) => {

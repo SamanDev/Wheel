@@ -292,7 +292,7 @@ function MNyWheel(prop) {
           backgroundColor: prop.getcolor(item),
           textColor: prop.getcolortext(item),
         },
-        option2: i + " . . . . . x" + item,
+
         option: "x" + item,
       });
     });
@@ -353,30 +353,23 @@ function MNyWheel(prop) {
   }, [userbets]);
 
   useEffect(() => {
-    if (wheel?.status) {
-      if (wheel?.status == "Pending") {
-        timer = setInterval(() => {
-          var t1 = new Date(wheel.date);
-          var t2 = new Date();
-          var dif = t1.getTime() - t2.getTime();
+    //clearInterval(timer);
+    timer = setInterval(() => {
+      console.log(time);
+      var t1 = new Date(wheel.date);
+      var t2 = new Date();
+      var dif = t1.getTime() - t2.getTime();
 
-          var Seconds_from_T1_to_T2 = dif / 1000;
-          var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
-          var bagh = 30 - (Seconds_Between_Dates % 30);
-          var mysec = wheel?.serverSec;
-          mysec = (t1.getSeconds() + Seconds_Between_Dates) % 60;
+      var Seconds_from_T1_to_T2 = dif / 1000;
+      var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
-          setSec(parseInt(mysec));
-          setTime(parseInt(bagh));
-        }, 1000);
-      } else {
-        clearInterval(timer);
-      }
-    }
+      setTime(parseInt(Seconds_Between_Dates));
+    }, 1000);
+
     return () => {
       clearInterval(timer);
     };
-  }, [wheel, time]);
+  }, [time]);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
@@ -407,43 +400,25 @@ function MNyWheel(prop) {
     };
   }, []);
   useEffect(() => {
-    if (wheel?.status) {
-      if (wheel.status == "Spin") {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          var t1 = new Date(wheel.date);
-          var t2 = new Date();
-          var dif = t1.getTime() - t2.getTime();
-
-          var Seconds_from_T1_to_T2 = dif / 1000;
-          var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
-
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(
-                parseInt(wheel.number) * (360 / segments.length) +
-                  (39 - Seconds_Between_Dates) * 360
-              ) +
-              "deg)",
-            transition:
-              "transform " + (39 - Seconds_Between_Dates) + "s ease-in-out",
-          });
-        }, 100);
-      }
-      if (wheel.status == "Spining") {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
-            $(".mainwheel .bhdLno canvas").css({
-              transform:
-                "rotate(-" +
-                parseFloat(parseInt(wheel.number) * (360 / segments.length)) +
-                "deg)",
-              transition: "transform 1s ease-in-out",
-            });
-          }
-        }, 100);
+    if (time > 30 && time <= 35) {
+      $(".mainwheel .bhdLno canvas").css({
+        transform:
+          "rotate(-" +
+          parseFloat(
+            parseInt(wheel.number) * (360 / segments.length) + 10 * 360
+          ) +
+          "deg)",
+        transition: "transform " + (40 - time) + "s",
+      });
+    } else {
+      if (wheel.status == "Pending") {
+        $(".mainwheel .bhdLno  canvas").css({
+          transform:
+            "rotate(-" +
+            parseFloat(parseInt(wheel.startNum) * (360 / segments.length)) +
+            "deg)",
+          transition: "transform 0s",
+        });
       }
       if (wheel.status == "Done") {
         $(".mainwheel .bhdLno canvas").css({
@@ -451,25 +426,23 @@ function MNyWheel(prop) {
             "rotate(-" +
             parseFloat(parseInt(wheel.number) * (360 / segments.length)) +
             "deg)",
-          transition: "transform 0s ease-in-out",
+          transition: "transform 0s",
         });
       }
-      if (wheel.status == "Pending") {
-        clearTimeout(timer2);
-        timer2 = setTimeout(() => {
-          if (!$(".mainwheel .bhdLno canvas").attr("style")) {
-            $(".mainwheel .bhdLno canvas").css({
-              transform:
-                "rotate(-" +
-                parseFloat(parseInt(wheel.startNum) * (360 / segments.length)) +
-                "deg)",
-              transition: "transform 0s ease-in-out",
-            });
-          }
-        }, 100);
-      }
     }
-  }, [wheel]);
+    var colornum = prop.getcolor(segments[wheel.startNum]);
+    if (wheel.status == "Spin") {
+      colornum = "#000000";
+    }
+
+    if (wheel.status != "Spin" && wheel.status != "Pending") {
+      colornum = prop.getcolor(segments[wheel.number]);
+    }
+    $(".mainwheel .bhdLno >div").css({
+      filter: "drop-shadow(0px 0px 10px " + colornum + ")",
+    });
+  }, [time]);
+
   return (
     <>
       <div
@@ -580,40 +553,34 @@ function MNyWheel(prop) {
       </div>
       <div
         className={
-          (parseInt(time) <= 3 && parseInt(time) >= 0) ||
+          (parseInt(30 - time) <= 3 && parseInt(30 - time) >= 0) ||
           wheel?.status == "Spin"
             ? "mainwheel mywhell mytrue"
             : "mainwheel mywhell"
         }
       >
-        {wheel?.status == "Pending" && time > 0 && (
+        {wheel?.status == "Pending" && time <= 30 && time > 0 && (
           <>
             <div className="betarea">
               <h2 className="text-shadows animate__animated  animate__bounceIn">
-                {time}
+                {30 - time}
               </h2>
             </div>
           </>
         )}
         <Mod id={user._id} />
-        <div className="animate__animated  animate__rollIn">
+        <div className="animate__animated  animate__rollIn animate__delay-1s">
           <Wheel
+            disableInitialAnimation={true}
             startingOptionIndex={0}
             mustStartSpinning={false}
-            backgroundColors={[
-              "#F22B35",
-              "#F99533",
-              "#24CA69",
-              "#514E50",
-              "#46AEFF",
-              "#9145B7",
-            ]}
-            outerBorderWidth={10}
-            outerBorderColor={"gold"}
+            outerBorderWidth={0}
+            outerBorderColor={"#00000050"}
             innerRadius={20}
-            innerBorderColor="gold"
-            innerBorderWidth={10}
-            radiusLineWidth={1}
+            innerBorderColor={"#00000050"}
+            innerBorderWidth={0}
+            radiusLineColor={"#00000050"}
+            radiusLineWidth={0}
             textDistance={70}
             fontSize={15}
             data={_l}
@@ -625,7 +592,7 @@ function MNyWheel(prop) {
         <div
           className={
             wheel?.status != "Pending" ||
-            (parseInt(time) <= 3 && parseInt(time) >= 0)
+            (parseInt(30 - time) <= 3 && parseInt(30 - time) > 0)
               ? "chiparea animate__animated animate__flipOutX"
               : "chiparea animate__animated animate__flipInY"
           }
