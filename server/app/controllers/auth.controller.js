@@ -104,6 +104,7 @@ exports.signin = (req, res) => {
         username: user.username,
         email: user.email,
         balance: user.balance,
+        image: user.image,
         balance2: user.balance2,
         roles: authorities,
         accessToken: token,

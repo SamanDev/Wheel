@@ -12,12 +12,7 @@ const BoardUser = () => {
     UserService.getUserBoard().then(
       (response) => {
         EventBus.dispatch("wheel", response.data.wheel);
-        var _nu = response.data.user;
-        var _ou = JSON.parse(localStorage.getItem("user"));
-        _nu.accessToken = _ou.accessToken;
-        localStorage.setItem("user", JSON.stringify(_nu));
-
-        EventBus.dispatch("user", _nu);
+        EventBus.dispatch("user", response.data.user);
         setContent(response.data);
       },
       (error) => {

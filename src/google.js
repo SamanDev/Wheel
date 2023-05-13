@@ -65,12 +65,7 @@ function App() {
           .then(() => {
             UserService.getUserBoard().then(
               (response) => {
-                var _nu = response.data.user;
-                var _ou = JSON.parse(localStorage.getItem("user"));
-                _nu.accessToken = _ou.accessToken;
-                localStorage.setItem("user", JSON.stringify(_nu));
-
-                EventBus.dispatch("user", _nu);
+                EventBus.dispatch("user", response.data.user);
               },
               (error) => {
                 const _content =
@@ -99,12 +94,7 @@ function App() {
       } else {
         UserService.getUserBoard().then(
           (response) => {
-            var _nu = response.data.user;
-            var _ou = JSON.parse(localStorage.getItem("user"));
-            _nu.accessToken = _ou.accessToken;
-            localStorage.setItem("user", JSON.stringify(_nu));
-
-            EventBus.dispatch("user", _nu);
+            EventBus.dispatch("user", response.data.user);
           },
           (error) => {
             const _content =
