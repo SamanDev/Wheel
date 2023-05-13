@@ -9,6 +9,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import UserService from "./services/user.service";
 import EventBus from "./common/EventBus";
+import { socket } from "./socket";
 function App() {
   const [user, setUser] = useState(
     localStorage.getItem("guser")
@@ -36,7 +37,32 @@ function App() {
       })
       .catch(() => {});
   };
+  function onConnect() {
+    socket.on("msg", ({ command, data }) => {
+      if (command == "update") {
+        // setWheel(data);
+        EventBus.dispatch("wheel", data);
+      }
+      if (command == "users") {
+        EventBus.dispatch("users", data);
+      }
+      if (command == "bets") {
+        EventBus.dispatch("bets", data);
+      }
+      if (command == "resetusers") {
+        EventBus.dispatch("resetusers");
+      }
+      if (command == "user") {
+        EventBus.dispatch("user", data);
+      }
 
+      if (command == "disconnect") {
+        socket.disconnect();
+      }
+    });
+  }
+
+  socket.on("connect", onConnect);
   useEffect(() => {
     if (user) {
       localStorage.setItem("guser", JSON.stringify(user));
@@ -62,26 +88,7 @@ function App() {
       if (!localStorage.getItem("user")) {
         dispatch(login(profile.name, profile.id))
           .then(() => {
-            UserService.getUserBoard().then(
-              (response) => {
-                window.location.href = "/play";
-                // EventBus.dispatch("user", response.data.user);
-              },
-              (error) => {
-                const _content =
-                  (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                  error.message ||
-                  error.toString();
-
-                if (error.response.status === 403) {
-                  EventBus.dispatch("logout");
-                  logOut();
-                }
-              }
-            );
-            // return <Navigate to="/play" />;
+            socket.connect();
           })
           .catch(() => {
             handleRegister(
@@ -92,50 +99,40 @@ function App() {
             );
           });
       } else {
-        UserService.getUserBoard().then(
-          (response) => {
-            EventBus.dispatch("user", response.data.user);
-          },
-          (error) => {
-            const _content =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            if (error.response.status === 403) {
-              EventBus.dispatch("logout");
-              logOut();
-            }
-          }
-        );
+        socket.connect();
       }
+    } else {
     }
   }, [profile]);
   // log out function to log the user out of google and set the profile array to null
   const logOut = () => {
     googleLogout();
     setProfile(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("guser");
   };
-  const { user: currentUser } = useSelector((state) => state.auth);
 
-  if (currentUser) {
-    return <Navigate to="/play" />;
-  }
   return (
-    <div>
-      <br />
-      <br />
+    <div className="navbar-nav ml-auto">
       {profile ? (
-        <div>
-          <img src={profile.picture} alt="user image" />
-          <Link to={"/play"} className="nav-link">
-            Play
-          </Link>
-        </div>
+        <>
+          <li className="nav-item">
+            <Link to={"/play"} className="nav-link">
+              Play
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to={"/"} className="nav-link" onClick={() => logOut()}>
+              LogOut
+            </Link>
+          </li>
+        </>
       ) : (
-        <button onClick={() => loginOk()}>Sign in with Google 🚀 </button>
+        <li className="nav-item">
+          <Link to={"/"} as="a" className="nav-link" onClick={() => loginOk()}>
+            Sign in with Google 🚀
+          </Link>
+        </li>
       )}
     </div>
   );

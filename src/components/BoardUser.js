@@ -29,11 +29,11 @@ const BoardUser = () => {
       }
     );
   }, []);
-  if (content == "") {
-    return null;
-  }
   if (!currentUser) {
     return <Navigate to="/" />;
+  }
+  if (content == "") {
+    return null;
   }
 
   return <Mywhell currentUser={currentUser} wheel={content.wheel} />;

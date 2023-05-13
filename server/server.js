@@ -208,30 +208,32 @@ wheelNamespace.on("connection", (socket) => {
   });
   socket.emit("msg", { command: "users", data: wheelusers });
   socket.on("addBet", (data) => {
-    if (wheel.status == "Pending") {
-      console.log(socket.userdata);
-      data.win = -1;
-      data.username = socket.user;
-      data.image = socket.userdata.image;
-      wheel.total = wheel.total + data.bet;
+    if (socket.userdata) {
+      if (wheel.status == "Pending") {
+        console.log(socket.userdata);
 
-      let fu = wheelusers.filter(
-        (user) =>
-          user.username == data.username && user.position == data.position
-      );
-      if (fu.length > 0) {
-        const newProjects = wheelusers.map((user) =>
-          user.username == data.username && user.position == data.position
-            ? { ...user, bet: user.bet + data.bet }
-            : user
+        data.win = -1;
+        data.username = socket.userdata.username;
+        data.image = socket.userdata.image;
+        wheel.total = wheel.total + data.bet;
+
+        let fu = wheelusers.filter(
+          (user) =>
+            user.username == data.username && user.position == data.position
         );
+        if (fu.length > 0) {
+          const newProjects = wheelusers.map((user) =>
+            user.username == data.username && user.position == data.position
+              ? { ...user, bet: user.bet + data.bet }
+              : user
+          );
 
-        wheelusers = newProjects;
-      } else {
-        wheelusers.push(data);
+          wheelusers = newProjects;
+        } else {
+          wheelusers.push(data);
+        }
+        socket.broadcast.emit("msg", { command: "bets", data: data });
       }
-
-      socket.broadcast.emit("msg", { command: "bets", data: data });
     }
   });
 

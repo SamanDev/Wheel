@@ -12,7 +12,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-
+import Google from "./google";
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 
@@ -67,34 +67,7 @@ const App = () => {
           </li>
         </div>
 
-        {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/play"} className="nav-link">
-                Play
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/" className="nav-link" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
-          </div>
-        ) : (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
-          </div>
-        )}
+        <Google />
       </nav>
 
       <Routes>
