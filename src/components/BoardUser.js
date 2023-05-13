@@ -12,7 +12,12 @@ const BoardUser = () => {
     UserService.getUserBoard().then(
       (response) => {
         EventBus.dispatch("wheel", response.data.wheel);
+        var _nu = response.data.user;
+        var _ou = JSON.parse(localStorage.getItem("user"));
+        _nu.accessToken = _ou.accessToken;
+        localStorage.setItem("user", JSON.stringify(_nu));
 
+        EventBus.dispatch("user", _nu);
         setContent(response.data);
       },
       (error) => {
@@ -36,7 +41,7 @@ const BoardUser = () => {
     return <Navigate to="/" />;
   }
 
-  return <Mywhell currentUser={content.user} wheel={content.wheel} />;
+  return <Mywhell currentUser={currentUser} wheel={content.wheel} />;
 };
 
 export default BoardUser;
