@@ -5,6 +5,7 @@ const User = mongoose.model(
   new mongoose.Schema({
     username: String,
     email: String,
+    image: String,
     balance: { type: Number, default: 0 },
     balance2: { type: Number, default: 1000 },
     password: String,

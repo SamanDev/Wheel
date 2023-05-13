@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import Mywhell from "../Wheel";
+import "../App.css";
 const BoardUser = () => {
   const [content, setContent] = useState("");
   const { user: currentUser } = useSelector((state) => state.auth);

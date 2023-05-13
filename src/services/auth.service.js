@@ -5,11 +5,12 @@ const API_URL =
     ? "https://api.charkheshans.com/api/auth/"
     : "http://api.charkheshans.com/api/auth/";
 
-const register = (username, email, password) => {
+const register = (username, email, password, image) => {
   return axios.post(API_URL + "signup", {
     username,
     email,
     password,
+    image,
   });
 };
 

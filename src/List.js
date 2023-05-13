@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Label } from "semantic-ui-react";
+import { Table, Label, Image } from "semantic-ui-react";
 import EventBus from "./common/EventBus";
 import ListService from "./services/list.service";
 function groupBySingleField(data, field) {
@@ -80,6 +80,7 @@ const TableExampleSingleLine = (prop) => {
 
             position: parseInt(pos),
             username: property,
+            image: _gmode[property][pos][0].image,
             win: sumOfWin(_gmode[property][pos]),
           });
         }
@@ -89,6 +90,7 @@ const TableExampleSingleLine = (prop) => {
         stat.sort((a, b) => (a.win < b.win ? 1 : -1));
       }
     }
+    console.log(stat);
     setList(stat);
   }, [userbets]);
   useEffect(() => {
@@ -164,6 +166,15 @@ const TableExampleSingleLine = (prop) => {
                       }
                     >
                       <b>{item.username}</b>
+                      <Image
+                        src={item.image}
+                        alt={item.username + " image"}
+                        circular
+                        bordered
+                        floated="left"
+                        width="20"
+                        inverted
+                      />
                     </Table.Cell>
                     <Table.Cell>
                       <div style={{ width: 40, display: "inline-block" }}>

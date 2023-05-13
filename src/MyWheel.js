@@ -454,17 +454,45 @@ function MNyWheel(prop) {
           zIndex: 3,
           width: 150,
 
-          lineHeight: "15px",
           padding: 10,
 
           background:
             "linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)",
         }}
       >
-        {user?.username}
-        <br /> ${balance}
-        <br />
-        Online: {online}
+        <div>
+          <span>
+            <lord-icon
+              src="https://cdn.lordicon.com/jgatzggh.json"
+              trigger="morph"
+              colors="outline:#794628,primary:#e8b730,secondary:#e8b730,tertiary:#000000"
+              style={{ width: 25, height: 25 }}
+            ></lord-icon>
+          </span>{" "}
+          {user?.username}
+        </div>
+        <div>
+          <span>
+            <lord-icon
+              src="https://cdn.lordicon.com/axhjquvh.json"
+              trigger="morph"
+              colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
+              style={{ width: 25, height: 25 }}
+            ></lord-icon>
+          </span>{" "}
+          {online}
+        </div>
+        <div>
+          <span>
+            <lord-icon
+              src="https://cdn.lordicon.com/uvpkeeul.json"
+              trigger="morph"
+              colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
+              style={{ width: 25, height: 25 }}
+            ></lord-icon>
+          </span>{" "}
+          {balance}
+        </div>
       </div>
       <div
         className="mainwheel mywhell"

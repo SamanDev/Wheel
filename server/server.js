@@ -214,8 +214,9 @@ wheelNamespace.on("connection", (socket) => {
   socket.on("addBet", (data) => {
     if (wheel.status == "Pending") {
       data.win = -1;
-      data.username = socket.user;
 
+      data.username = socket.user;
+      data.image = socket.userdata.image;
       wheel.total = wheel.total + data.bet;
 
       let fu = wheelusers.filter(

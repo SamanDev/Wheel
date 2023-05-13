@@ -194,6 +194,7 @@ border-radius: 1000px;
   height: 40vh;
   position: relative;
   z-index: 2;
+  line-height: 20px;
 
 }
 .rsec.table .lasttable tbody {
@@ -332,6 +333,18 @@ border-radius: 1000px;
   
 }
 
+.info {
+  
+}
+.info >div{
+  clear: both;
+  line-height: 25px;
+  height: 25px;
+  overflow: hidden;
+}
+.info >div>span{
+  float: left;
+}
 .info p{
   margin: 0 !important;
   font-size: 12px !important;

@@ -10,12 +10,12 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/test/all", (req, res) => {
+  app.get("/api/all", (req, res) => {
     res.status(200).send();
   });
 
   app.get(
-    "/api/test/user",
+    "/api/user",
     [authJwt.verifyToken, authJwt.getUser, authJwt.getWhell],
     (req, res) => {
       res.status(200).send({
@@ -26,13 +26,13 @@ module.exports = function (app) {
   );
 
   app.get(
-    "/api/test/mod",
+    "/api/mod",
     [authJwt.verifyToken, authJwt.isModerator],
     controller.moderatorBoard
   );
 
   app.get(
-    "/api/test/admin",
+    "/api/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
