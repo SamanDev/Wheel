@@ -63,7 +63,30 @@ function App() {
         console.log(profile);
         dispatch(login(profile.name, profile.id))
           .then(() => {
-            return <Navigate to="/play" />;
+            UserService.getUserBoard().then(
+              (response) => {
+                var _nu = response.data.user;
+                var _ou = JSON.parse(localStorage.getItem("user"));
+                _nu.accessToken = _ou.accessToken;
+                localStorage.setItem("user", JSON.stringify(_nu));
+
+                EventBus.dispatch("user", _nu);
+              },
+              (error) => {
+                const _content =
+                  (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                  error.message ||
+                  error.toString();
+
+                if (error.response.status === 403) {
+                  EventBus.dispatch("logout");
+                  logOut();
+                }
+              }
+            );
+            // return <Navigate to="/play" />;
           })
           .catch(() => {
             handleRegister(
@@ -80,7 +103,7 @@ function App() {
             var _ou = JSON.parse(localStorage.getItem("user"));
             _nu.accessToken = _ou.accessToken;
             localStorage.setItem("user", JSON.stringify(_nu));
-            EventBus.dispatch("wheel", response.data.wheel);
+
             EventBus.dispatch("user", _nu);
           },
           (error) => {
@@ -104,9 +127,12 @@ function App() {
   const logOut = () => {
     googleLogout();
     setProfile(null);
-    localStorage.removeItem("guser");
   };
+  const { user: currentUser } = useSelector((state) => state.auth);
 
+  if (currentUser) {
+    return <Navigate to="/play" />;
+  }
   return (
     <div>
       <br />

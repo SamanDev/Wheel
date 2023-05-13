@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import Mywhell from "../Wheel";
-import "../App.css";
+
 const BoardUser = () => {
   const [content, setContent] = useState("");
   const { user: currentUser } = useSelector((state) => state.auth);
-
   useEffect(() => {
     UserService.getUserBoard().then(
       (response) => {
         EventBus.dispatch("wheel", response.data.wheel);
-        EventBus.dispatch("user", response.data.user);
+
         setContent(response.data);
       },
       (error) => {
@@ -25,7 +25,6 @@ const BoardUser = () => {
 
         if (error.response.status === 403) {
           EventBus.dispatch("logout");
-          window.location.href = "/login";
         }
       }
     );
@@ -33,6 +32,10 @@ const BoardUser = () => {
   if (content == "") {
     return null;
   }
+  if (!currentUser) {
+    return <Navigate to="/" />;
+  }
+
   return <Mywhell currentUser={content.user} wheel={content.wheel} />;
 };
 

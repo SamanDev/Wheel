@@ -173,7 +173,6 @@ const TableExampleSingleLine = (prop) => {
                         bordered
                         floated="left"
                         width="20"
-                        inverted
                       />
                     </Table.Cell>
                     <Table.Cell>
