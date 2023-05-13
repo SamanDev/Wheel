@@ -60,12 +60,12 @@ function App() {
   useEffect(() => {
     if (profile) {
       if (!localStorage.getItem("user")) {
-        console.log(profile);
         dispatch(login(profile.name, profile.id))
           .then(() => {
             UserService.getUserBoard().then(
               (response) => {
-                EventBus.dispatch("user", response.data.user);
+                window.location.href = "/play";
+                // EventBus.dispatch("user", response.data.user);
               },
               (error) => {
                 const _content =

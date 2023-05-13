@@ -18,6 +18,7 @@ verifyToken = (req, res, next) => {
       return res.status(401).send({ message: "Unauthorized!" });
     }
     req.userId = decoded.id;
+    req.accessToken = token;
     next();
   });
 };
@@ -28,7 +29,10 @@ getUser = (req, res, next) => {
       res.status(500).send({ message: err });
       return;
     }
-    req.userdata = user;
+    var _nu = user;
+
+    _nu.accessToken = req.accessToken;
+    req.userdata = _nu;
     next();
   });
 };
