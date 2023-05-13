@@ -5,6 +5,7 @@ import GetChip from "./getChips";
 import EventBus from "./common/EventBus";
 import $ from "jquery";
 import Mod from "./modalads";
+import { useDispatch, useSelector } from "react-redux";
 const segments = [
   "2",
   "4",
@@ -270,6 +271,7 @@ const sumOfMyBet = (bets) => {
 var _l = [];
 var maintimer, timer, timer2;
 function MNyWheel(prop) {
+  const { user: currentUser } = useSelector((state) => state.auth);
   const [time, setTime] = useState(0);
   const [sec, setSec] = useState(0);
   const online = prop.online;
@@ -283,7 +285,7 @@ function MNyWheel(prop) {
   const [userbets, setuserbets] = useState([]);
   const [wheel, setWheel] = useState(prop.wheel);
   const [list, setList] = useState([]);
-  const [user, setUser] = useState(prop.loginToken);
+  const [user, setUser] = useState(currentUser);
   const segments = prop.segments;
 
   if (_l.length == 0) {
