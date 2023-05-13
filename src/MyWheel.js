@@ -233,6 +233,7 @@ const addBet = (pos, bet, users, socket, balance, setBalance, user) => {
         bet: parseInt(_b),
         position: parseInt(pos),
         username: user.username,
+        image: user.image,
       });
       socket.emit("addBet", {
         bet: parseInt(_b),

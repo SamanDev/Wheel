@@ -10,7 +10,7 @@ var corsOptions = {
     "http://localhost:3000",
   ],
 };
-const serverPort = process.env.NODE_ENV === "production" ? 2083 : 8080;
+const serverPort = process.env.NODE_ENV === "production" ? 2083 : 8085;
 const soocketPort = process.env.NODE_ENV === "production" ? 2087 : 8484;
 app.use(cors(corsOptions));
 
@@ -173,16 +173,12 @@ const createWheel = function (startNum) {
 
 const { Server } = require("socket.io");
 const io = new Server(soocketPort, {
-  cors: {
-    origin: corsOptions,
-    // or with an array of origins
-    // origin: ["https://my-frontend.com", "https://my-other-frontend.com", "http://localhost:3000"],
-  },
+  cors: { corsOptions },
 });
 const wheelNamespace = io.of("/wheel");
 wheelNamespace.use((socket, next) => {
   const user = socket.handshake.auth;
-
+  console.log(user);
   if (socket.user != user.username) {
     socket.userdata = user;
     socket.user = user.username;
@@ -213,8 +209,8 @@ wheelNamespace.on("connection", (socket) => {
   socket.emit("msg", { command: "users", data: wheelusers });
   socket.on("addBet", (data) => {
     if (wheel.status == "Pending") {
+      console.log(socket.userdata);
       data.win = -1;
-
       data.username = socket.user;
       data.image = socket.userdata.image;
       wheel.total = wheel.total + data.bet;

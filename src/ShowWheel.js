@@ -307,12 +307,9 @@ function MNyWheel(prop) {
       </div>
       <div
         className=" mywhell"
-        style={{ position: "absolute", right: 30, width: 0, zIndex: 1000 }}
+        style={{ position: "absolute", right: 0, width: 0, zIndex: 1000 }}
       >
-        <div
-          className="betarea res"
-          style={{ position: "relative", right: 70, width: 0 }}
-        >
+        <div className="betarea" style={{ right: 70, width: 0 }}>
           {betBtn(
             "2x",
 

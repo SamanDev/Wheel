@@ -10,16 +10,13 @@ function App(prop) {
         className={prop.bet == prop.num ? "chips active" : "chips"}
       >
         <div className={prop.className}>
-          <p style={{ color: prop.textColor }}>
-            <small>$</small>
-            {prop.num}
-          </p>
+          <p style={{ color: prop.textColor }}>{prop.num}</p>
           <lord-icon
             src="/swvqwdea.json"
             trigger="hover"
             scale="65"
             colors={prop.colors}
-            style={{ width: 70, height: 70 }}
+            style={{ width: 70, height: 70, zIndex: -1 }}
           ></lord-icon>
         </div>
       </div>
