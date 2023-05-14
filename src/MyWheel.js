@@ -442,7 +442,7 @@ function MNyWheel(prop) {
     $(".mainwheel .bhdLno >div").css({
       filter: "drop-shadow(0px 0px 10px " + colornum + ")",
     });
-  }, [time, wheel.date]);
+  }, [time, wheel.status]);
   if (user == "") {
     return (
       <Segment className="loadarea">
