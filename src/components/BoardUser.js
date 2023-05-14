@@ -4,39 +4,17 @@ import { Navigate, useNavigate } from "react-router-dom";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import Mywhell from "../Wheel";
-
+import { socket } from "../socket";
 const BoardUser = () => {
   const [content, setContent] = useState("");
-  const { user: currentUser } = useSelector((state) => state.auth);
+
+  var user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    UserService.getUserBoard().then(
-      (response) => {
-        EventBus.dispatch("wheel", response.data.wheel);
-        EventBus.dispatch("user", response.data.user);
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        if (error.response.status === 403) {
-          EventBus.dispatch("logout");
-        }
-      }
-    );
+    if (!user) {
+      window.location.href = "/";
+    }
   }, []);
-  if (!currentUser) {
-    return <Navigate to="/" />;
-  }
-  if (content == "") {
-    return null;
-  }
-
-  return <Mywhell currentUser={currentUser} wheel={content.wheel} />;
+  return <Mywhell currentUser={user} wheel={content} />;
 };
 
 export default BoardUser;

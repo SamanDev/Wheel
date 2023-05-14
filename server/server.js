@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
 var corsOptions = {
@@ -87,21 +86,21 @@ app.get("/lastlist", async (req, res) => {
     res.json(users2);
   }
 });
-app.get("/getchip", async (req, res) => {
+app.get("/getchip", (req, res) => {
   var newuserinc = User.findByIdAndUpdate(req.query.id, {
     $inc: { balance2: 100 },
-  }).then((res) => {
-    if (res?.username) {
-      var _d = res;
-      _d.balance2 = _d.balance2 + 100;
+  }).then((resp) => {
+    if (resp?.username) {
+      var _d = resp;
+      _d.balance2 = 100;
 
-      wheelNamespace.in(res.username).emit("msg", {
+      wheelNamespace.in(resp.username).emit("msg", {
         command: "user",
         data: _d,
       });
+      res.json(_d);
     }
   });
-  res.json(newuserinc);
 });
 
 let segments = [
@@ -176,23 +175,6 @@ const io = new Server(soocketPort, {
   cors: { corsOptions },
 });
 const wheelNamespace = io.of("/wheel");
-wheelNamespace.use((socket, next) => {
-  const user = socket.handshake.auth;
-  console.log(user);
-  if (socket.user != user.username) {
-    socket.userdata = user;
-    socket.user = user.username;
-  } else {
-    socket.userdata = user;
-  }
-  if (socket.user != null) {
-    wheelNamespace.in(user.username).disconnectSockets(true);
-
-    socket.join(user.username);
-  }
-
-  next();
-});
 
 wheelNamespace.on("disconnect", (reason) => {
   if (reason === "io server disconnect") {
@@ -201,17 +183,30 @@ wheelNamespace.on("disconnect", (reason) => {
   }
   console.log(reason); // else the socket will automatically try to reconnect
 });
-wheelNamespace.on("connection", (socket) => {
-  wheelNamespace.emit("msg", {
-    command: "online",
-    data: wheelNamespace.sockets.size,
-  });
-  socket.emit("msg", { command: "users", data: wheelusers });
-  socket.on("addBet", (data) => {
-    if (socket.userdata) {
-      if (wheel.status == "Pending") {
-        console.log(socket.userdata);
+wheelNamespace.use(async (socket, next) => {
+  const user = socket.handshake.auth;
+  if (user.toString() != "{}") {
+    console.log(user);
+    User.findById(user.id).then((res) => {
+      if (res?.username) {
+        socket.userdata = res;
 
+        wheelNamespace.in(user.username).disconnectSockets(true);
+
+        socket.join(user.username);
+
+        next();
+      }
+    });
+  } else {
+    socket.disconnect();
+    return false;
+  }
+});
+wheelNamespace.on("connection", (socket) => {
+  socket.on("addBet", (data) => {
+    if (socket.userdata.username) {
+      if (wheel.status == "Pending") {
         data.win = -1;
         data.username = socket.userdata.username;
         data.image = socket.userdata.image;
@@ -236,6 +231,18 @@ wheelNamespace.on("connection", (socket) => {
       }
     }
   });
+  socket.on("getwheel", (data) => {
+    wheelNamespace.emit("msg", {
+      command: "update",
+      data: wheel,
+    });
+    wheelNamespace.emit("msg", {
+      command: "online",
+      data: wheelNamespace.sockets.size,
+    });
+    socket.emit("msg", { command: "user", data: socket.userdata });
+    socket.emit("msg", { command: "users", data: wheelusers });
+  });
 
   // getLast(socket);
 });
@@ -256,7 +263,7 @@ const initial = async () => {
     spin();
   } else if (defwheel?.status == "Spin") {
     setTimeout(() => {
-      //spinstop();
+      spinstop();
     }, 3000);
   }
 

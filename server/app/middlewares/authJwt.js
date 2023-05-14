@@ -115,6 +115,7 @@ isModerator = (req, res, next) => {
 
 const authJwt = {
   verifyToken,
+
   getUser,
   getWhell,
   isAdmin,

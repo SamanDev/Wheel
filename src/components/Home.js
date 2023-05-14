@@ -32,9 +32,6 @@ const Home = () => {
           />
         </Card.Group>
         <h1>چطوری بازی کنم؟</h1>
-        <p>
-          <Google />
-        </p>
       </div>
     </div>
   );

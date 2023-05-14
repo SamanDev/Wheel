@@ -25,8 +25,7 @@ function App() {
   const handleLogin = (username, password) => {
     dispatch(login(username, password))
       .then(() => {
-        return <Navigate to="/play" />;
-        //window.location.href = "/";
+        socket.connect();
       })
       .catch(() => {});
   };
@@ -37,32 +36,37 @@ function App() {
       })
       .catch(() => {});
   };
-  function onConnect() {
-    socket.on("msg", ({ command, data }) => {
-      if (command == "update") {
-        // setWheel(data);
-        EventBus.dispatch("wheel", data);
-      }
-      if (command == "users") {
-        EventBus.dispatch("users", data);
-      }
-      if (command == "bets") {
-        EventBus.dispatch("bets", data);
-      }
-      if (command == "resetusers") {
-        EventBus.dispatch("resetusers");
-      }
-      if (command == "user") {
-        EventBus.dispatch("user", data);
-      }
+  useEffect(() => {
+    function onConnect() {
+      socket.on("msg", ({ command, data }) => {
+        if (command == "update") {
+          // setWheel(data);
+          EventBus.dispatch("wheel", data);
+        }
+        if (command == "users") {
+          EventBus.dispatch("users", data);
+        }
+        if (command == "bets") {
+          EventBus.dispatch("bets", data);
+        }
+        if (command == "resetusers") {
+          EventBus.dispatch("resetusers");
+        }
+        if (command == "user") {
+          EventBus.dispatch("user", data);
+        }
+        if (command == "online") {
+          EventBus.dispatch("online", data);
+        }
 
-      if (command == "disconnect") {
-        socket.disconnect();
-      }
-    });
-  }
+        if (command == "disconnect") {
+          socket.disconnect();
+        }
+      });
+    }
 
-  socket.on("connect", onConnect);
+    socket.on("connect", onConnect);
+  }, []);
   useEffect(() => {
     if (user) {
       localStorage.setItem("guser", JSON.stringify(user));
@@ -80,7 +84,7 @@ function App() {
         .then((res) => {
           setProfile(res.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => logOut());
     }
   }, [user]);
   useEffect(() => {
@@ -88,7 +92,7 @@ function App() {
       if (!localStorage.getItem("user")) {
         dispatch(login(profile.name, profile.id))
           .then(() => {
-            socket.connect();
+            window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(

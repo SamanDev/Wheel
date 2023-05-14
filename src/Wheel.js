@@ -48,19 +48,19 @@ const getcolor = (item) => {
   if (item == 25) {
     def = "#F71BBF";
   }
-  if (item == 20) {
+  if (item == 4) {
     def = "#FF3B19";
   }
   if (item == 10) {
     def = "#8523E8";
   }
-  if (item == 8) {
+  if (item == 20) {
     def = "#F5C218";
   }
-  if (item == 2) {
+  if (item == 8) {
     def = "#2CF501";
   }
-  if (item == 4) {
+  if (item == 2) {
     def = "#19CFFF";
   }
 
@@ -69,17 +69,17 @@ const getcolor = (item) => {
 const getcolortext = (item) => {
   var def = "#eeeeee";
 
-  if (item == 10) {
+  if (item == 2) {
     def = "#eeeeee";
   }
 
   if (item == 8) {
     def = "#666666";
   }
-  if (item == 4) {
+  if (item == 20) {
     def = "#eeeeee";
   }
-  if (item == 2) {
+  if (item == 10) {
     def = "#666666";
   }
   if (item == 0) {
@@ -100,7 +100,6 @@ const getPrize = (newPrizeNumber, pos) => {
 var panes = [];
 var timer, timer2, timer3;
 function App(prop) {
-  const [online, setOnline] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const [bet, setBet] = useState(
@@ -109,64 +108,6 @@ function App(prop) {
 
   const [wheel, setWheel] = useState(prop.wheel);
   const [user, setUser] = useState(prop.currentUser);
-
-  useEffect(() => {
-    function onConnect() {
-      socket.on("msg", ({ command, data }) => {
-        if (command == "update") {
-          // setWheel(data);
-          EventBus.dispatch("wheel", data);
-        }
-        if (command == "users") {
-          EventBus.dispatch("users", data);
-        }
-        if (command == "bets") {
-          EventBus.dispatch("bets", data);
-        }
-        if (command == "resetusers") {
-          EventBus.dispatch("resetusers");
-        }
-        if (command == "user") {
-          setUser(data);
-          //console.log(data);
-          EventBus.dispatch("user", data);
-        }
-        if (command == "online") {
-          setOnline(data);
-        }
-
-        if (command == "disconnect") {
-          socket.disconnect();
-        }
-      });
-    }
-
-    function onDisconnect() {
-      setLoading("nologin");
-    }
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      socket.connect();
-    } else {
-      window.location = "/login";
-    }
-
-    // no-op if the socket is already connected
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("setbet", bet);
@@ -273,9 +214,8 @@ function App(prop) {
           getcolor={getcolor}
           getcolortext={getcolortext}
           segments={segments}
-          loginToken={user}
+          currentUser={user}
           socket={socket}
-          online={online}
         />
         <AdsComponent dataAdSlot="X2XXXXXXXX" />
         <Segment color="black" inverted size="mini" className="betlist">

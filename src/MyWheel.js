@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
-import { Button, Header } from "semantic-ui-react";
+import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
 import GetChip from "./getChips";
 import EventBus from "./common/EventBus";
 import $ from "jquery";
@@ -271,10 +271,9 @@ const sumOfMyBet = (bets) => {
 var _l = [];
 var maintimer, timer, timer2;
 function MNyWheel(prop) {
-  const { user: currentUser } = useSelector((state) => state.auth);
   const [time, setTime] = useState(0);
   const [sec, setSec] = useState(0);
-  const online = prop.online;
+
   const socket = prop.socket;
   const bets = localStorage.getItem("lastbet")
     ? JSON.parse(localStorage.getItem("lastbet"))
@@ -282,10 +281,10 @@ function MNyWheel(prop) {
 
   const [balance, setBalance] = useState(0);
 
+  const [online, setOnline] = useState(0);
   const [userbets, setuserbets] = useState([]);
-  const [wheel, setWheel] = useState(prop.wheel);
   const [list, setList] = useState([]);
-  const [user, setUser] = useState(currentUser);
+
   const segments = prop.segments;
 
   if (_l.length == 0) {
@@ -300,7 +299,34 @@ function MNyWheel(prop) {
       });
     });
   }
+  const [wheel, setWheel] = useState(prop.wheel);
+  const [user, setUser] = useState(socket.auth);
 
+  useEffect(() => {
+    socket.emit("getwheel");
+    EventBus.on("wheel", (data) => {
+      if (data?.status) {
+        setWheel(data);
+      }
+    });
+    EventBus.on("users", (data) => {
+      setuserbets(data);
+    });
+    EventBus.on("bets", (data) => {
+      if (data != []) {
+        setuserbets((current) => [...current, data]);
+      }
+    });
+    EventBus.on("resetusers", (data) => {
+      setuserbets([]);
+    });
+    EventBus.on("user", (data) => {
+      setUser(data);
+    });
+    EventBus.on("online", (data) => {
+      setOnline(data);
+    });
+  }, []);
   useEffect(() => {
     setBalance(user?.balance2);
   }, [user?.balance2]);
@@ -373,35 +399,7 @@ function MNyWheel(prop) {
       clearInterval(timer);
     };
   }, [time]);
-  useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
-    EventBus.on("users", (data) => {
-      setuserbets(data);
-    });
-    EventBus.on("bets", (data) => {
-      if (data != []) {
-        setuserbets((current) => [...current, data]);
-      }
-    });
-    EventBus.on("resetusers", (data) => {
-      setuserbets([]);
-    });
-    EventBus.on("user", (data) => {
-      setUser(data);
-    });
 
-    return () => {
-      EventBus.remove("bets");
-      EventBus.remove("resetusers");
-      EventBus.remove("users");
-      EventBus.remove("user");
-      EventBus.remove("wheel");
-    };
-  }, []);
   useEffect(() => {
     if (time > 30 && time <= 35) {
       $(".mainwheel .bhdLno canvas").css({
@@ -445,7 +443,15 @@ function MNyWheel(prop) {
       filter: "drop-shadow(0px 0px 10px " + colornum + ")",
     });
   }, [time]);
-
+  if (user == "") {
+    return (
+      <Segment className="loadarea">
+        <Dimmer active>
+          <Loader size="massive">Loading</Loader>
+        </Dimmer>
+      </Segment>
+    );
+  }
   return (
     <>
       <div
@@ -599,7 +605,7 @@ function MNyWheel(prop) {
             </div>
           </>
         )}
-        <Mod id={user._id} />
+        <Mod id={user?._id} />
         <div className="animate__animated  animate__rollIn animate__delay-1s">
           <Wheel
             disableInitialAnimation={true}
