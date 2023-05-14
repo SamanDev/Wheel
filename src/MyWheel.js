@@ -382,7 +382,7 @@ function MNyWheel(prop) {
   }, [userbets]);
 
   useEffect(() => {
-    //clearInterval(timer);
+    clearInterval(timer);
     timer = setInterval(() => {
       console.log(time);
       var t1 = new Date(wheel.date);
@@ -398,7 +398,7 @@ function MNyWheel(prop) {
     return () => {
       clearInterval(timer);
     };
-  }, [time]);
+  }, [time, wheel]);
 
   useEffect(() => {
     if (time > 30 && time <= 35) {
@@ -442,7 +442,7 @@ function MNyWheel(prop) {
     $(".mainwheel .bhdLno >div").css({
       filter: "drop-shadow(0px 0px 10px " + colornum + ")",
     });
-  }, [time, wheel.status]);
+  }, [time]);
   if (user == "") {
     return (
       <Segment className="loadarea">
