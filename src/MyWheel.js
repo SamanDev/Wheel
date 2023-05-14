@@ -629,7 +629,7 @@ function MNyWheel(prop) {
         <div
           className={
             wheel?.status != "Pending" ||
-            (parseInt(30 - time) <= 3 && parseInt(30 - time) > 0)
+            (parseInt(30 - time) <= 3 && parseInt(30 - time) >= 0)
               ? "chiparea animate__animated animate__flipOutX"
               : "chiparea animate__animated animate__flipInY"
           }
