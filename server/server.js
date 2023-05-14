@@ -185,23 +185,18 @@ wheelNamespace.on("disconnect", (reason) => {
 });
 wheelNamespace.use(async (socket, next) => {
   const user = socket.handshake.auth;
-  if (user.toString() != "{}") {
-    console.log(user);
-    User.findById(user.id).then((res) => {
-      if (res?.username) {
-        socket.userdata = res;
 
-        wheelNamespace.in(user.username).disconnectSockets(true);
+  User.findById(user.id).then((res) => {
+    if (res?.username) {
+      socket.userdata = res;
 
-        socket.join(user.username);
+      wheelNamespace.in(user.username).disconnectSockets(true);
 
-        next();
-      }
-    });
-  } else {
-    socket.disconnect();
-    return false;
-  }
+      socket.join(user.username);
+
+      next();
+    }
+  });
 });
 wheelNamespace.on("connection", (socket) => {
   socket.on("addBet", (data) => {

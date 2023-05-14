@@ -25,7 +25,7 @@ function App() {
   const handleLogin = (username, password) => {
     dispatch(login(username, password))
       .then(() => {
-        socket.connect();
+        window.location.href = "/play";
       })
       .catch(() => {});
   };
