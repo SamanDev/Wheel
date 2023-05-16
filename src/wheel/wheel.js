@@ -78,7 +78,7 @@ function MNyWheel(prop) {
     if (wheel.status != "Spin" && wheel.status != "Pending") {
       colornum = prop.getcolor(segments[wheel.number]);
     }
-    $(".mainwheel .bhdLno").css({
+    $(".lsec").css({
       filter: "drop-shadow(0px 0px 40px " + colornum + ")",
     });
   };
@@ -90,15 +90,15 @@ function MNyWheel(prop) {
           disableInitialAnimation={true}
           startingOptionIndex={0}
           mustStartSpinning={false}
-          outerBorderWidth={1}
+          outerBorderWidth={0}
           outerBorderColor={"#eeeeee20"}
-          innerRadius={2}
+          innerRadius={20}
           innerBorderColor={"#00000020"}
-          innerBorderWidth={1}
+          innerBorderWidth={0}
           radiusLineColor={"#00000020"}
-          radiusLineWidth={1}
+          radiusLineWidth={0}
           textDistance={70}
-          fontSize={15}
+          fontSize={20}
           data={_l}
         />
       </div>
