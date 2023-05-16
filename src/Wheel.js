@@ -80,7 +80,7 @@ const getcolortext = (item) => {
     def = "#eeeeee";
   }
   if (item == 10) {
-    def = "#666666";
+    def = "#eeeeee";
   }
   if (item == 0) {
     def = "#555555";

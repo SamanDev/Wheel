@@ -120,7 +120,7 @@
   position: relative;
 }
 .mywhell {
-  transition: transform 1.5s ease-in;
+  transition: transform 5s ease-in;
   transform: scale(1.2);
   transform-origin: top left;
   margin: auto;
@@ -132,8 +132,12 @@
 
 
 
-.mywhell .bhdLno  >div {
+.mywhell .bhdLno   {
   transition: all 2s ease;
+
+}
+.mywhell .bhdLno  canvas {
+  
   transition-timing-function: cubic-bezier(0.41,0.02,0.0002,1) !important;
 }
 .mywhell .bhdLno {
@@ -166,7 +170,7 @@ border-radius: 1000px;
 /* animation */
 
 @keyframes slide {
-	0% {transform:translateX(-100%);}
+	0% {transform:translateX(-200%);}
 	
 	100% {transform:translateX(100%);}
 }

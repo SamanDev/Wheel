@@ -90,7 +90,7 @@ const TableExampleSingleLine = (prop) => {
         stat.sort((a, b) => (a.win < b.win ? 1 : -1));
       }
     }
-    console.log(stat);
+
     setList(stat);
   }, [userbets]);
   useEffect(() => {

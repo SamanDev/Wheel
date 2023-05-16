@@ -13,6 +13,7 @@ const BoardUser = () => {
     if (!user) {
       window.location.href = "/";
     }
+    socket.emit("getwheel");
   }, []);
   return <Mywhell currentUser={user} wheel={content} />;
 };
