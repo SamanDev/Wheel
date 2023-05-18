@@ -11,66 +11,8 @@ import BetsWheel from "./wheel/bets";
 import ChipsWheel from "./wheel/chips";
 import InfoWheel from "./wheel/info";
 import { useDispatch, useSelector } from "react-redux";
-const segments = [
-  "2",
-  "4",
-  "2",
-  "8",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "8",
-  "2",
-  "20",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "10",
-  "2",
-  "8",
-  "2",
-  "25",
-  "2",
-  "0",
-  "10",
-];
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
-function groupByMultipleFields(data, ...fields) {
-  if (fields.length === 0) return;
-  let newData = {};
-  const [field] = fields;
-  newData = groupBySingleField(data, field);
-  const remainingFields = fields.slice(1);
-  if (remainingFields.length > 0) {
-    Object.keys(newData).forEach((key) => {
-      newData[key] = groupByMultipleFields(newData[key], ...remainingFields);
-    });
-  }
-  return newData;
-}
+import { socket } from "./socket";
+
 const PrintBet = (prop) => {
   var item = prop.item;
   var i = prop.i;
@@ -149,37 +91,15 @@ const getChipsCount = (item, users, user) => {
     );
   });
 };
-const sumOfBet = (array) => {
-  return array.reduce((sum, currentValue) => {
-    var _am = currentValue.bet;
-    return sum + _am;
-  }, 0);
-};
-
-const sumOfWin = (array) => {
-  return array.reduce((sum, currentValue) => {
-    var _am = currentValue.win;
-    return sum + _am;
-  }, 0);
-};
 
 function MNyWheel(prop) {
-  const [time, setTime] = useState(0);
-  const [sec, setSec] = useState(0);
-
-  const socket = prop.socket;
   const bets = localStorage.getItem("lastbet")
     ? JSON.parse(localStorage.getItem("lastbet"))
     : [];
 
   const [balance, setBalance] = useState(0);
 
-  const [userbets, setuserbets] = useState([]);
-  const [list, setList] = useState([]);
-
-  const segments = prop.segments;
-
-  const [wheel, setWheel] = useState(prop.wheel);
+  const [wheel, setWheel] = useState({});
   const [user, setUser] = useState(socket.auth);
 
   useEffect(() => {
@@ -231,7 +151,7 @@ function MNyWheel(prop) {
       >
         <CountWheel {...prop} wheel={wheel} />
 
-        <ShowWheel {...prop} wheel={wheel} />
+        <ShowWheel />
       </div>
       <Mod id={user?._id} />
       <ChipsWheel {...prop} user={user} />

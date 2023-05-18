@@ -3,6 +3,7 @@ import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
 import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
 import { socket } from "../socket";
+import { segments, getcolor, getcolortext, segX } from "../utils/include";
 import $ from "jquery";
 function groupBySingleField(data, field) {
   return data.reduce((acc, val) => {
@@ -126,33 +127,15 @@ const PrintBet = (prop) => {
     </div>
   );
 };
+
 function BetsWheel(prop) {
   const [wheel, setWheel] = useState(prop.wheel);
   const [user, setUser] = useState(prop.user);
   const [userbets, setuserbets] = useState([]);
   const [balance, setBalance] = useState(user?.balance2);
-  const segments = prop.segments;
+
   const [list, setList] = useState([]);
-  const addBet = (pos, bet) => {
-    let _b = bet ? bet : bet;
-    if (wheel?.status == "Pending") {
-      if (balance >= _b) {
-        setBalance((prev) => prev - _b);
-        EventBus.dispatch("bets", {
-          bet: parseInt(_b),
-          position: parseInt(pos),
-          username: user.username,
-          image: user.image,
-        });
-        socket.emit("addBet", {
-          bet: parseInt(_b),
-          position: parseInt(pos),
-        });
-      } else {
-        $(".showads").trigger("click");
-      }
-    }
-  };
+
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
@@ -203,14 +186,14 @@ function BetsWheel(prop) {
     };
   }, [userbets]);
   const betBtn = (ps, bet) => {
-    if (wheel.status == "Pending") {
+    if (wheel?.status == "Pending") {
       return (
         <>
           <Button
             circular
             style={{
-              background: prop.getcolor(ps.replace("x", "")),
-              color: prop.getcolortext(ps.replace("x", "")),
+              background: getcolor(ps.replace("x", "")),
+              color: getcolortext(ps.replace("x", "")),
             }}
             onClick={() => {
               addBet(ps, bet);
@@ -228,7 +211,7 @@ function BetsWheel(prop) {
             circular
             className={
               parseInt(ps.replace("x", "")) ==
-                parseInt(segments[wheel.number]) && wheel.status == "Spining"
+                parseInt(segments[wheel?.number]) && wheel?.status == "Spining"
                 ? "active b" +
                   list.filter((u) => parseInt(u.position) == parseInt(ps))
                     .length
@@ -237,8 +220,8 @@ function BetsWheel(prop) {
                     .length
             }
             style={{
-              background: prop.getcolor(ps.replace("x", "")),
-              color: prop.getcolortext(ps.replace("x", "")),
+              background: getcolor(ps.replace("x", "")),
+              color: getcolortext(ps.replace("x", "")),
             }}
           >
             <div> {ps}</div>
@@ -248,7 +231,26 @@ function BetsWheel(prop) {
       );
     }
   };
-
+  const addBet = (pos, bet) => {
+    let _b = bet ? bet : bet;
+    if (wheel?.status == "Pending") {
+      if (balance >= _b) {
+        setBalance((prev) => prev - _b);
+        EventBus.dispatch("bets", {
+          bet: parseInt(_b),
+          position: parseInt(pos),
+          username: user.username,
+          image: user.image,
+        });
+        socket.emit("addBet", {
+          bet: parseInt(_b),
+          position: parseInt(pos),
+        });
+      } else {
+        $(".showads").trigger("click");
+      }
+    }
+  };
   return (
     <>
       <div
@@ -256,12 +258,9 @@ function BetsWheel(prop) {
         style={{ position: "absolute", right: 0, width: 0, zIndex: 1000 }}
       >
         <div className="betarea" style={{ right: 70, width: 0 }}>
-          {betBtn("2x", prop.bet)}
-          {betBtn("4x", prop.bet)}
-          {betBtn("8x", prop.bet)}
-          {betBtn("10x", prop.bet)}
-          {betBtn("20x", prop.bet)}
-          {betBtn("25x", prop.bet)}
+          {segX.map((seg) => {
+            <>{betBtn(seg + "x", prop.bet)}</>;
+          })}
         </div>
       </div>
     </>

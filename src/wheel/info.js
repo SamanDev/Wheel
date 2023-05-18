@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
 import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
+import { Jetton } from "../utils/include";
 var timer;
 function BetsWheel(prop) {
   const [time, setTime] = useState(0);
@@ -50,54 +51,25 @@ function BetsWheel(prop) {
 
   return (
     <>
-      <div
-        className="info animate__fadeIn animate__animated  animate__slower"
-        style={{
-          position: "absolute",
-          color: "white",
-          textAlign: "left",
-          zIndex: 3,
-          width: 200,
-          fontSize: 12,
-          padding: 10,
-
-          background:
-            "linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)",
-        }}
-      >
-        <div>
+      <div className="info">
+        <b>{user?.username}</b>
+        <div style={{ float: "right" }}>
+          <span>{online}</span>{" "}
           <span>
-            <lord-icon
-              src="https://cdn.lordicon.com/jgatzggh.json"
-              trigger="morph"
-              colors="outline:#794628,primary:#e8b730,secondary:#e8b730,tertiary:#000000"
-              style={{ width: 25, height: 25 }}
-            ></lord-icon>
-          </span>{" "}
-          {user?.username}
-        </div>
-        <div>
-          <span>
+            {" "}
             <lord-icon
               src="https://cdn.lordicon.com/axhjquvh.json"
               trigger="morph"
               colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
               style={{ width: 25, height: 25 }}
             ></lord-icon>
-          </span>{" "}
-          {online} online
-        </div>
-        <div>
+          </span>
           <span>
-            <lord-icon
-              src="https://cdn.lordicon.com/uvpkeeul.json"
-              trigger="morph"
-              colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
-              style={{ width: 25, height: 23 }}
-            ></lord-icon>
+            <Jetton />
           </span>{" "}
-          {user?.balance2}
+          <span> {user?.balance2}</span>
         </div>
+        <div></div>
       </div>
     </>
   );

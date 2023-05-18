@@ -10,6 +10,8 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import UserService from "./services/user.service";
 import EventBus from "./common/EventBus";
 import { socket } from "./socket";
+import { Button, Icon, Label } from "semantic-ui-react";
+import { Jetton } from "./utils/include";
 function App() {
   const [user, setUser] = useState(
     localStorage.getItem("guser")
@@ -36,37 +38,7 @@ function App() {
       })
       .catch(() => {});
   };
-  useEffect(() => {
-    function onConnect() {
-      socket.on("msg", ({ command, data }) => {
-        if (command == "update") {
-          // setWheel(data);
-          EventBus.dispatch("wheel", data);
-        }
-        if (command == "users") {
-          EventBus.dispatch("users", data);
-        }
-        if (command == "bets") {
-          EventBus.dispatch("bets", data);
-        }
-        if (command == "resetusers") {
-          EventBus.dispatch("resetusers");
-        }
-        if (command == "user") {
-          EventBus.dispatch("user", data);
-        }
-        if (command == "online") {
-          EventBus.dispatch("online", data);
-        }
 
-        if (command == "disconnect") {
-          socket.disconnect();
-        }
-      });
-    }
-
-    socket.on("connect", onConnect);
-  }, []);
   useEffect(() => {
     if (user) {
       localStorage.setItem("guser", JSON.stringify(user));
@@ -120,22 +92,44 @@ function App() {
     <div className="navbar-nav ml-auto">
       {profile ? (
         <>
-          <li className="nav-item">
-            <Link to={"/play"} className="nav-link">
-              Play
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"/"} className="nav-link" onClick={() => logOut()}>
-              LogOut
-            </Link>
-          </li>
+          <Button
+            as="div"
+            to={"/play"}
+            labelPosition="right"
+            className="ltr"
+            fluid
+          >
+            <Button color="red" fluid as={Link} to={"/play"}>
+              <Icon name="heart" />
+              شروع بازی
+            </Button>
+            <Label
+              as="a"
+              color="black"
+              pointing="left"
+              onClick={() => logOut()}
+            >
+              <Icon name="logout" />
+            </Label>
+          </Button>
         </>
       ) : (
         <li className="nav-item">
-          <Link to={"/"} as="a" className="nav-link" onClick={() => loginOk()}>
-            Sign in with Google 🚀
-          </Link>
+          <Button
+            as="div"
+            labelPosition="right"
+            className="ltr"
+            fluid
+            onClick={() => loginOk()}
+          >
+            <Button color="red" fluid>
+              <Icon name="heart" />
+              شانس خودت رو امتحان کن
+            </Button>
+            <Label as="a" basic color="red" pointing="left">
+              <Icon name="google" />
+            </Label>
+          </Button>
         </li>
       )}
     </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import "./assets/App.css";
 import "animate.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -58,18 +58,6 @@ const App = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/"} className="nav-link">
-              Home
-            </Link>
-          </li>
-        </div>
-
-        <Google />
-      </nav>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/play" element={<BoardUser />} />

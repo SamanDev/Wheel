@@ -3,18 +3,17 @@ import { Wheel } from "react-custom-roulette";
 
 import EventBus from "../common/EventBus";
 import $ from "jquery";
+import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
 var timer = false;
 var blnSpin = false;
-function MNyWheel(prop) {
-  const segments = prop.segments;
-
+function MNyWheel() {
   if (_l.length == 0) {
     segments.map((item, i) => {
       _l.push({
         style: {
-          backgroundColor: prop.getcolor(item),
-          textColor: prop.getcolortext(item),
+          backgroundColor: getcolor(item),
+          textColor: getcolortext(item),
         },
 
         option: "x" + item,
@@ -70,13 +69,13 @@ function MNyWheel(prop) {
         });
       }
     }
-    var colornum = prop.getcolor(segments[wheel.startNum]);
+    var colornum = getcolor(segments[wheel.startNum]);
     if (wheel.status == "Spin") {
       colornum = "#000000";
     }
 
     if (wheel.status != "Spin" && wheel.status != "Pending") {
-      colornum = prop.getcolor(segments[wheel.number]);
+      colornum = getcolor(segments[wheel.number]);
     }
     $(".lsec").css({
       filter: "drop-shadow(0px 0px 40px " + colornum + ")",

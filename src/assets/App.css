@@ -23,6 +23,20 @@
     rgb(0, 0, 0) 100%
   );
 }
+
+@font-face {
+  font-family: vazir;
+  font-style: normal;
+  font-weight: 700;
+  src: url("font/IRANSansWeb_Light.eot");
+  src: url("font/IRANSansWeb_Light.woff") format("woff"),
+    url("font/IRANSansWeb_Light.ttf") format("ttf"),
+    url("font/IRANSansWeb_Light.woff2") format("woff2");
+}
+
+
+
+
 .loadarea {
   display: inline-table;
   -webkit-flex-direction: column;
@@ -45,7 +59,41 @@
   font-size: 100px;
   color: #fff;
 }
+.info {
+position: absolute;
+color: white;
+text-align: left;
+z-index: 3;
 
+font-size: 12px;
+padding: 0 10px;
+background-image: linear-gradient(90deg, rgb(0, 0, 0) 20%, rgba(0, 0, 0, 0) 50%,rgb(0, 0, 0) 100%);
+left: 0px;
+right: 0;
+font-family: bungee, sans-serif;
+line-height: 25px;
+}
+.info b{
+  display: inline-block;
+}
+.info span{
+  position:relative;
+  top: calc(50% - 10px);
+  display: inline-block;
+}
+.info >div{
+  clear: both;
+display: flex;
+ 
+  overflow: hidden;
+}
+
+
+.info p{
+  margin: 0 !important;
+  font-size: 12px !important;
+  text-shadow: 0px 0px 1px  rgba(0, 0, 0, 1);
+}
 .mywhell .betarea {
   position: absolute;
   width: 80vw;
@@ -122,10 +170,10 @@
 .mywhell {
   transition: transform 5s ease-in;
   transform: scale(1.2);
-  transform-origin: top left;
+  transform-origin: top center;
   margin: auto;
-  height: 60vh;
-  
+  right: 0;
+  left: 0;
   padding-top: 30px;
   position: relative;
 }
@@ -259,12 +307,12 @@ border-radius: 1000px;
 }
 
 .text-shadows {
-  font-family: Arial, Helvetica, sans-serif;
+  
   text-shadow: 3px 3px 0 var(--color-secondary), 6px 6px 0 var(--color-tertiary),
     9px 9px var(--color-quaternary), 12px 12px 0 var(--color-quinary),
     0 0 10px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 1),
     0 0 15px rgba(0, 0, 0, 1);
-  font-family: bungee, sans-serif;
+  font-family: bungee, sans-serif !important;
   font-weight: 900;
 
   font-size: calc(2rem + 5vw);
@@ -337,34 +385,9 @@ border-radius: 1000px;
   
 }
 
-.info {
-  
-}
-.info >div{
-  clear: both;
-  line-height: 25px;
-  height: 25px;
-  overflow: hidden;
-}
-.info >div>span{
-  float: left;
-}
-.info p{
-  margin: 0 !important;
-  font-size: 12px !important;
-  text-shadow: 0px 0px 1px  rgba(0, 0, 0, 1);
-}
-.info h3{
-  margin: 0 !important;
-  font-size: 18px !important;
-  text-shadow: 0px 0px 2px  rgba(0, 0, 0, 1);
-}
-.info small.header{
-  display: inline-block !important;
-  font-size: 10px !important;
-  margin: 0 5px !important;
-  text-shadow: 0px 0px 1px   rgba(0, 0, 0, 1);
-}
+
+
+
 .betbtnarea{
   width: 80px;
   height: 500px;

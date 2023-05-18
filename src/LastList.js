@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Statistic, Label } from "semantic-ui-react";
 import Mod from "./modal";
 import ListService from "./services/list.service";
+import { segments, getcolor, getcolortext } from "./utils/include";
 const userBet = (wheel, username) => {
   var bets = 0;
   var net = 0;
@@ -18,7 +19,6 @@ const userBet = (wheel, username) => {
 const TableExampleSingleLine = (prop) => {
   const [lastList, setlastList] = useState([]);
 
-  const segments = prop.segments;
   useEffect(() => {
     ListService.getPublicContent({
       command: prop.command,
@@ -64,8 +64,8 @@ const TableExampleSingleLine = (prop) => {
                   <Statistic.Value>
                     <Label
                       style={{
-                        background: prop.getcolor(segments[item.number]),
-                        color: prop.getcolortext(segments[item.number]),
+                        background: getcolor(segments[item.number]),
+                        color: getcolortext(segments[item.number]),
                       }}
                       size="small"
                     >
@@ -110,14 +110,7 @@ const TableExampleSingleLine = (prop) => {
                   <Statistic.Label>Win</Statistic.Label>
                 </Statistic>
 
-                <Mod
-                  wheel={item}
-                  loginToken={prop.loginToken}
-                  segments={prop.segments}
-                  getPrize={prop.getPrize}
-                  getcolor={prop.getcolor}
-                  getcolortext={prop.getcolortext}
-                />
+                <Mod wheel={item} getPrize={prop.getPrize} />
               </Table.Cell>
             </Table.Row>
           );
