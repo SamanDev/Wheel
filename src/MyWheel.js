@@ -101,7 +101,11 @@ function MNyWheel(prop) {
 
   const [wheel, setWheel] = useState({});
   const [user, setUser] = useState(socket.auth);
-
+  useEffect(() => {
+    EventBus.on("wheel", (data) => {
+      setWheel(data);
+    });
+  }, []);
   useEffect(() => {
     setBalance(user?.balance2);
   }, [user?.balance2]);
@@ -140,7 +144,7 @@ function MNyWheel(prop) {
   return (
     <>
       <InfoWheel {...prop} user={user} wheel={wheel} />
-      <BetsWheel {...prop} user={user} />
+      <BetsWheel {...prop} user={user} wheel={wheel} />
 
       <div
         className={

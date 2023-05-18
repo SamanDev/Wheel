@@ -35,7 +35,9 @@ function ModalExampleModal(prop) {
         }}
       >
         <h1 className="text-center">ads</h1>
-        <AdsComponent dataAdSlot="X2XXXXXXXXmoda" />
+        <div className="adds">
+          <AdsComponent dataAdSlot="X2XXXXXXXX8" />
+        </div>
       </div>
     </Modal>
   );

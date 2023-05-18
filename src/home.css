@@ -16,6 +16,8 @@
     justify-content: center;
     margin: auto;
    position: relative;
+  
+   transition: all 0.5s ease-in;
   }
   p{
     font-size:19px
@@ -24,7 +26,7 @@
     font-family: vazir !important;
   
   }
-  body,h1,h2,h3,h4,h5,h6,p{
+h1,h2,h3,h4,h5,h6,p{
 
     direction: rtl;
     text-align: justify;

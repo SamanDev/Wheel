@@ -34,7 +34,23 @@
     url("font/IRANSansWeb_Light.woff2") format("woff2");
 }
 
-
+.adds{
+  background:rgba(0, 0, 0,.1);
+  margin: 10px auto;
+  position: relative;
+}
+.adds::before{
+  opacity: 1;
+	content:'google ads';
+  top:0;
+  left: 0;
+	transform:translateY(50%);
+	width:100%;
+	bottom: 0;
+	position: absolute;
+	z-index:1;
+  text-align: center;
+}
 
 
 .loadarea {
@@ -96,10 +112,10 @@ display: flex;
 }
 .mywhell .betarea {
   position: absolute;
-  width: 80vw;
+  width: 100vw;
   max-width: 445px;
   height: 80vw;
-
+  max-height: 445px;
   object-fit: contain;
   flex-shrink: 0;
 
@@ -191,6 +207,7 @@ display: flex;
 .mywhell .bhdLno {
 overflow: hidden;
 border-radius: 1000px;
+margin: auto;
 }
 .mywhell .bhdLno:after {
   opacity: 1;
@@ -321,7 +338,7 @@ border-radius: 1000px;
   color: var(--color-primary);
   animation-duration: 1s !important;
   letter-spacing: 0.4rem;
-  line-height: 400px;
+  line-height: 300px;
 }
 .lsec > .segment,
 .rsec > .segment {
@@ -406,30 +423,4 @@ border-radius: 1000px;
   left: 0;
   right: 0;
 }
-@media (max-width: 768px) {
- 
-  .lsec > .segment,
-  .rsec > .segment {
-    margin: 0px;
-  }
- 
-  
-  .mywhell {
-    transform: scale(1);
-  
-   
 
-  }
-  .modals .animate_rollIn >div {
-    transform: scale(.7);
-  
-   
-
-  }
-  .mywhell.mytrue {
-    transform: scale(1.1);
-    
-   
-
-  }
-}

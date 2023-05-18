@@ -72,7 +72,7 @@ function App(prop) {
     <>
       <div className="home">
         <Mywhell bet={bet} setBet={setBet} />
-        <AdsComponent dataAdSlot="X2XXXXXXXX" />
+
         <Segment color="black" inverted size="mini" className="betlist">
           <div className="table rsec">
             <Tab

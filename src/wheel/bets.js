@@ -3,51 +3,18 @@ import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
 import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
 import { socket } from "../socket";
-import { segments, getcolor, getcolortext, segX } from "../utils/include";
+import {
+  segments,
+  getcolor,
+  getcolortext,
+  segX,
+  groupBySingleField,
+  groupByMultipleFields,
+  sumOfBet,
+  sumOfWin,
+} from "../utils/include";
 import $ from "jquery";
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
-function groupByMultipleFields(data, ...fields) {
-  if (fields.length === 0) return;
-  let newData = {};
-  const [field] = fields;
-  newData = groupBySingleField(data, field);
-  const remainingFields = fields.slice(1);
-  if (remainingFields.length > 0) {
-    Object.keys(newData).forEach((key) => {
-      newData[key] = groupByMultipleFields(newData[key], ...remainingFields);
-    });
-  }
-  return newData;
-}
 
-const sumOfBet = (array) => {
-  return array.reduce((sum, currentValue) => {
-    var _am = currentValue.bet;
-    return sum + _am;
-  }, 0);
-};
-
-const sumOfWin = (array) => {
-  return array.reduce((sum, currentValue) => {
-    var _am = currentValue.win;
-    return sum + _am;
-  }, 0);
-};
 const haveBet = (pos, list, user) => {
   return list
     .filter(
@@ -186,7 +153,7 @@ function BetsWheel(prop) {
     };
   }, [userbets]);
   const betBtn = (ps, bet) => {
-    if (wheel?.status == "Pending") {
+    if (wheel.status == "Pending") {
       return (
         <>
           <Button
@@ -259,7 +226,7 @@ function BetsWheel(prop) {
       >
         <div className="betarea" style={{ right: 70, width: 0 }}>
           {segX.map((seg) => {
-            <>{betBtn(seg + "x", prop.bet)}</>;
+            <>hi{betBtn(seg + "x", prop.bet)}</>;
           })}
         </div>
       </div>
