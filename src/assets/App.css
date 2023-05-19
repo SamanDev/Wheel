@@ -411,13 +411,13 @@ margin: auto;
 
 .betbtnarea{
   width: 80px;
- 
-  transform-origin: top left !important;
-  transform: scale(.7);
-  position: absolute;
-  z-index: 10;
-  bottom: 20px;
-  right:20px;
+transform-origin: top left !important;
+transform: scale(.8);
+position: absolute;
+z-index: 10;
+top: 290px;
+right: 50px;
+bottom: 0;
 }
 .betlist{
   

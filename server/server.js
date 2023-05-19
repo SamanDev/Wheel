@@ -92,7 +92,7 @@ app.get("/getchip", (req, res) => {
   }).then((resp) => {
     if (resp?.username) {
       var _d = resp;
-      _d.balance2 = 100;
+      _d.balance2 = _d.balance2 + 1000;
 
       wheelNamespace.in(resp.username).emit("msg", {
         command: "user",
@@ -202,11 +202,6 @@ wheelNamespace.on("connection", (socket) => {
           if (res?.username) {
             var _d = res;
             _d.balance2 = _d.balance2 - data.bet;
-
-            wheelNamespace.in(res.username).emit("msg", {
-              command: "user",
-              data: _d,
-            });
           }
         });
 
