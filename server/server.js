@@ -103,36 +103,9 @@ app.get("/getchip", (req, res) => {
   });
 });
 
-let segments = [
-  "2",
-  "4",
-  "2",
-  "8",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "8",
-  "2",
-  "20",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "10",
-  "2",
-  "8",
-  "2",
-  "25",
-  "2",
-  "0",
-  "10",
+const segments = [
+  0, 2, 4, 2, 10, 2, 4, 2, 8, 2, 4, 2, 25, 2, 4, 2, 8, 2, 4, 2, 10, 2, 4, 2, 8,
+  2, 4, 2, 20,
 ];
 const d = new Date();
 var wheel = {
@@ -222,12 +195,27 @@ wheelNamespace.on("connection", (socket) => {
         } else {
           wheelusers.push(data);
         }
-        socket.broadcast.emit("msg", { command: "bets", data: data });
+        var newuser = User.findOneAndUpdate(
+          { username: data.username },
+          { $inc: { balance2: data.bet * -1 } }
+        ).then((res) => {
+          if (res?.username) {
+            var _d = res;
+            _d.balance2 = _d.balance2 - data.bet;
+
+            wheelNamespace.in(res.username).emit("msg", {
+              command: "user",
+              data: _d,
+            });
+          }
+        });
+
+        wheelNamespace.emit("msg", { command: "bets", data: data });
       }
     }
   });
   socket.on("getwheel", (data) => {
-    wheelNamespace.emit("msg", {
+    socket.emit("msg", {
       command: "update",
       data: wheel,
     });
@@ -334,7 +322,7 @@ const spin = async () => {
     number: newPrizeNumbern,
   });
   if (wheelusers.length > 0) {
-    dec();
+    //dec();
   }
 };
 const spinstop = async () => {
@@ -397,7 +385,7 @@ const doneWheel = async () => {
 };
 const getPrize = (newPrizeNumber, pos) => {
   var num = 0;
-  if (parseInt(newPrizeNumber.replace("x", "")) == parseInt(pos)) {
+  if (parseInt(newPrizeNumber) == parseInt(pos)) {
     num = parseInt(pos);
   }
 

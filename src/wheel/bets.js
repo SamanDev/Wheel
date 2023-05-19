@@ -69,9 +69,11 @@ const getChipsCount = (item, user) => {
   for (let i = 0; i < count1; i++) {
     bets.push(1);
   }
-  return bets.map((chip, i) => {
-    return <PrintBet key={i} i={i} chip={chip} item={item} user={user} />;
-  });
+  return bets
+    .sort((a, b) => (a > b ? 1 : -1))
+    .map((chip, i) => {
+      return <PrintBet key={i} i={i} chip={chip} item={item} user={user} />;
+    });
 };
 const PrintBet = (prop) => {
   const item = prop.item;
@@ -210,12 +212,7 @@ function BetsWheel(prop) {
     if (wheel?.status == "Pending") {
       if (balance >= _b) {
         setBalance((prev) => prev - _b);
-        EventBus.dispatch("bets", {
-          bet: parseInt(_b),
-          position: parseInt(pos),
-          username: user.username,
-          image: user.image,
-        });
+
         socket.emit("addBet", {
           bet: parseInt(_b),
           position: parseInt(pos),
