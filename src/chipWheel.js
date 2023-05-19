@@ -69,7 +69,7 @@ const PrintBet = (prop) => {
   var user = prop.user;
   var users = prop.users;
   var _s =
-    item.username == user.username
+    item.username == user?.username
       ? { marginTop: i * -3, marginLeft: i * 3 }
       : {
           marginTop: i * -3,

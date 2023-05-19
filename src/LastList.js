@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Statistic, Label } from "semantic-ui-react";
 import Mod from "./modal";
 import ListService from "./services/list.service";
+import EventBus from "./common/EventBus";
 import { segments, getcolor, getcolortext } from "./utils/include";
 const userBet = (wheel, username) => {
   var bets = 0;
@@ -19,15 +20,13 @@ const userBet = (wheel, username) => {
 const TableExampleSingleLine = (prop) => {
   const [lastList, setlastList] = useState([]);
 
+  const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     ListService.getPublicContent({
       command: prop.command,
     }).then((response) => {
       setlastList(response.data);
     });
-    return () => {
-      setlastList([]);
-    };
   }, [prop.command]);
 
   return (
@@ -35,17 +34,17 @@ const TableExampleSingleLine = (prop) => {
       unstackable
       inverted
       size="small"
-      className="lasttable"
+      className="lasttable ltr"
       style={{ marginTop: 0 }}
     >
       <Table.Body>
         {lastList.map((item) => {
-          var userBets = userBet(item, prop.loginToken.username);
+          var userBets = userBet(item, user?.username);
           return (
             <Table.Row key={item._id}>
               <Table.Cell>
                 <Statistic color="violet" inverted size="mini">
-                  <Statistic.Value>${item.total}</Statistic.Value>
+                  <Statistic.Value>{item.total}</Statistic.Value>
                   <Statistic.Label>Bets</Statistic.Label>
                 </Statistic>
                 <Statistic
@@ -57,7 +56,7 @@ const TableExampleSingleLine = (prop) => {
                       : "red"
                   }
                 >
-                  <Statistic.Value>${item.net}</Statistic.Value>
+                  <Statistic.Value>{item.net}</Statistic.Value>
                   <Statistic.Label>Win</Statistic.Label>
                 </Statistic>
                 <Statistic color="black" inverted>
@@ -68,6 +67,7 @@ const TableExampleSingleLine = (prop) => {
                         color: getcolortext(segments[item.number]),
                       }}
                       size="small"
+                      className="ltr"
                     >
                       {segments[item.number]}x
                     </Label>
@@ -87,7 +87,7 @@ const TableExampleSingleLine = (prop) => {
                       : { opacity: 1 }
                   }
                 >
-                  <Statistic.Value>${userBets[0]}</Statistic.Value>
+                  <Statistic.Value>{userBets[0]}</Statistic.Value>
                   <Statistic.Label>You</Statistic.Label>
                 </Statistic>
                 <Statistic
@@ -106,11 +106,11 @@ const TableExampleSingleLine = (prop) => {
                       : { opacity: 1 }
                   }
                 >
-                  <Statistic.Value>${userBets[1]}</Statistic.Value>
+                  <Statistic.Value>{userBets[1]}</Statistic.Value>
                   <Statistic.Label>Win</Statistic.Label>
                 </Statistic>
 
-                <Mod wheel={item} getPrize={prop.getPrize} />
+                <Mod wheel={item} user={user} />
               </Table.Cell>
             </Table.Row>
           );

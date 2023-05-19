@@ -1,42 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Segment, Statistic, Label } from "semantic-ui-react";
 import List from "./List";
-import Mywhell from "./ShowWheel";
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
-const userBet = (wheel, username) => {
-  var bets = 0;
-  var net = 0;
-  var userArr = wheel.wheelusers
-    .filter((user) => user.username == username)
-    .map((item, i) => {
-      net = net + item.win;
-
-      bets = bets + item.bet;
-    });
-
-  return [bets, net];
-};
+import Mywhell from "./wheel/showwheel";
+import EventBus from "./common/EventBus";
+import BetsWheel from "./wheel/showbets";
+import { Jetton, userBet } from "./utils/include";
 function ModalExampleModal(prop) {
   const [open, setOpen] = React.useState(false);
   const users = prop.wheel;
   const item = prop.wheel;
-  console.log(users);
-  var userBets = userBet(users, prop.loginToken.username);
+  const [user, setUser] = useState(prop.user);
+
+  var userBets = userBet(users, user?.username);
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -45,7 +20,7 @@ function ModalExampleModal(prop) {
       basic
       closeIcon={true}
       trigger={
-        <Button size="mini" color="black">
+        <Button size="mini" color="black" className="show">
           Show
         </Button>
       }
@@ -56,93 +31,74 @@ function ModalExampleModal(prop) {
           overflow: "auto",
         }}
       >
-        <div
-          className="info animate__fadeIn animate__animated  animate__delay-1s"
+        <Segment
+          inverted
+          size="mini"
+          compact
+          className="animate__slideInRight animate__animated "
           style={{
+            zIndex: 10,
             position: "absolute",
-            color: "white",
-            textAlign: "left",
-            zIndex: 30,
-            width: 150,
-
-            lineHeight: "15px",
-            padding: 10,
-            transform: "scale(.6)",
-            transformOrigin: "left top",
-            background:
-              "linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)",
+            textAlign: "center",
           }}
         >
-          <Segment
+          <Statistic color="violet" inverted size="mini">
+            <Statistic.Value>{item.total}</Statistic.Value>
+            <Statistic.Label>Bets</Statistic.Label>
+          </Statistic>
+          <Statistic
             inverted
             size="mini"
-            compact
-            className="animate__slideInRight animate__animated info"
-            style={{
-              float: "left",
-              backgroundColor: "transparent",
-              width: 300,
-              zIndex: 10,
-            }}
+            color={
+              parseFloat(item.net / item.total).toFixed(2) >= 1
+                ? "green"
+                : "red"
+            }
           >
-            <Statistic color="violet" inverted size="small">
-              <Statistic.Value>${item.total}</Statistic.Value>
-              <Statistic.Label>Bets</Statistic.Label>
-            </Statistic>
-            <Statistic
-              inverted
-              size="small"
-              color={
-                parseFloat(item.net / item.total).toFixed(2) >= 1
-                  ? "green"
-                  : "red"
-              }
-            >
-              <Statistic.Value>${item.net}</Statistic.Value>
-              <Statistic.Label>Win</Statistic.Label>
-            </Statistic>
-            <br />
+            <Statistic.Value>{item.net}</Statistic.Value>
+            <Statistic.Label>Win</Statistic.Label>
+          </Statistic>
 
-            <Statistic
-              color={parseFloat(userBets[0]).toFixed(2) > 0 ? "orange" : "grey"}
-              inverted
-              size="mini"
-              style={
-                parseFloat(userBets[0]).toFixed(2) == 0
-                  ? { opacity: 0.5 }
-                  : { opacity: 1 }
-              }
-            >
-              <Statistic.Value>${userBets[0]}</Statistic.Value>
-              <Statistic.Label>You</Statistic.Label>
-            </Statistic>
-            <Statistic
-              inverted
-              size="mini"
-              color={
-                parseFloat(userBets[1]) > parseFloat(userBets[0])
-                  ? "green"
-                  : parseFloat(userBets[0]).toFixed(2) > 0
-                  ? "red"
-                  : "grey"
-              }
-              style={
-                parseFloat(userBets[0]).toFixed(2) == 0
-                  ? { opacity: 0.5 }
-                  : { opacity: 1 }
-              }
-            >
-              <Statistic.Value>${userBets[1]}</Statistic.Value>
-              <Statistic.Label>Win</Statistic.Label>
-            </Statistic>
-          </Segment>
-        </div>
+          <Statistic
+            color={parseFloat(userBets[0]).toFixed(2) > 0 ? "orange" : "grey"}
+            inverted
+            size="mini"
+            style={
+              parseFloat(userBets[0]).toFixed(2) == 0
+                ? { opacity: 0.5 }
+                : { opacity: 1 }
+            }
+          >
+            <Statistic.Value>{userBets[0]}</Statistic.Value>
+            <Statistic.Label>You</Statistic.Label>
+          </Statistic>
+          <Statistic
+            inverted
+            size="mini"
+            color={
+              parseFloat(userBets[1]) > parseFloat(userBets[0])
+                ? "green"
+                : parseFloat(userBets[0]).toFixed(2) > 0
+                ? "red"
+                : "grey"
+            }
+            style={
+              parseFloat(userBets[0]).toFixed(2) == 0
+                ? { opacity: 0.5 }
+                : { opacity: 1 }
+            }
+          >
+            <Statistic.Value>{userBets[1]}</Statistic.Value>
+            <Statistic.Label>Win</Statistic.Label>
+          </Statistic>
+        </Segment>
         <div className="animate__slideInLeft animate__animated">
+          <BetsWheel {...prop} user={user} />
           <Mywhell {...prop} last={true} />
         </div>
         <Segment color="black" inverted size="mini" className="res">
           <div className="table rsec">
-            <List {...prop} last={true} startSpin={true} />
+            <List {...prop} last={true} />
           </div>
         </Segment>
       </div>

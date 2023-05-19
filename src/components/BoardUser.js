@@ -7,6 +7,8 @@ import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 const BoardUser = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const [wheel, setWheel] = useState({});
+
   useEffect(() => {
     if (!user?.accessToken) {
       window.location.href = "/";
@@ -15,6 +17,9 @@ const BoardUser = () => {
 
   const [userDC, setUserDC] = useState(false);
   useEffect(() => {
+    EventBus.on("wheel", (data) => {
+      setWheel(data);
+    });
     EventBus.on("disconnect", (data) => {
       setUserDC(true);
     });
@@ -31,7 +36,7 @@ const BoardUser = () => {
       </Segment>
     );
   }
-  return <Mywhell currentUser={user} />;
+  return <Mywhell user={user} wheel={wheel} />;
 };
 
 export default BoardUser;

@@ -204,8 +204,8 @@ wheelNamespace.on("connection", (socket) => {
             _d.balance2 = _d.balance2 - data.bet;
           }
         });
-
-        wheelNamespace.emit("msg", { command: "bets", data: data });
+        socket.broadcast.emit("msg", { command: "bets", data: data });
+        // wheelNamespace.emit("msg", { command: "bets", data: data });
       }
     }
   });

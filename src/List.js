@@ -8,12 +8,17 @@ import {
   sumOfBet,
   sumOfWin,
   count,
+  segments,
+  getcolor,
+  getcolortext,
+  getPrize,
 } from "./utils/include";
 
 const TableExampleSingleLine = (prop) => {
   const [wheel, setWheel] = useState(prop.wheel);
-  const [userbets, setuserbets] = useState(wheel?.wheelusers);
+  const [userbets, setuserbets] = useState(prop.wheel?.wheelusers);
   const [list, setList] = useState([]);
+  const [user, setUser] = useState(prop.user);
   useEffect(() => {
     if (!prop.last) {
       ListService.getPublicContent({
@@ -23,7 +28,9 @@ const TableExampleSingleLine = (prop) => {
       });
     }
     return () => {
-      setuserbets([]);
+      if (!prop.last) {
+        setuserbets([]);
+      }
     };
   }, [prop.command]);
   useEffect(() => {
@@ -54,9 +61,7 @@ const TableExampleSingleLine = (prop) => {
   useEffect(() => {
     if (!prop.last) {
       EventBus.on("wheel", (data) => {
-        if (data?.status) {
-          setWheel(data);
-        }
+        setWheel(data);
       });
       EventBus.on("users", (data) => {
         setuserbets(data);
@@ -69,12 +74,17 @@ const TableExampleSingleLine = (prop) => {
       EventBus.on("resetusers", (data) => {
         setuserbets([]);
       });
+      EventBus.on("user", (data) => {
+        setUser(data);
+      });
     }
+
     return () => {
       if (!prop.last) {
         EventBus.remove("resetusers");
-        EventBus.remove("users");
         EventBus.remove("bets");
+        EventBus.remove("user");
+        EventBus.remove("users");
         EventBus.remove("wheel");
       }
     };
@@ -92,18 +102,11 @@ const TableExampleSingleLine = (prop) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>
-              Users{" "}
-              {userbets?.length > 0 &&
-                count(groupBySingleField(userbets, "username")) > 0 && (
-                  <>{count(groupBySingleField(userbets, "username"))}</>
-                )}
+              Users {<>{count(groupBySingleField(userbets, "username"))}</>}
             </Table.HeaderCell>
-            <Table.HeaderCell>
-              Bet{" "}
-              {userbets?.length > 0 && wheel?.total > 0 && <>${wheel?.total}</>}
-            </Table.HeaderCell>
+            <Table.HeaderCell>Bet {<>{wheel?.total}</>}</Table.HeaderCell>
 
-            <Table.HeaderCell>Win</Table.HeaderCell>
+            <Table.HeaderCell>Win {<>{wheel?.net}</>}</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
       </Table>
@@ -116,7 +119,7 @@ const TableExampleSingleLine = (prop) => {
                   <Table.Row key={item.username + i}>
                     <Table.Cell
                       style={
-                        item.username == prop.loginToken.username
+                        item.username == user?.username
                           ? item.win == 0
                             ? { color: "red" }
                             : { color: "gold" }
@@ -134,13 +137,16 @@ const TableExampleSingleLine = (prop) => {
                       />
                     </Table.Cell>
                     <Table.Cell>
-                      <div style={{ width: 40, display: "inline-block" }}>
-                        ${item.bet}
+                      <div
+                        className="ltr"
+                        style={{ width: 40, display: "inline-block" }}
+                      >
+                        {item.bet}
                       </div>
                       <Label
                         style={{
-                          background: prop.getcolor(item.position),
-                          color: prop.getcolortext(item.position),
+                          background: getcolor(item.position),
+                          color: getcolortext(item.position),
                         }}
                         size="small"
                       >
@@ -153,22 +159,16 @@ const TableExampleSingleLine = (prop) => {
                         <>
                           <Label
                             style={{
-                              background: prop.getcolor(
-                                prop.getPrize(
-                                  prop.segments[wheel.number],
-                                  item.position
-                                )
+                              background: getcolor(
+                                getPrize(segments[wheel.number], item.position)
                               ),
-                              color: prop.getcolortext(
-                                prop.getPrize(
-                                  prop.segments[wheel.number],
-                                  item.position
-                                )
+                              color: getcolortext(
+                                getPrize(segments[wheel.number], item.position)
                               ),
                             }}
                             size="small"
                           >
-                            ${parseFloat(item.win)}
+                            {parseFloat(item.win)}
                           </Label>
                         </>
                       ) : (

@@ -107,9 +107,11 @@ function App() {
               as="a"
               color="black"
               pointing="left"
-              onClick={() => logOut()}
+              onClick={() => {
+                logOut();
+              }}
             >
-              <Icon name="logout" />
+              <Icon name="log out" />
             </Label>
           </Button>
         </>

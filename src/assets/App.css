@@ -111,7 +111,7 @@ display: flex;
   font-size: 12px !important;
   text-shadow: 0px 0px 1px  rgba(0, 0, 0, 1);
 }
-.mainwheel *,.betbtnarea * {
+.mainwheel *,.betbtnarea *,tr,tr .ui,.betarea .ui {
   font-family: bungee, sans-serif !important;
 }
 .mywhell .betarea {
@@ -200,9 +200,12 @@ display: flex;
 
 
 
-.mywhell .bhdLno   {
-  transition: all 2s ease;
+.bhdLno   {
+  transition: all 1s ease;
 
+}
+.modal{
+  left: auto !important;
 }
 .mywhell .bhdLno  canvas {
   transition: all 2s ease;
@@ -284,7 +287,7 @@ margin: auto;
 .rsec.table tr,.rsec.table td{
   position: relative;
 }
-.rsec.table .button {
+.show.button {
  position: absolute;
  top: 0;
  bottom: 0;

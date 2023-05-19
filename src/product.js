@@ -3,8 +3,9 @@ import { Card, Button } from "semantic-ui-react";
 
 const CardExampleCardProps = (prop) => (
   <Card
-    image={prop.image}
+    className="ltr"
     header={prop.header}
+    fluid
     extra={
       <>
         <div style={{ float: "left" }}>

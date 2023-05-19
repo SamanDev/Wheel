@@ -94,3 +94,24 @@ export function count(obj) {
   }
   return count;
 }
+export const getPrize = (newPrizeNumber, pos) => {
+  var num = 0;
+  if (parseInt(newPrizeNumber) == parseInt(pos)) {
+    num = parseInt(pos);
+  }
+
+  return num;
+};
+export const userBet = (wheel, username) => {
+  var bets = 0;
+  var net = 0;
+  var userArr = wheel.wheelusers
+    .filter((user) => user.username == username)
+    .map((item, i) => {
+      net = net + item.win;
+
+      bets = bets + item.bet;
+    });
+
+  return [bets, net];
+};

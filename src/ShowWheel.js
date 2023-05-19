@@ -2,42 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
 import { Button, Header } from "semantic-ui-react";
 import GetChip from "./getChips";
-function groupBySingleField(data, field) {
-  return data.reduce((acc, val) => {
-    const rest = Object.keys(val).reduce((newObj, key) => {
-      if (key !== field) {
-        newObj[key] = val[key];
-      }
-      return newObj;
-    }, {});
-    if (acc[val[field]]) {
-      acc[val[field]].push(rest);
-    } else {
-      acc[val[field]] = [rest];
-    }
-    return acc;
-  }, {});
-}
-function groupByMultipleFields(data, ...fields) {
-  if (fields.length === 0) return;
-  let newData = {};
-  const [field] = fields;
-  newData = groupBySingleField(data, field);
-  const remainingFields = fields.slice(1);
-  if (remainingFields.length > 0) {
-    Object.keys(newData).forEach((key) => {
-      newData[key] = groupByMultipleFields(newData[key], ...remainingFields);
-    });
-  }
-  return newData;
-}
+import {
+  segments,
+  getcolor,
+  getcolortext,
+  groupByMultipleFields,
+} from "./utils/include";
 const PrintBet = (prop) => {
   var item = prop.item;
   var i = prop.i;
   var user = prop.user;
   var users = prop.users;
   var _s =
-    item.username == user.username
+    item.username == user?.username
       ? { marginTop: i * -3, marginLeft: i * 3 }
       : {
           marginTop: i * -3,
@@ -110,15 +87,14 @@ function MNyWheel(prop) {
 
   const [list, setList] = useState([]);
   const users = prop.wheel;
-  const segments = prop.segments;
 
   var _sec = users?.serverSec;
   if (_l.length == 0) {
     segments.map((item, i) => {
       _l.push({
         style: {
-          backgroundColor: prop.getcolor(item),
-          textColor: prop.getcolortext(item),
+          backgroundColor: getcolor(item),
+          textColor: getcolortext(item),
         },
         option: i + " ... . . . . . x" + item,
         option2: "x" + item,
@@ -157,7 +133,7 @@ function MNyWheel(prop) {
   const haveBet = (pos) => {
     return list
       .filter(
-        // (u) => u.username == prop.loginToken.username && u.position == pos
+        // (u) => u.username == loginToken.username && u.position == pos
         (u) => parseInt(u.position) == parseInt(pos)
       )
       .sort((a, b) => (a.date > b.date ? 1 : -1))
@@ -172,11 +148,11 @@ function MNyWheel(prop) {
           circular
           className={
             parseInt(ps.replace("x", "")) == parseInt(segments[users.number])
-              ? "active b" +
+              ? "active b ltr" +
                 users.wheelusers.filter(
                   (u) => parseInt(u.position) == parseInt(ps)
                 ).length
-              : "noactive b" +
+              : "noactive b ltr" +
                 users.wheelusers.filter(
                   (u) => parseInt(u.position) == parseInt(ps)
                 ).length
@@ -313,38 +289,38 @@ function MNyWheel(prop) {
           {betBtn(
             "2x",
 
-            prop.getcolor,
-            prop.getcolortext
+            getcolor,
+            getcolortext
           )}
           {betBtn(
             "4x",
 
-            prop.getcolor,
-            prop.getcolortext
+            getcolor,
+            getcolortext
           )}
           {betBtn(
             "8x",
 
-            prop.getcolor,
-            prop.getcolortext
+            getcolor,
+            getcolortext
           )}
           {betBtn(
             "10x",
 
-            prop.getcolor,
-            prop.getcolortext
+            getcolor,
+            getcolortext
           )}
           {betBtn(
             "20x",
 
-            prop.getcolor,
-            prop.getcolortext
+            getcolor,
+            getcolortext
           )}
           {betBtn(
             "25x",
 
-            prop.getcolor,
-            prop.getcolortext
+            getcolor,
+            getcolortext
           )}
         </div>
       </div>
