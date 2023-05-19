@@ -45,6 +45,7 @@ export const Jetton = () => {
   );
 };
 export function groupBySingleField(data, field) {
+  if (!data) return null;
   return data.reduce((acc, val) => {
     const rest = Object.keys(val).reduce((newObj, key) => {
       if (key !== field) {

@@ -6,16 +6,17 @@ import { socket } from "../socket";
 import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 const BoardUser = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null;
   const [wheel, setWheel] = useState({});
 
+  const [userDC, setUserDC] = useState(false);
   useEffect(() => {
     if (!user?.accessToken) {
       window.location.href = "/";
     }
   }, []);
-
-  const [userDC, setUserDC] = useState(false);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       setWheel(data);
@@ -27,7 +28,7 @@ const BoardUser = () => {
       setUserDC(false);
     });
   }, []);
-  if (userDC) {
+  if (userDC || !user?.accessToken) {
     return (
       <Segment className="loadarea">
         <Dimmer active>
