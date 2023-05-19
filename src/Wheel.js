@@ -9,20 +9,11 @@ import { socket } from "./socket";
 import AdsComponent from "./adsComponent";
 export const apiPath = "";
 
-const getPrize = (newPrizeNumber, pos) => {
-  var num = 0;
-  if (parseInt(newPrizeNumber) == parseInt(pos)) {
-    num = parseInt(pos);
-  }
-
-  return num;
-};
-
 var panes = [];
 var timer, timer2, timer3;
 function App(prop) {
   const [bet, setBet] = useState(
-    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 10
+    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 1
   );
 
   const [user, setUser] = useState(socket.auth);
@@ -37,29 +28,24 @@ function App(prop) {
         menuItem: "Live",
         render: () => (
           <>
-            <List size="mini" getPrize={getPrize} />
+            <List size="mini" />
           </>
         ),
       },
       {
         menuItem: "Last",
-        render: () => (
-          <LastList size="mini" getPrize={getPrize} command="lastList" />
-        ),
+        render: () => <LastList size="mini" command="lastList" />,
       },
 
       {
         menuItem: "Top Win",
-        render: () => (
-          <LastList size="mini" getPrize={getPrize} command="winList" />
-        ),
+        render: () => <LastList size="mini" command="winList" />,
       },
       {
         menuItem: "My Win",
         render: () => (
           <LastList
             size="mini"
-            getPrize={getPrize}
             loginToken={user}
             command={"myList&u=" + user?.username}
           />
@@ -72,6 +58,23 @@ function App(prop) {
     <>
       <div className="home">
         <Mywhell bet={bet} setBet={setBet} />
+
+        <Segment color="black" inverted size="mini" className="betlist">
+          <div className="table rsec">
+            <Tab
+              color="black"
+              menu={{
+                color: "black",
+                inverted: true,
+                attached: true,
+                tabular: false,
+                pointing: true,
+              }}
+              panes={panes}
+              renderActiveOnly={true}
+            />
+          </div>
+        </Segment>
       </div>
     </>
   );
