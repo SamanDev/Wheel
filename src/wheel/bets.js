@@ -225,7 +225,10 @@ function BetsWheel(prop) {
 
   return (
     <>
-      <div className="mainwheel mywhell  animate__animated  animate__rollIn">
+      <div
+        className="mainwheel mywhell"
+        style={{ zIndex: 2, width: 100, float: "left" }}
+      >
         <div className="betarea">
           {segX.map((seg, i) => {
             return (

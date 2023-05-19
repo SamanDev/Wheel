@@ -11,10 +11,6 @@ function CountWheel(prop) {
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
-    return () => {
-      clearInterval(timer);
-      setWheel({});
-    };
   }, []);
 
   useEffect(() => {

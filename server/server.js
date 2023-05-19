@@ -88,7 +88,7 @@ app.get("/lastlist", async (req, res) => {
 });
 app.get("/getchip", (req, res) => {
   var newuserinc = User.findByIdAndUpdate(req.query.id, {
-    $inc: { balance2: 100 },
+    $inc: { balance2: 1000 },
   }).then((resp) => {
     if (resp?.username) {
       var _d = resp;
@@ -209,7 +209,7 @@ wheelNamespace.on("connection", (socket) => {
       }
     }
   });
-  socket.on("getwheel", (data) => {
+  socket.on("getwheel", () => {
     socket.emit("msg", {
       command: "update",
       data: wheel,
@@ -340,15 +340,15 @@ const spinstop = async () => {
     data: wheel,
   });
   wheelNamespace.emit("msg", { command: "users", data: wheelusers });
+  if (wheelusers.length > 0) {
+    _time = 3000;
+    inc();
+  }
   var dd = await Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spining",
     total: _tot,
     net: _net,
   });
-  if (wheelusers.length > 0) {
-    _time = 3000;
-    inc();
-  }
 
   setTimeout(() => {
     doneWheel();

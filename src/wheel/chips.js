@@ -23,11 +23,14 @@ function BetsWheel(prop) {
 
   return (
     <>
-      <div className="mainwheel mywhell  animate__animated  animate__rollIn">
+      <div
+        className="mainwheel mywhell  animate__animated  animate__rollIn"
+        style={{ zIndex: 2, width: 100, float: "right", marginTop: 20 }}
+      >
         <div className="betbtnarea">
           <div
             className={
-              wheel?.status != "Pending"
+              wheel?.status == "Spin"
                 ? "chiparea animate__animated animate__flipOutX"
                 : "chiparea animate__animated animate__flipInY"
             }

@@ -105,8 +105,9 @@ function MNyWheel(prop) {
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
-    EventBus.on("disconnect", (data) => {
-      setUser("dc");
+
+    EventBus.on("user", (data) => {
+      setUser(data);
     });
     EventBus.on("balance", (data) => {
       const userOld = JSON.parse(localStorage.getItem("user"));
