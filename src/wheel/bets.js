@@ -120,6 +120,7 @@ function BetsWheel(prop) {
     });
     EventBus.on("user", (data) => {
       setUser(data);
+      setBalance(data?.balance2);
     });
     EventBus.on("users", (data) => {
       setuserbets(data);
@@ -128,6 +129,14 @@ function BetsWheel(prop) {
       if (data != []) {
         setuserbets((current) => [...current, data]);
       }
+    });
+    EventBus.on("balance", (data) => {
+      const userOld = JSON.parse(localStorage.getItem("user"));
+      var _user = userOld;
+      _user.balance2 = data;
+
+      setUser(_user);
+      setBalance(data);
     });
     EventBus.on("resetusers", (data) => {
       setuserbets([]);
