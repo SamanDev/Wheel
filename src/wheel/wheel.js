@@ -5,8 +5,7 @@ import EventBus from "../common/EventBus";
 import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
-var timer = false;
-var blnSpin = false;
+
 function MNyWheel() {
   if (_l.length == 0) {
     segments.map((item, i) => {
@@ -30,7 +29,8 @@ function MNyWheel() {
 
   useEffect(() => {
     updateWheel();
-  }, [wheel.status]);
+  }, [wheel?.status]);
+
   const updateWheel = () => {
     if (wheel.status == "Spin") {
       var t1 = new Date(wheel.date);
@@ -39,7 +39,7 @@ function MNyWheel() {
 
       var Seconds_from_T1_to_T2 = dif / 1000;
       var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
-      blnSpin = true;
+
       $(".mainwheel .bhdLno canvas").css({
         transform:
           "rotate(-" +
@@ -56,7 +56,7 @@ function MNyWheel() {
             "rotate(-" +
             parseFloat(parseInt(wheel.startNum) * (360 / segments.length)) +
             "deg)",
-          transition: "transform 0s",
+          transition: "transform 2s",
         });
       }
       if (wheel.status == "Done") {
@@ -77,7 +77,7 @@ function MNyWheel() {
     if (wheel.status != "Spin" && wheel.status != "Pending") {
       colornum = getcolor(segments[wheel.number]);
     }
-    $("canvas").css({
+    $(".mainwheel .bhdLno").css({
       filter: "drop-shadow(0px 0px 10px " + colornum + ")",
     });
   };
@@ -86,7 +86,6 @@ function MNyWheel() {
     <>
       <div className="animate__animated  animate__rollIn">
         <Wheel
-          disableInitialAnimation={true}
           startingOptionIndex={0}
           mustStartSpinning={false}
           outerBorderWidth={0}

@@ -22,7 +22,7 @@ var panes = [];
 var timer, timer2, timer3;
 function App(prop) {
   const [bet, setBet] = useState(
-    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 1
+    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 10
   );
 
   const [user, setUser] = useState(socket.auth);

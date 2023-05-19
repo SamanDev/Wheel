@@ -97,13 +97,23 @@ function MNyWheel(prop) {
     ? JSON.parse(localStorage.getItem("lastbet"))
     : [];
 
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(1000);
 
   const [wheel, setWheel] = useState({});
   const [user, setUser] = useState(socket.auth);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       setWheel(data);
+    });
+    EventBus.on("disconnect", (data) => {
+      setUser("dc");
+    });
+    EventBus.on("balance", (data) => {
+      const userOld = JSON.parse(localStorage.getItem("user"));
+      var _user = userOld;
+      _user.balance2 = data;
+      console.log(_user);
+      setUser(_user);
     });
   }, []);
   useEffect(() => {
@@ -141,6 +151,15 @@ function MNyWheel(prop) {
       </Segment>
     );
   }
+  if (user == "dc") {
+    return (
+      <Segment className="loadarea">
+        <Dimmer active>
+          <Loader size="massive">Connection lost</Loader>
+        </Dimmer>
+      </Segment>
+    );
+  }
   return (
     <>
       <InfoWheel {...prop} user={user} wheel={wheel} />
@@ -154,7 +173,7 @@ function MNyWheel(prop) {
       >
         <CountWheel {...prop} wheel={wheel} />
 
-        <ShowWheel />
+        <ShowWheel wheel={wheel} />
       </div>
       <BetsWheel {...prop} user={user} wheel={wheel} />
       <ChipsWheel {...prop} user={user} />

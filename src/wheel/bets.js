@@ -212,7 +212,7 @@ function BetsWheel(prop) {
     if (wheel?.status == "Pending") {
       if (balance >= _b) {
         setBalance((prev) => prev - _b);
-
+        EventBus.dispatch("balance", balance - _b);
         socket.emit("addBet", {
           bet: parseInt(_b),
           position: parseInt(pos),
@@ -222,13 +222,14 @@ function BetsWheel(prop) {
       }
     }
   };
+
   return (
     <>
-      <div className="mainwheel mywhell">
+      <div className="mainwheel mywhell  animate__animated  animate__rollIn">
         <div className="betarea">
-          {segX.map((seg) => {
+          {segX.map((seg, i) => {
             return (
-              <>
+              <span key={i}>
                 <Label
                   size="huge"
                   tag
@@ -242,7 +243,7 @@ function BetsWheel(prop) {
                   {seg}x
                 </Label>
                 {betBtn(seg + "x", prop.bet)}
-              </>
+              </span>
             );
           })}
         </div>

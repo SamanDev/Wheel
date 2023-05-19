@@ -205,7 +205,7 @@ display: flex;
 
 }
 .mywhell .bhdLno  canvas {
-  
+  transition: all 2s ease;
   transition-timing-function: cubic-bezier(0.41,0.02,0.00000000001,0.00000000001,1) !important;
 }
 .mywhell .bhdLno {
@@ -411,13 +411,13 @@ margin: auto;
 
 .betbtnarea{
   width: 80px;
-  height: 500px;
+ 
   transform-origin: top left !important;
   transform: scale(.7);
   position: absolute;
   z-index: 10;
-  top: 0px;
-  right:0;
+  bottom: 20px;
+  right:20px;
 }
 .betlist{
   

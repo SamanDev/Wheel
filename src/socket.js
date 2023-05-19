@@ -40,5 +40,8 @@ function onConnect() {
     }
   });
 }
-
+function onDisConnect() {
+  EventBus.dispatch("disconnect");
+}
 socket.on("connect", onConnect);
+socket.on("disconnect", onDisConnect);
