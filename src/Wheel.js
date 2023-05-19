@@ -58,23 +58,6 @@ function App(prop) {
     <>
       <div className="home">
         <Mywhell bet={bet} setBet={setBet} />
-
-        <Segment color="black" inverted size="mini" className="betlist">
-          <div className="table rsec">
-            <Tab
-              color="black"
-              menu={{
-                color: "black",
-                inverted: true,
-                attached: true,
-                tabular: false,
-                pointing: true,
-              }}
-              panes={panes}
-              renderActiveOnly={true}
-            />
-          </div>
-        </Segment>
       </div>
     </>
   );
