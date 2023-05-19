@@ -88,6 +88,7 @@ left: 0px;
 right: 0;
 font-family: bungee, sans-serif;
 line-height: 25px;
+height: 25px;
 }
 .info b{
   display: inline-block;
@@ -110,6 +111,9 @@ display: flex;
   font-size: 12px !important;
   text-shadow: 0px 0px 1px  rgba(0, 0, 0, 1);
 }
+.mainwheel *,.betbtnarea * {
+  font-family: bungee, sans-serif !important;
+}
 .mywhell .betarea {
   position: absolute;
   width: 100vw;
@@ -122,7 +126,7 @@ display: flex;
   z-index: 200;
 }
 .mywhell .betarea .button {
- 
+  font-family: bungee, sans-serif !important;
   width: 50px;
   line-height: 50px;
   z-index: 99999;
@@ -185,7 +189,7 @@ display: flex;
 }
 .mywhell {
   transition: transform 5s ease-in;
-  transform: scale(1.2);
+  transform: scale(1);
   transform-origin: top center;
   margin: auto;
   right: 0;
@@ -202,7 +206,7 @@ display: flex;
 }
 .mywhell .bhdLno  canvas {
   
-  transition-timing-function: cubic-bezier(0.41,0.02,0.0002,1) !important;
+  transition-timing-function: cubic-bezier(0.41,0.02,0.00000000001,0.00000000001,1) !important;
 }
 .mywhell .bhdLno {
 overflow: hidden;
@@ -241,7 +245,7 @@ margin: auto;
 }
 
 .mywhell.mytrue {
-  transform: scale(1.5);
+  transform: scale(1.1);
 }
 .mywhell im2g {
   display: none;

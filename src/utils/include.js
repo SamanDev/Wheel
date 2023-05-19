@@ -1,79 +1,37 @@
 export const segments = [
-  "2",
-  "4",
-  "2",
-  "8",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "8",
-  "2",
-  "20",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "4",
-  "2",
-  "10",
-  "2",
-  "8",
-  "2",
-  "25",
-  "2",
-  "0",
-  "10",
+  0, 2, 4, 2, 10, 2, 4, 2, 8, 2, 4, 2, 25, 2, 4, 2, 8, 2, 4, 2, 10, 2, 4, 2, 8,
+  2, 4, 2, 20,
 ];
 export const segX = ["2", "4", "8", "10", "20", "25"];
 export const getcolor = (item) => {
   var def = "#000000";
 
   if (item == 25) {
-    def = "#F71BBF";
+    def = "#e57452";
   }
   if (item == 4) {
-    def = "#FF3B19";
+    def = "#e05b89";
   }
   if (item == 10) {
-    def = "#8523E8";
+    def = "#8de29d";
   }
   if (item == 20) {
-    def = "#F5C218";
+    def = "#fdf65d";
   }
   if (item == 8) {
-    def = "#2CF501";
+    def = "#9277de";
   }
   if (item == 2) {
-    def = "#19CFFF";
+    def = "#6fc2d3";
   }
 
   return def;
 };
 export const getcolortext = (item) => {
-  var def = "#eeeeee";
-
-  if (item == 2) {
-    def = "#eeeeee";
-  }
-
-  if (item == 8) {
-    def = "#666666";
-  }
+  var def = "#ffffff";
   if (item == 20) {
-    def = "#eeeeee";
+    def = "#000000";
   }
-  if (item == 10) {
-    def = "#eeeeee";
-  }
-  if (item == 0) {
-    def = "#555555";
-  }
-
   return def;
 };
 export const Jetton = () => {

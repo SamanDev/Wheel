@@ -144,7 +144,6 @@ function MNyWheel(prop) {
   return (
     <>
       <InfoWheel {...prop} user={user} wheel={wheel} />
-      <BetsWheel {...prop} user={user} wheel={wheel} />
 
       <div
         className={
@@ -157,8 +156,10 @@ function MNyWheel(prop) {
 
         <ShowWheel />
       </div>
-      <Mod id={user?._id} />
+      <BetsWheel {...prop} user={user} wheel={wheel} />
       <ChipsWheel {...prop} user={user} />
+
+      <Mod id={user?._id} />
     </>
   );
 }

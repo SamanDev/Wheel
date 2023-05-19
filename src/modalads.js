@@ -20,10 +20,14 @@ function ModalExampleModal(prop) {
       onOpen={() => setOpen(true)}
       open={open}
       basic
-      closeIcon={false}
       closeOnDimmerClick={true}
       trigger={
-        <Button size="mini" color="black" className="showads">
+        <Button
+          size="mini"
+          style={{ display: "none" }}
+          color="black"
+          className="showads"
+        >
           Show
         </Button>
       }

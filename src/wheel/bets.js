@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
-import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
+import {
+  Button,
+  Header,
+  Segment,
+  Dimmer,
+  Loader,
+  Label,
+} from "semantic-ui-react";
 import { socket } from "../socket";
 import {
   segments,
@@ -220,13 +227,26 @@ function BetsWheel(prop) {
   };
   return (
     <>
-      <div
-        className="mainwheel mywhell"
-        style={{ position: "absolute", right: 0, width: 0, zIndex: 1000 }}
-      >
-        <div className="betarea" style={{ right: 70, width: 0 }}>
+      <div className="mainwheel mywhell">
+        <div className="betarea">
           {segX.map((seg) => {
-            <>hi{betBtn(seg + "x", prop.bet)}</>;
+            return (
+              <>
+                <Label
+                  size="huge"
+                  tag
+                  style={{
+                    background: getcolor(seg),
+                    color: getcolortext(seg),
+                    float: "left",
+                    width: 100,
+                  }}
+                >
+                  {seg}x
+                </Label>
+                {betBtn(seg + "x", prop.bet)}
+              </>
+            );
           })}
         </div>
       </div>

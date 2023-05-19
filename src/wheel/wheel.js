@@ -77,8 +77,8 @@ function MNyWheel() {
     if (wheel.status != "Spin" && wheel.status != "Pending") {
       colornum = getcolor(segments[wheel.number]);
     }
-    $(".home").css({
-      filter: "drop-shadow(0px 0px 40px " + colornum + ")",
+    $("canvas").css({
+      filter: "drop-shadow(0px 0px 10px " + colornum + ")",
     });
   };
 
