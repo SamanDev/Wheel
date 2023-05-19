@@ -151,15 +151,7 @@ function MNyWheel(prop) {
       </Segment>
     );
   }
-  if (user == "dc") {
-    return (
-      <Segment className="loadarea">
-        <Dimmer active>
-          <Loader size="massive">Connection lost</Loader>
-        </Dimmer>
-      </Segment>
-    );
-  }
+
   return (
     <>
       <InfoWheel {...prop} user={user} wheel={wheel} />

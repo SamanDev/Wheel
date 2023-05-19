@@ -14,6 +14,8 @@ export var socket = io(URL, {
   autoConnect: true,
 });
 function onConnect() {
+  EventBus.dispatch("connect");
+  socket.emit("getwheel");
   socket.on("msg", ({ command, data }) => {
     if (command == "update") {
       // setWheel(data);
