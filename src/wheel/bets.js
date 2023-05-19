@@ -222,6 +222,12 @@ function BetsWheel(prop) {
       if (balance >= _b) {
         setBalance((prev) => prev - _b);
         EventBus.dispatch("balance", balance - _b);
+        EventBus.dispatch("bets", {
+          bet: parseInt(_b),
+          position: parseInt(pos),
+          username: user.username,
+          image: user.image,
+        });
         socket.emit("addBet", {
           bet: parseInt(_b),
           position: parseInt(pos),
