@@ -84,7 +84,7 @@ const PrintBet = (prop) => {
       ? { marginTop: i * -3, marginLeft: i * 3 }
       : {
           marginTop: i * -3,
-          marginLeft: i * -3,
+          marginLeft: i * 1 + 60,
           transform: "scale(.5)",
         };
 
