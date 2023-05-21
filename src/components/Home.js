@@ -7,8 +7,9 @@ import List from "./List";
 
 const Home = () => {
   return (
-    <div className="home" style={{ padding: 15 }}>
-      <div className="slider-thumb">
+    <div className="home">
+      <div className="cadr">
+        <div className="slider-thumb"></div>
         <img src="/assets/logo.png" className="logo" />
         <div className="container">
           <h1>رایگان بازی کن. هر جایزه ای دوست داری ببر!</h1>

@@ -15,10 +15,10 @@ export const getcolor = (item) => {
   if (item == 10) {
     def = "#8de29d";
   }
-  if (item == 20) {
+  if (item == 8) {
     def = "#fdf65d";
   }
-  if (item == 8) {
+  if (item == 20) {
     def = "#9277de";
   }
   if (item == 2) {
@@ -29,7 +29,7 @@ export const getcolor = (item) => {
 };
 export const getcolortext = (item) => {
   var def = "#ffffff";
-  if (item == 20) {
+  if (item == 8) {
     def = "#000000";
   }
   return def;

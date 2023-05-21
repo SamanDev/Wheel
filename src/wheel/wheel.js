@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
 
 import EventBus from "../common/EventBus";
+import CountWheel from "./count";
 import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
@@ -98,6 +99,7 @@ function MNyWheel(prop) {
   return (
     <>
       <div className="animate__animated  animate__rollIn">
+        <CountWheel {...prop} />
         <Wheel
           startingOptionIndex={0}
           mustStartSpinning={false}

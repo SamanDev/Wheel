@@ -57,20 +57,16 @@ const App = () => {
   }, [currentUser, logOut]);
 
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/play" element={<BoardUser />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/play" element={<BoardUser />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/profile" element={<Profile />} />
 
-        <Route path="/mod" element={<BoardModerator />} />
-        <Route path="/admin" element={<BoardAdmin />} />
-      </Routes>
-
-      {/* <AuthVerify logOut={logOut} /> */}
-    </div>
+      <Route path="/mod" element={<BoardModerator />} />
+      <Route path="/admin" element={<BoardAdmin />} />
+    </Routes>
   );
 };
 

@@ -37,7 +37,13 @@ const BoardUser = () => {
       </Segment>
     );
   }
-  return <Mywhell user={user} wheel={wheel} />;
+  return (
+    <div className="home wheel">
+      <div className="cadr">
+        <Mywhell user={user} wheel={wheel} />
+      </div>
+    </div>
+  );
 };
 
 export default BoardUser;

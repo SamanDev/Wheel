@@ -23,8 +23,16 @@
     url("font/IRANSansWeb_Light.ttf") format("ttf"),
     url("font/IRANSansWeb_Light.woff2") format("woff2");
 }
-#root >div{
+.wheel{
   background: black;
+  background-image: none !important;
+}
+.comment *:not(input) {
+  color: #eee !important;
+}
+.comment input{
+  position: relative;
+  z-index: 12;
 }
 .adds{
   background:rgba(0, 0, 0,.1);

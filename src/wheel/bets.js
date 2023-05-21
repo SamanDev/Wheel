@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
-import {
-  Button,
-  Header,
-  Segment,
-  Dimmer,
-  Loader,
-  Label,
-} from "semantic-ui-react";
+import { Button, Label } from "semantic-ui-react";
 import { socket } from "../socket";
 import {
   segments,
   getcolor,
   getcolortext,
   segX,
-  groupBySingleField,
   groupByMultipleFields,
   sumOfBet,
   sumOfWin,
@@ -25,8 +17,9 @@ import $ from "jquery";
 const haveBet = (pos, list, user) => {
   return list
     .filter(
-      // (u) =>        u.username == user.username && parseInt(u.position) == parseInt(pos)
-      (u) => parseInt(u.position) == parseInt(pos)
+      (u) =>
+        u.username == user.username && parseInt(u.position) == parseInt(pos)
+      //s(u) => parseInt(u.position) == parseInt(pos)
     )
     .sort((a, b) => (a.date > b.date ? 1 : -1))
     .map((item, i) => {

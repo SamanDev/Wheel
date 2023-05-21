@@ -7,9 +7,9 @@ import $ from "jquery";
 import Mod from "./modalads";
 import CountWheel from "./wheel/count";
 import ShowWheel from "./wheel/wheel";
-import BetsWheel from "./wheel/bets";
-import ChipsWheel from "./wheel/chips";
+import BottomWheel from "./wheel/bottom";
 import InfoWheel from "./wheel/info";
+
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "./socket";
 
@@ -85,12 +85,9 @@ function MNyWheel(prop) {
             : "mainwheel mywhell"
         }
       >
-        <CountWheel {...prop} wheel={wheel} />
-
         <ShowWheel wheel={wheel} />
       </div>
-      <BetsWheel {...prop} user={user} wheel={wheel} />
-      <ChipsWheel {...prop} user={user} />
+      <BottomWheel {...prop} user={user} wheel={wheel} />
 
       <Mod id={user?._id} />
     </>

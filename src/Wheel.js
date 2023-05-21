@@ -55,9 +55,7 @@ function App(prop) {
 
   return (
     <>
-      <div className="wheel home">
-        <Mywhell bet={bet} setBet={setBet} />
-      </div>
+      <Mywhell bet={bet} setBet={setBet} />
     </>
   );
 }
