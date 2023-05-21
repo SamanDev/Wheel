@@ -18,10 +18,40 @@
   font-family: vazir;
   font-style: normal;
   font-weight: 700;
-  src: url("font/IRANSansWeb_Light.eot");
-  src: url("font/IRANSansWeb_Light.woff") format("woff"),
-    url("font/IRANSansWeb_Light.ttf") format("ttf"),
-    url("font/IRANSansWeb_Light.woff2") format("woff2");
+  src: url("font/Dosis-VariableFont_wght.ttf");
+  
+}
+.ui.grid{
+  margin-left:0;
+  margin-right:0;
+}
+
+.seg *{
+  transition: all .5s ease-in;
+}
+
+.seg .segx{
+  position: relative;
+  top:-8px;
+}
+.seg.none .segx{
+  
+  top:0px;
+}
+.seg span{
+  
+  position: relative;
+  top:4px;
+}
+.seg .segttotal{
+  position: absolute;
+  font-size: 10px;
+  bottom: 7px;
+  opacity: 1;
+}
+.seg.none .segttotal{
+  bottom: -40px;
+  opacity: 0;
 }
 .wheel{
   background: black;
@@ -148,7 +178,7 @@ display: flex;
   cursor: default;
  
 }
-.mywhell.mytrue .betarea .button.b0:not(.active) ,.mywhell .betarea .button.b0:not(.active) {
+.mywhell.mytrue .betarea .b0:not(.active) ,.mywhell .betarea .b0:not(.active) {
   background: rgb(0, 0, 0,.1) !important;
  
   cursor: default;
@@ -157,14 +187,14 @@ display: flex;
 .mywhell .betarea .button.active  {
   box-shadow: 0 0  20px 10px rgba(222, 238, 0, 0.5);
 }
-.mywhell:not(.mytrue) .betarea .button.noactive  {
+.mywhell:not(.mytrue) .betarea .noactive  {
   background: rgb(0, 0, 0,1) !important;
  opacity: .4;
   cursor: default;
   color: rgba(255, 255, 255, 1) !important;
   box-shadow: 0 0  5px 0px rgba(251, 255, 32, 0.5);
 }
-.lsec * {
+#root * {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -174,22 +204,10 @@ display: flex;
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.lsec {
-  display: inline-table;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  transition: all 0.5s ease-in;
-  height: 100vh;
- 
-  position: relative;
-}
+
 .mywhell {
   transition: transform 5s ease-in;
-  transform: scale(1);
+  transform: scale(.9);
   transform-origin: top center;
   margin: auto;
   right: 0;
@@ -254,7 +272,7 @@ margin: auto;
 }
 
 .mywhell.mytrue {
-  transform: scale(1.1);
+  transform: scale(1);
 }
 .mywhell im2g {
   display: none;

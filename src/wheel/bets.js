@@ -9,11 +9,28 @@ import {
   getcolortext,
   segX,
   groupByMultipleFields,
+  groupBySingleField,
   sumOfBet,
   sumOfWin,
 } from "../utils/include";
 import $ from "jquery";
 
+const getPosCount = (list, pos) => {
+  var bets = 0;
+  var peps = 0;
+  if (list) {
+    console.log(list);
+    list
+      .filter((user) => user.position == pos)
+      .map((item, i) => {
+        peps = peps + 1;
+
+        bets = bets + item.bet;
+      });
+  }
+
+  return [bets, peps];
+};
 const haveBet = (pos, list, user) => {
   return list
     .filter(
@@ -74,7 +91,7 @@ const PrintBet = (prop) => {
   var user = prop.user;
   var _s =
     item.username == user.username
-      ? { marginTop: i * -3, marginLeft: i * 3 }
+      ? { marginTop: i * -3, marginLeft: i * -6 }
       : {
           marginTop: i * -3,
           marginLeft: i * 1 + 60,
@@ -147,7 +164,6 @@ function BetsWheel(prop) {
 
             position: parseInt(pos),
             username: property,
-            win: sumOfWin(_gmode[property][pos]),
           });
         }
       }
@@ -159,6 +175,7 @@ function BetsWheel(prop) {
       }
     }
     setList(stat);
+    console.log(_gmode);
     return () => {
       setList([]);
     };
@@ -233,32 +250,52 @@ function BetsWheel(prop) {
 
   return (
     <>
-      <div
-        className="mainwheel mywhell"
-        style={{ zIndex: 2, width: 100, float: "left" }}
-      >
-        <div className="betarea">
-          {segX.map((seg, i) => {
-            return (
-              <span key={i}>
-                <Label
-                  size="huge"
-                  tag
-                  style={{
-                    background: getcolor(seg),
-                    color: getcolortext(seg),
-                    float: "left",
-                    width: 100,
-                  }}
-                >
-                  {seg}x
-                </Label>
-                {betBtn(seg + "x", prop.bet)}
-              </span>
-            );
-          })}
-        </div>
-      </div>
+      {segX.map((seg, i) => {
+        var inf = getPosCount(list, seg);
+        return (
+          <Label
+            size="huge"
+            key={i}
+            tag
+            as="a"
+            onClick={() => {
+              addBet(seg, prop.bet);
+            }}
+            style={{
+              background: getcolor(seg),
+              color: getcolortext(seg),
+              float: "left",
+              width: 100,
+              marginBottom: 5,
+            }}
+          >
+            <div className={inf[1] > 0 ? "seg" : "seg none"}>
+              <div className="segx">x{seg}</div>
+              <div className="segttotal">
+                {inf[1]}{" "}
+                <span>
+                  <lord-icon
+                    src="https://cdn.lordicon.com/axhjquvh.json"
+                    trigger="morph"
+                    colors={
+                      "outline:" +
+                      getcolor(seg) +
+                      ",primary:" +
+                      getcolortext(seg) +
+                      ",secondary:" +
+                      getcolortext(seg) +
+                      ""
+                    }
+                    style={{ width: 16, height: 16 }}
+                  ></lord-icon>
+                </span>{" "}
+                {inf[0]}
+              </div>
+            </div>
+            <div className="betarea">{haveBet(seg, list, user)}</div>
+          </Label>
+        );
+      })}
     </>
   );
 }
