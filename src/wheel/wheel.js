@@ -5,21 +5,29 @@ import EventBus from "../common/EventBus";
 import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
-const updateWheel = (wheel) => {
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+var degg = 360 / segments.length / 2;
+var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
+const updateWheel = (wheel, rndd) => {
   console.log(wheel);
+  var t1 = new Date(wheel.date);
+  var t2 = new Date();
+  var dif = t1.getTime() - t2.getTime();
+
+  var Seconds_from_T1_to_T2 = dif / 1000;
+  var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
+
+  console.log(rndd);
   if (wheel.status == "Spin") {
-    var t1 = new Date(wheel.date);
-    var t2 = new Date();
-    var dif = t1.getTime() - t2.getTime();
-
-    var Seconds_from_T1_to_T2 = dif / 1000;
-    var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
-
     $(".mainwheel .bhdLno canvas").css({
       transform:
         "rotate(-" +
         parseFloat(
-          parseInt(wheel.number) * (360 / segments.length) + (40 - time) * 360
+          parseInt(wheel.number) * (360 / segments.length) +
+            (40 - time) * 360 +
+            rndd
         ) +
         "deg)",
       transition: "transform " + (40 - time) + "s",
@@ -29,7 +37,9 @@ const updateWheel = (wheel) => {
       $(".mainwheel .bhdLno  canvas").css({
         transform:
           "rotate(-" +
-          parseFloat(parseInt(wheel.startNum) * (360 / segments.length)) +
+          parseFloat(
+            parseInt(wheel.startNum) * (360 / segments.length) + rndd
+          ) +
           "deg)",
         transition: "transform 2s",
       });
@@ -38,7 +48,7 @@ const updateWheel = (wheel) => {
       $(".mainwheel .bhdLno canvas").css({
         transform:
           "rotate(-" +
-          parseFloat(parseInt(wheel.number) * (360 / segments.length)) +
+          parseFloat(parseInt(wheel.number) * (360 / segments.length) + rndd) +
           "deg)",
         transition: "transform 0s",
       });
@@ -53,7 +63,7 @@ const updateWheel = (wheel) => {
     colornum = getcolor(segments[wheel.number]);
   }
   $(".mainwheel .bhdLno").css({
-    filter: "drop-shadow(0px 0px 10px " + colornum + ")",
+    filter: "drop-shadow(0px 0px 100px " + colornum + ")",
   });
 };
 function MNyWheel(prop) {
@@ -79,7 +89,10 @@ function MNyWheel(prop) {
   }, []);
 
   useEffect(() => {
-    updateWheel(wheel);
+    if (wheel?.status == "Spin") {
+      rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
+    }
+    updateWheel(wheel, rndd);
   }, [wheel?.status]);
 
   return (

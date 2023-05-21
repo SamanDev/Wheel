@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Segment, Tab } from "semantic-ui-react";
 
 import List from "./List";
 
 import LastList from "./LastList";
 import Mywhell from "./MyWheel";
 import { socket } from "./socket";
-import AdsComponent from "./adsComponent";
+
 export const apiPath = "";
 
 var panes = [];
-var timer, timer2, timer3;
+
 function App(prop) {
   const [bet, setBet] = useState(
-    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 1
+    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 200
   );
 
   const [user, setUser] = useState(socket.auth);
@@ -56,7 +55,7 @@ function App(prop) {
 
   return (
     <>
-      <div className="home">
+      <div className="wheel home">
         <Mywhell bet={bet} setBet={setBet} />
       </div>
     </>

@@ -4,7 +4,7 @@
   
     overflow: auto;
     background-size: 300% 300%;
-    background-image: linear-gradient(-45deg, #ff357f 0%, rgb(0, 255, 234) 25%, yellow 51%, #ff357f 100%);
+    background-image: linear-gradient(-45deg, #9f9f9f 0%, rgb(218, 218, 218) 25%, rgb(108, 108, 108) 51%, #cccccc 100%);
     -webkit-animation: AnimateBG 20s ease infinite;
             animation: AnimateBG 20s ease infinite;
   }
