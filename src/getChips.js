@@ -13,7 +13,7 @@ const GetChip = (prop) => {
         {...prop}
       />
     );
-  if (bet == 200)
+  if (bet == 250)
     return (
       <Chips
         num={bet}

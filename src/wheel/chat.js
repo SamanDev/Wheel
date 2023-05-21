@@ -23,8 +23,8 @@ function ChatWheel(prop) {
       className="mainwheel"
       id="chatarea"
       style={{
-        width: 200,
-        height: 300,
+        width: "100%",
+        height: 280,
         overflow: "auto",
         marginTop: 30,
       }}

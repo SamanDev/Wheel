@@ -67,13 +67,13 @@ const getChipsCount = (item, user) => {
   }
 
   bet = bet - count10 * 500;
-  var count5 = bet / 200;
+  var count5 = bet / 250;
   count5 = parseInt(count5);
   for (let i = 0; i < count5; i++) {
-    bets.push(200);
+    bets.push(250);
   }
 
-  bet = bet - count5 * 200;
+  bet = bet - count5 * 250;
   var count1 = bet / 50;
   count1 = parseInt(count1);
   for (let i = 0; i < count1; i++) {
@@ -257,7 +257,6 @@ function BetsWheel(prop) {
             size="huge"
             key={i}
             tag
-            as="a"
             onClick={() => {
               addBet(seg, prop.bet);
             }}
@@ -267,6 +266,7 @@ function BetsWheel(prop) {
               float: "left",
               width: 100,
               marginBottom: 5,
+              cursor: "pointer",
             }}
           >
             <div className={inf[1] > 0 ? "seg" : "seg none"}>
@@ -280,11 +280,7 @@ function BetsWheel(prop) {
                     colors={
                       "outline:" +
                       getcolor(seg) +
-                      ",primary:" +
-                      getcolortext(seg) +
-                      ",secondary:" +
-                      getcolortext(seg) +
-                      ""
+                      ",primary:#777777,secondary:#444444"
                     }
                     style={{ width: 16, height: 16 }}
                   ></lord-icon>

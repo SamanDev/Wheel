@@ -12,7 +12,7 @@ var panes = [];
 
 function App(prop) {
   const [bet, setBet] = useState(
-    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 200
+    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 250
   );
 
   const [user, setUser] = useState(socket.auth);

@@ -48,16 +48,16 @@ function MNyWheel(prop) {
       nextbet = 5000;
     }
     if (nextbet > balance) {
-      nextbet = 25;
+      nextbet = 1000;
     }
     if (nextbet > balance) {
-      nextbet = 10;
+      nextbet = 500;
     }
     if (nextbet > balance) {
-      nextbet = 5;
+      nextbet = 250;
     }
     if (nextbet > balance) {
-      nextbet = 1;
+      nextbet = 50;
     }
     if (nextbet != bet) {
       prop.setBet(nextbet);

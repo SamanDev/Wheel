@@ -26,8 +26,9 @@ const SendChatWheel = () => (
         onSubmit={() => {
           addChat($("#send").val());
         }}
+        style={{ padding: "0 20px" }}
       >
-        <Form.Input id="send" fluid />
+        <Form.Input id="send" size="mini" fluid />
         <Button
           name="txt"
           content="Add Reply"

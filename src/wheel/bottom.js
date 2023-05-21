@@ -8,7 +8,7 @@ import SendChatWheel from "./sendchat";
 const GridExampleDividedPhrase = (prop) => (
   <>
     <Grid columns="three" divided>
-      <Grid.Row>
+      <Grid.Row style={{ margin: 0 }}>
         <Grid.Column>
           <BetsWheel {...prop} />
         </Grid.Column>
