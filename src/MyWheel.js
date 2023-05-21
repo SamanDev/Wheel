@@ -45,7 +45,7 @@ function MNyWheel(prop) {
     var bet = prop.bet;
     var nextbet = bet;
     if (nextbet > balance) {
-      nextbet = 50;
+      nextbet = 5000;
     }
     if (nextbet > balance) {
       nextbet = 25;
