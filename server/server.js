@@ -172,6 +172,9 @@ wheelNamespace.use(async (socket, next) => {
   });
 });
 wheelNamespace.on("connection", (socket) => {
+  socket.on("addchat", (data) => {
+    socket.broadcast.emit("msg", { command: "chat", data: data });
+  });
   socket.on("addBet", (data) => {
     if (socket.userdata.username) {
       if (wheel.status == "Pending") {
