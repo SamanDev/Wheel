@@ -33,10 +33,13 @@ function onConnect() {
     if (command == "user") {
       EventBus.dispatch("user", data);
     }
+
     if (command == "online") {
       EventBus.dispatch("online", data);
     }
-
+    if (command == "chat") {
+      EventBus.dispatch("chat", data);
+    }
     if (command == "disconnect") {
       socket.disconnect();
     }
