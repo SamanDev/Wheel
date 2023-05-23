@@ -17,7 +17,7 @@
 @font-face {
   font-family: vazir;
   font-style: normal;
-  font-weight: 700;
+
   src: url("font/Dosis-VariableFont_wght.ttf");
   
 }
@@ -68,6 +68,7 @@
   background:rgba(0, 0, 0,.1);
   margin: 10px auto;
   position: relative;
+  overflow: hidden;
 }
 .adds::before{
   opacity: 1;

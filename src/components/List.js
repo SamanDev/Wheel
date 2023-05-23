@@ -5,7 +5,7 @@ import Leaders from "../Leaders";
 import Gifts from "../Gifts";
 const panes = [
   {
-    menuItem: "جوایز",
+    menuItem: "Market",
     render: () => (
       <Tab.Pane attached={false}>
         <Gifts />
@@ -13,7 +13,7 @@ const panes = [
     ),
   },
   {
-    menuItem: "لیدر ها",
+    menuItem: "Leaders",
     render: () => (
       <Tab.Pane attached={false}>
         <Leaders size="mini" command="leaders" />
@@ -21,7 +21,7 @@ const panes = [
     ),
   },
   {
-    menuItem: "آخرین",
+    menuItem: "Last",
     render: () => (
       <Tab.Pane attached={false}>
         <LastList size="mini" command="lastList" />

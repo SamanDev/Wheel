@@ -4,7 +4,7 @@
   
     overflow: auto;
     background-size: 300% 300%;
-    background-image: linear-gradient(-45deg, #9f9f9f 0%, rgb(218, 218, 218) 25%, rgb(108, 108, 108) 51%, #cccccc 100%);
+    background-image: linear-gradient(-45deg, #9f9f9f 0%, rgb(218, 218, 218) 25%, rgb(255, 255, 255) 51%, #cccccc 100%);
     -webkit-animation: AnimateBG 20s ease infinite;
             animation: AnimateBG 20s ease infinite;
   }
@@ -23,15 +23,11 @@
   p{
     font-size:19px
   }
-  h1,h2,h3,h4,h5,h6,p,.ui{
+  p{
     font-family: vazir !important;
   
   }
-h1,h2,h3,h4,h5,h6,p,.ui.tab{
 
-    direction: rtl;
-    text-align: justify;
-  }
   .logo{
     width: 50%;
     position: relative;

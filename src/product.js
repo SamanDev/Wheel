@@ -18,7 +18,7 @@ const CardExampleCardProps = (prop) => (
         </div>{" "}
         {prop.fee}{" "}
         <Button color="orange" size="mini" floated="right">
-          خرید
+          Order Now
         </Button>
       </>
     }

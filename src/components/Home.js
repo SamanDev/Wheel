@@ -4,6 +4,7 @@ import "../home.css";
 import Google from "../google";
 import AdsComponent from "../adsComponent";
 import List from "./List";
+import Menu from "./menu";
 
 const Home = () => {
   return (
@@ -12,31 +13,27 @@ const Home = () => {
         <div className="slider-thumb"></div>
         <img src="/assets/logo.png" className="logo" />
         <div className="container">
-          <h1>رایگان بازی کن. هر جایزه ای دوست داری ببر!</h1>
           <p>
-            «چرخ شانس» یک بازی کاملا مجانی با قوانین ساده است که در آن
-            شرکت‌کنندگان می‌توانند با انتخاب یکی از اعداد موجود بر روی چرخ، شانس
-            خود را برای بردن جایزه امتحان کنند.
+            Welcome to "Wheel of Persia," a <b>free and non-gambling game</b>{" "}
+            where you pick numbers on a wheel. If your number hits, you win
+            multiples of your bid. But here's the twist: you can cash out your
+            chips for real prizes and unlock new wheels. It's all about luck,
+            strategy, and the thrill of winning big in "Wheel of Persia"!
           </p>
           <p>
-            در صورتی که شماره انتخابی آنها با شماره‌ای که بر روی چرخ مشخص شده
-            است برابر باشد، آنها برنده ضریبی از آن شماره خواهند شد.
+            It's all about <b>luck, strategy, and the thrill of winning</b> big
+            in "Wheel of Persia"!
           </p>
-          <p>
-            این بازی به صورت رایگان برگزار می‌شود و هیچگونه ارتباطی با قمار
-            ندارد.
-          </p>
-          <p>
-            {" "}
-            جوایز این بازی واقعی هستند و برندگان در بخش جوایز. می‌توانند ژتون
-            های خود را به هدیه ها تبدیل کنند.
-          </p>
+
           <Google />
+          <div className="adds">
+            <AdsComponent dataAdSlot="X2XXXXXXXX" />
+          </div>
           <List />
           <div className="adds">
             <AdsComponent dataAdSlot="X2XXXXXXXX" />
           </div>
-          <h1>رایگان بازی کن. هر جایزه ای دوست داری ببر!</h1>
+          <Menu />
         </div>
       </div>
     </div>

@@ -4,14 +4,10 @@ import React, { useState, useEffect } from "react";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { register, login } from "./actions/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
-import UserService from "./services/user.service";
-import EventBus from "./common/EventBus";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { socket } from "./socket";
 import { Button, Icon, Label } from "semantic-ui-react";
-import { Jetton } from "./utils/include";
 function App() {
   const [user, setUser] = useState(
     localStorage.getItem("guser")
@@ -101,7 +97,7 @@ function App() {
           >
             <Button color="red" fluid as={Link} to={"/play"}>
               <Icon name="heart" />
-              شروع بازی
+              Wheel NOW!
             </Button>
             <Label
               as="a"
@@ -121,12 +117,12 @@ function App() {
             as="div"
             labelPosition="right"
             className="ltr"
-            fluid
+            style={{ margin: "10px auto" }}
             onClick={() => loginOk()}
           >
             <Button color="red" fluid>
               <Icon name="heart" />
-              شانس خودت رو امتحان کن
+              Sign in with GOOGLE
             </Button>
             <Label as="a" basic color="red" pointing="left">
               <Icon name="google" />

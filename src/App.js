@@ -9,10 +9,13 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
+import About from "./components/About";
+import Term from "./components/Term";
+import Privacy from "./components/Privacy";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-import Google from "./google";
+
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 
@@ -59,6 +62,9 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/about-us" element={<About />} />
+      <Route path="/terms-and-conditions" element={<Term />} />
+      <Route path="/privacy-policy" element={<Privacy />} />
       <Route path="/play" element={<BoardUser />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
