@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Table, Statistic, Label } from "semantic-ui-react";
 import Mod from "./modal";
 import ListService from "./services/list.service";
-import EventBus from "./common/EventBus";
 import { segments, getcolor, getcolortext } from "./utils/include";
 const userBet = (wheel, username) => {
   var bets = 0;
   var net = 0;
-  var userArr = wheel.wheelusers
+  wheel.wheelusers
     .filter((user) => user.username == username)
     .map((item, i) => {
       net = net + item.win;

@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Table, Statistic, Label } from "semantic-ui-react";
+import React from "react";
 
-import { Button, Image, Card } from "semantic-ui-react";
-import Mod from "./modal";
-import ListService from "./services/list.service";
-import EventBus from "./common/EventBus";
+import { Card } from "semantic-ui-react";
 import Product from "./product";
 
 const TableExampleSingleLine = (prop) => {
-  const [lastList, setlastList] = useState([]);
-
   return (
     <Card.Group>
       <Product

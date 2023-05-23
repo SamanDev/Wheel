@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Table, Statistic, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 
-import { Button, Image, List } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 import Mod from "./modal";
 import ListService from "./services/list.service";
 import EventBus from "./common/EventBus";
-import { Jetton, userBet, count, groupBySingleField } from "./utils/include";
+import { userBet, count, groupBySingleField } from "./utils/include";
 
 import { segments, getcolor, getcolortext } from "./utils/include";
 const printnum = (prop) => {
   if (prop == 0) return <>-</>;
   if (prop > 0) return <>+{prop}</>;
-  if (prop < 0) return <>-{prop}</>;
+  if (prop < 0) return <>{prop}</>;
 };
 const TableExampleSingleLine = (prop) => {
   const userld = JSON.parse(localStorage.getItem("user"));

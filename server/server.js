@@ -4,8 +4,8 @@ const app = express();
 
 var corsOptions = {
   origin: [
-    "https://www.charkheshans.com",
-    "http://www.charkheshans.com",
+    "https://www.wheelofpersia.com",
+    "http://www.wheelofpersia.com",
     "http://localhost:3000",
   ],
 };

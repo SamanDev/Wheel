@@ -12,7 +12,11 @@
   --color-quinary: #5252eefb;
   
 }
-
+html,body{
+  width: 100vw;
+  height: 100vh;
+overflow: hidden;
+}
 
 @font-face {
   font-family: vazir;

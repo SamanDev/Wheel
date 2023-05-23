@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL =
   process.env.NODE_ENV === "production"
-    ? "https://api.charkheshans.com/api/auth/"
-    : "http://api.charkheshans.com/api/auth/";
+    ? "https://api.wheelofpersia.com/api/auth/"
+    : "http://api.wheelofpersia.com/api/auth/";
 
 const register = (username, email, password, image) => {
   return axios.post(API_URL + "signup", {
