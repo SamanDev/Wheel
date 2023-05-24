@@ -385,6 +385,8 @@ margin: auto;
   left: 30px;
   bottom:0px;
   z-index: 1000;
+  transform: scale(.82);
+  top:-35px
   
 }
 .chiparea .chips {
@@ -458,5 +460,6 @@ bottom: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  
 }
 

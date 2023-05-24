@@ -10,23 +10,29 @@ function ChatWheel(prop) {
       if (data != []) {
         setuserbets((current) => [...current, data]);
       }
-      document.getElementById("chatarea").scroll({
-        top: userbets.length * 100,
-
-        behavior: "smooth",
-      });
     });
+    return () => {
+      EventBus.off("chat");
+    };
   }, []);
+  useEffect(() => {
+    document.getElementById("chatarea").scroll({
+      top: userbets.length * 100,
+
+      behavior: "smooth",
+    });
+  }, [userbets]);
 
   return (
     <div
       className="mainwheel"
       id="chatarea"
       style={{
-        width: "100%",
-        height: 280,
+        width: "130%",
+        height: 260,
         overflow: "auto",
         marginTop: 30,
+        overflowX: "hidden",
       }}
     >
       {userbets.map((cmd, i) => {

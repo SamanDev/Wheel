@@ -25,8 +25,8 @@ function BetsWheel(prop) {
     <div
       className={
         wheel?.status == "Spin"
-          ? "chiparea animate__animated animate__flipOutX"
-          : "chiparea animate__animated animate__flipInY"
+          ? "chiparea animate__animated "
+          : "chiparea animate__animated "
       }
     >
       <div style={user?.balance2 >= 50 ? {} : { opacity: 0.5 }}>
