@@ -11,9 +11,8 @@ export default class MenuExampleVerticalText extends Component {
 
     return (
       <>
-        {" "}
         <Divider />
-        <Menu text vertical fluid style={{ marginBottom: 50 }}>
+        <Menu text vertical fluid style={{ marginBottom: 100 }}>
           <Menu.Item header>more...</Menu.Item>
           <Menu.Item name="Home" as={Link} to={"/"} />
           <Menu.Item name="About us" as={Link} to={"/about-us"} />
@@ -23,6 +22,7 @@ export default class MenuExampleVerticalText extends Component {
             to={"/terms-and-conditions"}
           />
           <Menu.Item name="Privacy Policy" as={Link} to={"/privacy-policy"} />
+          <Divider />
           <Menu.Item as={"div"} style={{ textAlign: "right" }}>
             Copyright &copy; 2023.
           </Menu.Item>

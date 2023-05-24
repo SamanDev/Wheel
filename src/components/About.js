@@ -1,16 +1,11 @@
 import React from "react";
 
-import "../home.css";
-import Google from "../google";
-import AdsComponent from "../adsComponent";
-import List from "./List";
 import Menu from "./menu";
 
 const Home = () => {
   return (
     <div className="home">
       <div className="cadr">
-        <div className="slider-thumb"></div>
         <img src="/assets/logo.png" className="logo" />
         <div className="container">
           <p>
