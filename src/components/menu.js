@@ -13,7 +13,7 @@ export default class MenuExampleVerticalText extends Component {
       <>
         {" "}
         <Divider />
-        <Menu text vertical fluid>
+        <Menu text vertical fluid style={{ marginBottom: 50 }}>
           <Menu.Item header>more...</Menu.Item>
           <Menu.Item name="Home" as={Link} to={"/"} />
           <Menu.Item name="About us" as={Link} to={"/about-us"} />
