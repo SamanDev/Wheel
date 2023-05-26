@@ -85,6 +85,7 @@ function MNyWheel(prop) {
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
+    updateWheel(wheel, rndd);
   }, []);
 
   useEffect(() => {
@@ -92,7 +93,7 @@ function MNyWheel(prop) {
       rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
     }
     updateWheel(wheel, rndd);
-  }, [wheel]);
+  }, [wheel.status]);
 
   return (
     <>
