@@ -7,6 +7,7 @@ import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import * as serviceWorker from "./serviceWorker";
 const container = document.getElementById("root");
 const root = createRoot(container);
 
@@ -19,3 +20,4 @@ root.render(
     </Provider>
   </GoogleOAuthProvider>
 );
+serviceWorker.unregister();

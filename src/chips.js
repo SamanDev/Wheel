@@ -1,4 +1,13 @@
 import React from "react";
+import {
+  sumOfBet,
+  sumOfWin,
+  userBet,
+  segments,
+  getcolor,
+  getcolortext,
+  Jetton,
+} from "./utils/include";
 function App(prop) {
   return (
     <>

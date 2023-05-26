@@ -15,7 +15,7 @@
 html,body{
   width: 100vw;
   height: 100vh;
-overflow-x: hidden;
+overflow: hidden;
 }
 
 @font-face {
@@ -282,8 +282,8 @@ margin: auto;
 .mywhell im2g {
   display: none;
 }
-.res .mywhell{
-  transform: scale(0.9);
+.modals .mywhell{
+  transform: scale(0.6);
 }
 
  .tablelist {

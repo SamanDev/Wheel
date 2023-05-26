@@ -51,6 +51,7 @@ function ModalExampleModal(prop) {
               zIndex: 10,
               position: "absolute",
               textAlign: "center",
+              overflow: "hidden",
             }}
           >
             <Statistic color="violet" inverted size="mini">

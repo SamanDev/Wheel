@@ -52,6 +52,7 @@ function ModalExampleModal(prop) {
       basic
       size="mini"
       closeOnDimmerClick={true}
+      closeIcon={true}
       className={userclass}
     >
       <Segment inverted size="mini">
