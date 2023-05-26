@@ -30,7 +30,7 @@ function MNyWheel(prop) {
       const userOld = JSON.parse(localStorage.getItem("user"));
       var _user = userOld;
       _user.balance2 = data;
-      console.log(_user);
+
       setUser(_user);
     });
   }, []);

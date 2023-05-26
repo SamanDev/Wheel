@@ -7,7 +7,14 @@ import { register, login } from "./actions/auth";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { socket } from "./socket";
-import { Button, Icon, Label } from "semantic-ui-react";
+import {
+  Button,
+  Icon,
+  Label,
+  Loader,
+  Segment,
+  Dimmer,
+} from "semantic-ui-react";
 function App() {
   const [user, setUser] = useState(
     localStorage.getItem("guser")
@@ -15,6 +22,7 @@ function App() {
       : null
   );
   const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const loginOk = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -57,10 +65,11 @@ function App() {
   }, [user]);
   useEffect(() => {
     if (profile) {
+      setLoading(true);
       if (!localStorage.getItem("user")) {
         dispatch(login(profile.name, profile.id))
           .then(() => {
-            //window.location.href = "/play";
+            window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(
@@ -72,6 +81,7 @@ function App() {
           });
       }
     } else {
+      setLoading(false);
     }
   }, [profile]);
   // log out function to log the user out of google and set the profile array to null
@@ -81,7 +91,15 @@ function App() {
     localStorage.removeItem("user");
     localStorage.removeItem("guser");
   };
-
+  if (loading) {
+    return (
+      <Segment className="load">
+        <Dimmer active>
+          <Loader size="massive">Loading</Loader>
+        </Dimmer>
+      </Segment>
+    );
+  }
   return (
     <div className="navbar-nav ml-auto">
       {profile ? (

@@ -15,7 +15,7 @@
 html,body{
   width: 100vw;
   height: 100vh;
-overflow: hidden;
+overflow-x: hidden;
 }
 
 @font-face {
@@ -104,6 +104,16 @@ overflow: hidden;
 }
 .loadarea.ui.segment {
   border: none !important;
+ 
+}
+.load.ui.segment {
+  border: none !important;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
 }
 .countdown-item {
   position: absolute;
@@ -282,8 +292,8 @@ margin: auto;
 .mywhell im2g {
   display: none;
 }
-.modals .mywhell{
-  transform: scale(0.6);
+.res .mywhell{
+  transform: scale(0.9);
 }
 
  .tablelist {

@@ -124,6 +124,7 @@ function ModalExampleModal(prop) {
                 </Statistic.Value>
               </Statistic>
             </div>
+            <Divider />
           </>
         ) : (
           <>
@@ -201,7 +202,8 @@ function ModalExampleModal(prop) {
               <Statistic color="grey" inverted size="mini">
                 <Statistic.Value>No Winner</Statistic.Value>
                 <Statistic.Label>Try Again</Statistic.Label>
-              </Statistic>
+              </Statistic>{" "}
+              <Divider />
             </>
           )}
 

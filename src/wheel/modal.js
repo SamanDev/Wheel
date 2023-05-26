@@ -155,6 +155,7 @@ function ModalExampleModal(prop) {
                 </Statistic.Value>
               </Statistic>
             </div>
+            <Divider />
           </>
         ) : (
           <>
@@ -238,35 +239,38 @@ function ModalExampleModal(prop) {
           )}
 
           {bets[1] > 0 ? (
-            <Statistic color="violet" inverted size="small">
-              <Statistic.Value>{bets[1]}</Statistic.Value>
-              <Statistic.Label>You Won</Statistic.Label>
-              <Statistic.Value>
-                <Label
-                  size="huge"
-                  style={{
-                    background: getcolor(bigwin?.position),
-                    color: getcolortext(bigwin?.position),
-                    margin: "10px 10px",
-                    display: "block",
-                    textAlign: "center",
-                    lineHeight: "23px",
-                  }}
-                >
-                  {bets[1] / segments[wheel.number]}{" "}
-                  <span
+            <>
+              <Statistic color="violet" inverted size="small">
+                <Statistic.Value>{bets[1]}</Statistic.Value>
+                <Statistic.Label>You Won</Statistic.Label>
+                <Statistic.Value>
+                  <Label
+                    size="huge"
                     style={{
-                      display: "inline",
-                      position: "relative",
-                      top: 4,
+                      background: getcolor(bigwin?.position),
+                      color: getcolortext(bigwin?.position),
+                      margin: "10px 10px",
+                      display: "block",
+                      textAlign: "center",
+                      lineHeight: "23px",
                     }}
                   >
-                    <Jetton />
-                  </span>{" "}
-                  x{segments[wheel.number]}
-                </Label>
-              </Statistic.Value>
-            </Statistic>
+                    {bets[1] / segments[wheel.number]}{" "}
+                    <span
+                      style={{
+                        display: "inline",
+                        position: "relative",
+                        top: 4,
+                      }}
+                    >
+                      <Jetton />
+                    </span>{" "}
+                    x{segments[wheel.number]}
+                  </Label>
+                </Statistic.Value>
+              </Statistic>
+              <Divider />
+            </>
           ) : (
             bets[0] > 0 && (
               <Statistic color="red" inverted size="mini">

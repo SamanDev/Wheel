@@ -104,11 +104,11 @@ function ModalExampleModal(prop) {
               <Statistic.Label>Win</Statistic.Label>
             </Statistic>
           </Segment>
-          <div className="animate__slideInLeft animate__animated">
-            <Modalwin {...prop} />
-            <BetsWheel {...prop} user={user} />
-            <Mywhell {...prop} last={true} />
-          </div>
+
+          <Modalwin {...prop} last={true} />
+
+          <Mywhell {...prop} last={true} />
+
           <Segment color="black" inverted size="mini" className="res">
             <div className="table rsec">
               <List {...prop} last={true} />
