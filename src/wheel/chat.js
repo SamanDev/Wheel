@@ -11,9 +11,6 @@ function ChatWheel(prop) {
         setuserbets((current) => [...current, data]);
       }
     });
-    return () => {
-      EventBus.off("chat");
-    };
   }, []);
   useEffect(() => {
     document.getElementById("chatarea").scroll({

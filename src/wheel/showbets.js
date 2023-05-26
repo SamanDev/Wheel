@@ -35,39 +35,39 @@ const haveBet = (pos, list, user) => {
 };
 const getChipsCount = (item, user) => {
   var bet = item.bet;
-  var count50 = bet / 50;
+  var count50 = bet / 5000;
   var bets = [];
   count50 = parseInt(count50);
 
   for (let i = 0; i < count50; i++) {
-    bets.push(50);
+    bets.push(5000);
   }
-  bet = bet - count50 * 50;
+  bet = bet - count50 * 5000;
 
-  var count25 = bet / 25;
+  var count25 = bet / 1000;
   count25 = parseInt(count25);
   for (let i = 0; i < count25; i++) {
-    bets.push(25);
+    bets.push(1000);
   }
-  bet = bet - count25 * 25;
-  var count10 = bet / 10;
+  bet = bet - count25 * 1000;
+  var count10 = bet / 500;
   count10 = parseInt(count10);
   for (let i = 0; i < count10; i++) {
-    bets.push(10);
+    bets.push(500);
   }
 
-  bet = bet - count10 * 10;
-  var count5 = bet / 5;
+  bet = bet - count10 * 500;
+  var count5 = bet / 250;
   count5 = parseInt(count5);
   for (let i = 0; i < count5; i++) {
-    bets.push(5);
+    bets.push(250);
   }
 
-  bet = bet - count5 * 5;
-  var count1 = bet / 1;
+  bet = bet - count5 * 250;
+  var count1 = bet / 50;
   count1 = parseInt(count1);
   for (let i = 0; i < count1; i++) {
-    bets.push(1);
+    bets.push(50);
   }
   return bets
     .sort((a, b) => (a > b ? 1 : -1))

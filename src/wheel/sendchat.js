@@ -32,7 +32,6 @@ const SendChatWheel = () => (
       >
         {" "}
         <Button
-          size="mini"
           style={{
             position: "absolute",
             right: "10px",
@@ -43,7 +42,7 @@ const SendChatWheel = () => (
         >
           <Icon name="send" color="black" />
         </Button>
-        <Form.Input id="send" size="mini" placeholder="write here..." fluid />
+        <Form.Input id="send" placeholder="write here..." fluid />
       </Form>
     </Comment>
   </Comment.Group>

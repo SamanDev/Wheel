@@ -12,6 +12,7 @@ import {
   groupBySingleField,
   sumOfBet,
   sumOfWin,
+  UsersIcon,
 } from "../utils/include";
 import $ from "jquery";
 
@@ -19,7 +20,6 @@ const getPosCount = (list, pos) => {
   var bets = 0;
   var peps = 0;
   if (list) {
-    console.log(list);
     list
       .filter((user) => user.position == pos)
       .map((item, i) => {
@@ -175,57 +175,12 @@ function BetsWheel(prop) {
       }
     }
     setList(stat);
-    console.log(_gmode);
+
     return () => {
       setList([]);
     };
   }, [userbets]);
-  const betBtn = (ps, bet) => {
-    if (wheel.status == "Pending") {
-      return (
-        <>
-          <Button
-            circular
-            style={{
-              background: getcolor(ps.replace("x", "")),
-              color: getcolortext(ps.replace("x", "")),
-            }}
-            onClick={() => {
-              addBet(ps, bet);
-            }}
-          >
-            {ps}
-            {haveBet(ps, list, user)}
-          </Button>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Button
-            circular
-            className={
-              parseInt(ps.replace("x", "")) ==
-                parseInt(segments[wheel?.number]) && wheel?.status == "Spining"
-                ? "active b" +
-                  list.filter((u) => parseInt(u.position) == parseInt(ps))
-                    .length
-                : "noactive b" +
-                  list.filter((u) => parseInt(u.position) == parseInt(ps))
-                    .length
-            }
-            style={{
-              background: getcolor(ps.replace("x", "")),
-              color: getcolortext(ps.replace("x", "")),
-            }}
-          >
-            <div> {ps}</div>
-            {haveBet(ps, list, user)}
-          </Button>
-        </>
-      );
-    }
-  };
+
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
     if (wheel?.status == "Pending") {
@@ -274,16 +229,14 @@ function BetsWheel(prop) {
               <div className="segttotal">
                 {inf[1]}{" "}
                 <span>
-                  <lord-icon
-                    src="https://cdn.lordicon.com/axhjquvh.json"
-                    trigger="morph"
+                  <UsersIcon
                     colors={
                       "outline:" +
                       getcolor(seg) +
                       ",primary:#777777,secondary:#444444"
                     }
                     style={{ width: 16, height: 16 }}
-                  ></lord-icon>
+                  />
                 </span>{" "}
                 {inf[0]}
               </div>

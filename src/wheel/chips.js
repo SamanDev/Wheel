@@ -22,52 +22,54 @@ function BetsWheel(prop) {
   }, []);
 
   return (
-    <div
-      className={
-        wheel?.status == "Spin"
-          ? "chiparea animate__animated "
-          : "chiparea animate__animated "
-      }
-    >
-      <div style={user?.balance2 >= 50 ? {} : { opacity: 0.5 }}>
-        <GetChip
-          chip={50}
-          handleBet={prop.addBet}
-          bet={prop.bet}
-          setBet={prop.setBet}
-        />
-      </div>
-      <div style={user?.balance2 >= 250 ? {} : { opacity: 0.5 }}>
-        <GetChip
-          chip={250}
-          handleBet={prop.addBet}
-          bet={prop.bet}
-          setBet={prop.setBet}
-        />
-      </div>
-      <div style={user?.balance2 >= 500 ? {} : { opacity: 0.5 }}>
-        <GetChip
-          chip={500}
-          handleBet={prop.addBet}
-          bet={prop.bet}
-          setBet={prop.setBet}
-        />
-      </div>
-      <div style={user?.balance2 >= 1000 ? {} : { opacity: 0.5 }}>
-        <GetChip
-          chip={1000}
-          handleBet={prop.addBet}
-          bet={prop.bet}
-          setBet={prop.setBet}
-        />
-      </div>
-      <div style={user?.balance2 >= 5000 ? {} : { opacity: 0.5 }}>
-        <GetChip
-          chip={5000}
-          handleBet={prop.addBet}
-          bet={prop.bet}
-          setBet={prop.setBet}
-        />
+    <div className="chiparea">
+      <div
+        className={
+          wheel?.status == "Spin"
+            ? " animate__animated animate__backOutRight"
+            : " animate__animated animate__backInRight"
+        }
+      >
+        <div style={user?.balance2 >= 50 ? {} : { opacity: 0.5 }}>
+          <GetChip
+            chip={50}
+            handleBet={prop.addBet}
+            bet={prop.bet}
+            setBet={prop.setBet}
+          />
+        </div>
+        <div style={user?.balance2 >= 250 ? {} : { opacity: 0.5 }}>
+          <GetChip
+            chip={250}
+            handleBet={prop.addBet}
+            bet={prop.bet}
+            setBet={prop.setBet}
+          />
+        </div>
+        <div style={user?.balance2 >= 500 ? {} : { opacity: 0.5 }}>
+          <GetChip
+            chip={500}
+            handleBet={prop.addBet}
+            bet={prop.bet}
+            setBet={prop.setBet}
+          />
+        </div>
+        <div style={user?.balance2 >= 1000 ? {} : { opacity: 0.5 }}>
+          <GetChip
+            chip={1000}
+            handleBet={prop.addBet}
+            bet={prop.bet}
+            setBet={prop.setBet}
+          />
+        </div>
+        <div style={user?.balance2 >= 5000 ? {} : { opacity: 0.5 }}>
+          <GetChip
+            chip={5000}
+            handleBet={prop.addBet}
+            bet={prop.bet}
+            setBet={prop.setBet}
+          />
+        </div>
       </div>
     </div>
   );

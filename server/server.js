@@ -56,21 +56,27 @@ db.mongoose
 app.get("/lastlist", async (req, res) => {
   if (req.query.l == "users") {
     res.json(wheelusers);
+  } else if (req.query.l == "leaders") {
+    const userswin = await User.find()
+
+      .limit(10)
+      .sort({ balance2: -1 });
+    res.json(userswin);
   } else {
-    var sortig = { date: -1 };
+    var sortig = { date: -1, total: -1 };
     if (req.query.l != "myList") {
       if (req.query.l == "winList") {
         sortig = { net: -1 };
       }
       var users2 = await Wheel.find({ status: "Done" })
-        .limit(25)
+        .limit(10)
         .sort(sortig)
         .populate("wheelusers");
     } else {
       var udata = [];
       const userswin = await db.userWheel
         .find({ username: req.query.u }, { pid: 1 })
-        .limit(20)
+        .limit(10)
         .sort({ win: -1 });
 
       var userlist = groupBySingleField(userswin, "pid");
@@ -324,7 +330,7 @@ const spin = async () => {
   }
 };
 const spinstop = async () => {
-  var _time = 2000;
+  var _time = 5000;
   wheel.status = "Spining";
   var _tot = 0;
   var _net = 0;
@@ -344,7 +350,7 @@ const spinstop = async () => {
   });
   wheelNamespace.emit("msg", { command: "users", data: wheelusers });
   if (wheelusers.length > 0) {
-    _time = 3000;
+    // _time = 3000;
     inc();
   }
   var dd = await Wheel.findByIdAndUpdate(wheel._id, {
@@ -358,7 +364,7 @@ const spinstop = async () => {
   }, _time);
 };
 const doneWheel = async () => {
-  var _time = 1000;
+  var _time = 3000;
   wheel.status = "Done";
   wheelNamespace.emit("msg", {
     command: "update",
@@ -366,7 +372,7 @@ const doneWheel = async () => {
   });
   var dd = await Wheel.findByIdAndUpdate(wheel._id, { status: "Done" });
   if (wheelusers.length > 0) {
-    _time = 3000;
+    // _time = 3000;
 
     wheelusers.forEach(async (item) => {
       item.pid = wheel._id;

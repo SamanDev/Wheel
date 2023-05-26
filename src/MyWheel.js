@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Wheel } from "react-custom-roulette";
-import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
-import GetChip from "./getChips";
+import { Segment, Dimmer, Loader } from "semantic-ui-react";
 import EventBus from "./common/EventBus";
-import $ from "jquery";
 import Mod from "./modalads";
-import CountWheel from "./wheel/count";
+import Modalwin from "./wheel/modal";
 import ShowWheel from "./wheel/wheel";
 import BottomWheel from "./wheel/bottom";
 import InfoWheel from "./wheel/info";
 
-import { useDispatch, useSelector } from "react-redux";
 import { socket } from "./socket";
 
 function MNyWheel(prop) {
@@ -87,8 +83,9 @@ function MNyWheel(prop) {
       >
         <ShowWheel wheel={wheel} />
       </div>
-      <BottomWheel {...prop} user={user} wheel={wheel} />
 
+      <BottomWheel {...prop} user={user} wheel={wheel} />
+      <Modalwin {...prop} user={user} wheel={wheel} />
       <Mod id={user?._id} />
     </>
   );

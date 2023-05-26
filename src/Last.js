@@ -7,7 +7,7 @@ import ListService from "./services/list.service";
 import EventBus from "./common/EventBus";
 import { userBet, count, groupBySingleField } from "./utils/include";
 
-import { segments, getcolor, getcolortext } from "./utils/include";
+import { segments, getcolor, getcolortext, UsersIcon } from "./utils/include";
 const printnum = (prop) => {
   if (prop == 0) return <>-</>;
   if (prop > 0) return <>+{prop}</>;
@@ -43,7 +43,6 @@ const TableExampleSingleLine = (prop) => {
                 style={{ float: "left", lineHeight: "25px", display: "flex" }}
               >
                 <Label
-                  avatar
                   style={{
                     background: getcolor(segments[item.number]),
                     color: getcolortext(segments[item.number]),
@@ -54,12 +53,7 @@ const TableExampleSingleLine = (prop) => {
                 >
                   {segments[item.number]}x
                 </Label>
-                <lord-icon
-                  src="https://cdn.lordicon.com/axhjquvh.json"
-                  trigger="morph"
-                  colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
-                  style={{ width: 25, height: 25 }}
-                ></lord-icon>{" "}
+                <UsersIcon />{" "}
                 {<>{count(groupBySingleField(item?.wheelusers, "username"))}</>}{" "}
               </div>
               <div

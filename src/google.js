@@ -60,7 +60,7 @@ function App() {
       if (!localStorage.getItem("user")) {
         dispatch(login(profile.name, profile.id))
           .then(() => {
-            window.location.href = "/play";
+            //window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(
@@ -70,8 +70,6 @@ function App() {
               profile.picture
             );
           });
-      } else {
-        socket.connect();
       }
     } else {
     }

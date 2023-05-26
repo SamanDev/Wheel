@@ -8,6 +8,7 @@ import {
   getcolortext,
   groupByMultipleFields,
 } from "./utils/include";
+import Modalwin from "./wheel/modalshow";
 const PrintBet = (prop) => {
   var item = prop.item;
   var i = prop.i;
@@ -324,6 +325,7 @@ function MNyWheel(prop) {
           )}
         </div>
       </div>
+
       <div className={"mywhell"}>
         <div className="animate__animated  animate__rollIn">
           <Wheel

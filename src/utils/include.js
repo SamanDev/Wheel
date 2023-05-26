@@ -37,10 +37,24 @@ export const getcolortext = (item) => {
 export const Jetton = () => {
   return (
     <lord-icon
-      src="https://cdn.lordicon.com/uvpkeeul.json"
+      src="/assets/icon/jeton.json"
       trigger="morph"
       colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
       style={{ width: 25, height: 23 }}
+    ></lord-icon>
+  );
+};
+export const UsersIcon = (prop) => {
+  return (
+    <lord-icon
+      src="/assets/icon/user.json"
+      trigger="morph"
+      colors={
+        prop.colors
+          ? prop.colors
+          : "outline:#794628,primary:#e8b730,secondary:#e8b730"
+      }
+      style={prop.style ? prop.style : { width: 25, height: 23 }}
     ></lord-icon>
   );
 };
@@ -106,13 +120,25 @@ export const getPrize = (newPrizeNumber, pos) => {
 export const userBet = (wheel, username) => {
   var bets = 0;
   var net = 0;
-  var userArr = wheel.wheelusers
-    .filter((user) => user.username == username)
-    .map((item, i) => {
-      net = net + item.win;
+  try {
+    wheel.wheelusers
+      .filter((user) => user.username == username)
+      .map((item, i) => {
+        net = net + item.win;
 
-      bets = bets + item.bet;
-    });
+        bets = bets + item.bet;
+      });
+  } catch (error) {
+    if (wheel.length) {
+      wheel
+        .filter((user) => user.username == username)
+        .map((item, i) => {
+          net = net + item.win;
+
+          bets = bets + item.bet;
+        });
+    }
+  }
 
   return [bets, net];
 };
