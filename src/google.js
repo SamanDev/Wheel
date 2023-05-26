@@ -65,8 +65,8 @@ function App() {
   }, [user]);
   useEffect(() => {
     if (profile) {
-      setLoading(true);
       if (!localStorage.getItem("user")) {
+        setLoading(true);
         dispatch(login(profile.name, profile.id))
           .then(() => {
             window.location.href = "/play";
