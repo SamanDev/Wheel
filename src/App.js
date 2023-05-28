@@ -42,7 +42,21 @@ const App = () => {
     EventBus.on("logout", () => {
       logOut();
     });
+    EventBus.on("setuser", (data) => {
+      if (data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(data));
+        EventBus.dispatch("user", data);
+      } else {
+        const userOld = JSON.parse(localStorage.getItem("user"));
+        var _user = data;
+        _user.accessToken = userOld.accessToken;
+        _user.id = userOld.id;
+        _user._id = userOld.id;
+        localStorage.setItem("user", JSON.stringify(_user));
 
+        EventBus.dispatch("user", _user);
+      }
+    });
     return () => {
       EventBus.remove("logout");
     };

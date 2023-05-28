@@ -31,6 +31,7 @@ function App() {
   const handleLogin = (username, password) => {
     dispatch(login(username, password))
       .then(() => {
+        setLoading(false);
         window.location.href = "/play";
       })
       .catch(() => {});
@@ -70,6 +71,7 @@ function App() {
         setLoading(true);
         dispatch(login(profile.name, profile.id))
           .then(() => {
+            setLoading(false);
             window.location.href = "/play";
           })
           .catch(() => {
