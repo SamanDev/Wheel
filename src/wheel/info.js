@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
 import { Button, Header, Segment, Dimmer, Loader } from "semantic-ui-react";
-import { Jetton } from "../utils/include";
+import { Jetton, UsersIcon } from "../utils/include";
 
 function BetsWheel(prop) {
   const [wheel, setWheel] = useState(prop.wheel);
@@ -45,12 +45,10 @@ function BetsWheel(prop) {
           <span>{online}</span>{" "}
           <span>
             {" "}
-            <lord-icon
-              src="https://cdn.lordicon.com/axhjquvh.json"
-              trigger="morph"
+            <UsersIcon
               colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
               style={{ width: 25, height: 25 }}
-            ></lord-icon>
+            />
           </span>
           <span>
             <Jetton />

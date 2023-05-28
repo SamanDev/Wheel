@@ -20,6 +20,7 @@ const db = require("./app/models");
 const Role = db.role;
 const User = db.user;
 const Wheel = db.Wheel;
+const Tokens = db.token;
 function groupBySingleField(data, field) {
   return data.reduce((acc, val) => {
     const rest = Object.keys(val).reduce((newObj, key) => {
@@ -92,9 +93,78 @@ app.get("/lastlist", async (req, res) => {
     res.json(users2);
   }
 });
+function removeItemOnce(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
+
+app.get("/gettokens", (req, res) => {
+  Tokens.findByIdAndDelete(req.query.id, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (docs?.rid) {
+        User.findByIdAndUpdate(
+          docs.rid,
+          {
+            $inc: { balance2: 5000 },
+            $pull: { tokens: req.query.id },
+          },
+
+          function (err, resp) {
+            if (err) {
+              console.log(err);
+              wheelNamespace.in(resp.username).emit("msg", {
+                command: "setuser",
+                data: resp,
+              });
+              res.json(resp);
+            } else {
+              var _d = resp;
+              _d.balance2 = _d.balance2 + 5000;
+              _d.tokens = removeItemOnce(_d.tokens, req.query.id);
+
+              wheelNamespace.in(resp.username).emit("msg", {
+                command: "setuser",
+                data: _d,
+              });
+              res.json(_d);
+            }
+          }
+        );
+      } else {
+        User.find(
+          { tokens: req.query.id },
+
+          function (err, resp) {
+            console.log(JSON.stringify(resp));
+            if (err) {
+              console.log(err);
+            } else {
+              var _d = resp;
+              console.log(JSON.stringify(_d));
+              if (_d?.username) {
+                _d.tokens = removeItemOnce(_d.tokens, req.query.id);
+
+                wheelNamespace.in(resp.username).emit("msg", {
+                  command: "setuser",
+                  data: _d,
+                });
+                res.json(_d);
+              }
+            }
+          }
+        );
+      }
+    }
+  });
+});
 app.get("/getchip", (req, res) => {
   var newuserinc = User.findByIdAndUpdate(req.query.id, {
-    $inc: { balance2: 1000 },
+    $inc: { balance2: 5000 },
   }).then((resp) => {
     if (resp?.username) {
       var _d = resp;
@@ -227,7 +297,7 @@ wheelNamespace.on("connection", (socket) => {
       command: "online",
       data: wheelNamespace.sockets.size,
     });
-    socket.emit("msg", { command: "user", data: socket.userdata });
+    socket.emit("msg", { command: "setuser", data: socket.userdata });
     socket.emit("msg", { command: "users", data: wheelusers });
   });
 

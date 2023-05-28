@@ -15,6 +15,12 @@ const User = mongoose.model(
         ref: "Role",
       },
     ],
+    tokens: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Token",
+      },
+    ],
   })
 );
 

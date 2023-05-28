@@ -79,7 +79,7 @@ function MNyWheel(prop) {
       });
     });
   }
-  const [wheel, setWheel] = useState({});
+  const [wheel, setWheel] = useState(prop.wheel);
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {

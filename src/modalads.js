@@ -1,25 +1,62 @@
-import React from "react";
-import { Button, Modal, Segment, Statistic, Label } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Modal,
+  Segment,
+  Statistic,
+  Label,
+  Icon,
+  Divider,
+} from "semantic-ui-react";
 import AdsComponent from "./adsComponent";
 import UserService from "./services/user.service";
 import EventBus from "./common/EventBus";
+import { Jetton, UsersIcon } from "./utils/include";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+const gettokens = (id) => {
+  UserService.gettokens(id).then((response) => {
+    EventBus.dispatch("setuser", response.data);
+  });
+};
 const getchips = (id) => {
   UserService.getchips(id).then((response) => {
-    EventBus.dispatch("user", response.data);
+    // EventBus.dispatch("setuser", response.data);
   });
 };
 function ModalExampleModal(prop) {
-  const [open, setOpen] = React.useState(false);
+  const [copied, setCopied] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [link, setLink] = useState("");
+
+  useEffect(() => {
+    if (copied) {
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    }
+  }, [copied]);
+  useEffect(() => {
+    var _link = window.location.href
+      .toString()
+      .replace("/play", "/invite/" + user.id);
+    setLink(_link);
+  }, [user]);
+  useEffect(() => {
+    EventBus.on("user", (data) => {
+      setUser(data);
+    });
+  }, []);
 
   return (
     <Modal
       onClose={() => {
-        getchips(prop.id);
         setOpen(false);
       }}
       onOpen={() => setOpen(true)}
       open={open}
       basic
+      size="mini"
       closeOnDimmerClick={true}
       trigger={
         <Button
@@ -36,12 +73,70 @@ function ModalExampleModal(prop) {
         style={{
           height: "100vh",
           overflow: "auto",
+          textAlign: "center",
         }}
       >
-        <h1 className="text-center">ads</h1>
-        <div className="adds">
-          <AdsComponent dataAdSlot="X2XXXXXXXX8" />
-        </div>
+        <lord-icon
+          src="https://cdn.lordicon.com/lcwlrxqh.json"
+          trigger="loop"
+          colors="primary:#b4b4b4,secondary:#08a88a"
+          style={{ width: 250, height: 250 }}
+        ></lord-icon>
+        <h1 className="text-center">LoW BaLanCe</h1>
+        <Segment inverted size="mini">
+          You can watch ads and get 1000{" "}
+          <span style={{ position: "relative", top: 6 }}>
+            <Jetton />
+          </span>{" "}
+          for free.
+          <br /> <br />
+          <Button
+            color="facebook"
+            onClick={() => {
+              getchips(prop.id);
+            }}
+          >
+            <Icon name="video" /> Watch Ads
+          </Button>
+          <Divider horizontal inverted>
+            Or
+          </Divider>
+          {user?.tokens.length && (
+            <>
+              You have {user.tokens.length} tokens to use. each token will give
+              you 5000
+              <span style={{ position: "relative", top: 6 }}>
+                <Jetton />
+              </span>{" "}
+              <br /> <br />
+              <Button
+                color="teal"
+                onClick={() => {
+                  gettokens(user.tokens[0]);
+                }}
+              >
+                <Icon name="free code camp" />
+                Use Token
+              </Button>
+              <Divider horizontal inverted>
+                Or
+              </Divider>
+            </>
+          )}
+          Invite friends via your invite link and get 5000{" "}
+          <span style={{ position: "relative", top: 6 }}>
+            <Jetton />
+          </span>{" "}
+          for each them.
+          <br /> <br />
+          <small className="text-muted">{link}</small>
+          <br /> <br />
+          <CopyToClipboard text={link} onCopy={() => setCopied(true)}>
+            <Button color={copied ? "green" : "youtube"}>
+              <Icon name={copied ? "check" : "copy outline"} /> Copy Link
+            </Button>
+          </CopyToClipboard>
+        </Segment>
       </div>
     </Modal>
   );

@@ -10,6 +10,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import About from "./components/About";
+import Invite from "./components/Invite";
 import Term from "./components/Term";
 import Privacy from "./components/Privacy";
 import BoardUser from "./components/BoardUser";
@@ -50,6 +51,7 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/invite/*" element={<Invite />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />

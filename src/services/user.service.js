@@ -17,6 +17,11 @@ const getchips = (id) => {
     headers: authHeader(),
   });
 };
+const gettokens = (id) => {
+  return axios.get(API_URL + "gettokens?id=" + id, {
+    headers: authHeader(),
+  });
+};
 
 const getModeratorBoard = () => {
   return axios.get(API_URL + "api/mod", { headers: authHeader() });
@@ -32,4 +37,5 @@ export default {
   getModeratorBoard,
   getAdminBoard,
   getchips,
+  gettokens,
 };

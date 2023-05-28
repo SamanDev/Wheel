@@ -36,7 +36,8 @@ function App() {
       .catch(() => {});
   };
   const handleRegister = (username, email, password, image) => {
-    dispatch(register(username, email, password, image))
+    const refer = localStorage.getItem("refer");
+    dispatch(register(username, email, password, image, refer))
       .then(() => {
         handleLogin(username, password);
       })

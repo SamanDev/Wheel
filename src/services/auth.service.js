@@ -5,12 +5,13 @@ const API_URL =
     ? "https://api.wheelofpersia.com/api/auth/"
     : "http://api.wheelofpersia.com/api/auth/";
 
-const register = (username, email, password, image) => {
+const register = (username, email, password, image, refer) => {
   return axios.post(API_URL + "signup", {
     username,
     email,
     password,
     image,
+    refer,
   });
 };
 

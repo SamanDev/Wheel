@@ -5,7 +5,15 @@ const Role = db.role;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-
+const createToken = function (userId, comment) {
+  return db.token.create(comment).then((tkn) => {
+    return User.findByIdAndUpdate(
+      userId,
+      { $push: { tokens: tkn._id } },
+      { new: true, useFindAndModify: false }
+    );
+  });
+};
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
@@ -60,6 +68,13 @@ exports.signup = (req, res) => {
         });
       });
     }
+    if (req.body.refer) {
+      createToken(req.body.refer, {
+        name: req.body.username,
+        uid: user._id,
+        rid: req.body.refer,
+      });
+    }
   });
 };
 
@@ -106,6 +121,7 @@ exports.signin = (req, res) => {
         balance: user.balance,
         image: user.image,
         balance2: user.balance2,
+        tokens: user.tokens,
         roles: authorities,
         accessToken: token,
       });
