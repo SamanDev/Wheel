@@ -87,10 +87,6 @@ function MNyWheel(prop) {
       setWheel(data);
     });
     updateWheel(wheel, rndd);
-    return () => {
-      setWheel(prop.wheel);
-      EventBus.remove("wheel");
-    };
   }, []);
 
   useEffect(() => {
