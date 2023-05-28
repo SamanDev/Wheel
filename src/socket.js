@@ -9,7 +9,7 @@ const URL =
 const getToken = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
-export var socket = io(URL, {
+export const socket = io(URL, {
   auth: getToken(),
   autoConnect: true,
 });

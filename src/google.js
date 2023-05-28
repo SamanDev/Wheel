@@ -6,7 +6,7 @@ import axios from "axios";
 import { register, login } from "./actions/auth";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { socket } from "./socket";
+
 import {
   Button,
   Icon,
@@ -80,6 +80,8 @@ function App() {
               profile.picture
             );
           });
+      } else {
+        setLoading(false);
       }
     } else {
       setLoading(false);
