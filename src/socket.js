@@ -33,6 +33,9 @@ function onConnect() {
     if (command == "user") {
       EventBus.dispatch("user", data);
     }
+    if (command == "setuser") {
+      EventBus.dispatch("setuser", data);
+    }
 
     if (command == "online") {
       EventBus.dispatch("online", data);

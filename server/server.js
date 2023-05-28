@@ -117,20 +117,11 @@ app.get("/gettokens", (req, res) => {
           function (err, resp) {
             if (err) {
               console.log(err);
-              wheelNamespace.in(resp.username).emit("msg", {
-                command: "setuser",
-                data: resp,
-              });
-              res.json(resp);
             } else {
               var _d = resp;
               _d.balance2 = _d.balance2 + 5000;
               _d.tokens = removeItemOnce(_d.tokens, req.query.id);
 
-              wheelNamespace.in(resp.username).emit("msg", {
-                command: "setuser",
-                data: _d,
-              });
               res.json(_d);
             }
           }
@@ -145,14 +136,10 @@ app.get("/gettokens", (req, res) => {
               console.log(err);
             } else {
               var _d = resp;
-              console.log(JSON.stringify(_d));
+
               if (_d?.username) {
                 _d.tokens = removeItemOnce(_d.tokens, req.query.id);
 
-                wheelNamespace.in(resp.username).emit("msg", {
-                  command: "setuser",
-                  data: _d,
-                });
                 res.json(_d);
               }
             }
