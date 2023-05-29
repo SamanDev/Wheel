@@ -151,16 +151,12 @@ app.get("/gettokens", (req, res) => {
 });
 app.get("/getchip", (req, res) => {
   var newuserinc = User.findByIdAndUpdate(req.query.id, {
-    $inc: { balance2: 5000 },
+    $inc: { balance2: 1000 },
   }).then((resp) => {
     if (resp?.username) {
       var _d = resp;
       _d.balance2 = _d.balance2 + 1000;
 
-      wheelNamespace.in(resp.username).emit("msg", {
-        command: "user",
-        data: _d,
-      });
       res.json(_d);
     }
   });

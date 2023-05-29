@@ -21,7 +21,7 @@ const gettokens = (id) => {
 };
 const getchips = (id) => {
   UserService.getchips(id).then((response) => {
-    // EventBus.dispatch("setuser", response.data);
+    EventBus.dispatch("setuser", response.data);
   });
 };
 function ModalExampleModal(prop) {
