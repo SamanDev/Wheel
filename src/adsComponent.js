@@ -14,10 +14,10 @@ const AdsComponent = (props) => {
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
+        data-ad-format="fluid"
+        data-ad-layout-key="-cr-1p+4i-cp+1l"
         data-ad-client="ca-pub-2041686233914582"
         data-ad-slot={dataAdSlot}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
       ></ins>
     </>
   );
