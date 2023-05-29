@@ -11,6 +11,7 @@ import {
 import AdsComponent from "./adsComponent";
 import UserService from "./services/user.service";
 import EventBus from "./common/EventBus";
+import ModalAds from "./modalvideo";
 import { Jetton, UsersIcon } from "./utils/include";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 const gettokens = (id) => {
@@ -90,14 +91,7 @@ function ModalExampleModal(prop) {
           </span>{" "}
           for free.
           <br /> <br />
-          <Button
-            color="facebook"
-            onClick={() => {
-              getchips(prop.id);
-            }}
-          >
-            <Icon name="video" /> Watch Ads
-          </Button>
+          <ModalAds getchips={getchips} id={prop.id} />
           <Divider horizontal inverted>
             Or
           </Divider>

@@ -124,13 +124,11 @@ function BetsWheel(prop) {
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
+      setWheel(data);
     });
     EventBus.on("user", (data) => {
       setUser(data);
-      setBalance(data?.balance2);
+      setBalance(data.balance2);
     });
     EventBus.on("users", (data) => {
       setuserbets(data);
@@ -140,14 +138,7 @@ function BetsWheel(prop) {
         setuserbets((current) => [...current, data]);
       }
     });
-    EventBus.on("balance", (data) => {
-      const userOld = JSON.parse(localStorage.getItem("user"));
-      var _user = userOld;
-      _user.balance2 = data;
 
-      setUser(_user);
-      setBalance(data);
-    });
     EventBus.on("resetusers", (data) => {
       setuserbets([]);
     });
@@ -175,16 +166,16 @@ function BetsWheel(prop) {
       }
     }
     setList(stat);
-
-    return () => {
-      setList([]);
-    };
   }, [userbets]);
 
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
     if (wheel?.status == "Pending") {
       if (balance >= _b) {
+        socket.emit("addBet", {
+          bet: parseInt(_b),
+          position: parseInt(pos),
+        });
         setBalance((prev) => prev - _b);
         EventBus.dispatch("balance", balance - _b);
         EventBus.dispatch("bets", {
@@ -192,10 +183,6 @@ function BetsWheel(prop) {
           position: parseInt(pos),
           username: user.username,
           image: user.image,
-        });
-        socket.emit("addBet", {
-          bet: parseInt(_b),
-          position: parseInt(pos),
         });
       } else {
         $(".showads").trigger("click");

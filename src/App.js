@@ -21,7 +21,7 @@ import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 
 import EventBus from "./common/EventBus";
-
+import { socket } from "./socket";
 const App = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -42,6 +42,14 @@ const App = () => {
     EventBus.on("logout", () => {
       logOut();
     });
+    EventBus.on("connect", (data) => {
+      socket.emit("getwheel");
+    });
+    return () => {
+      EventBus.remove("logout");
+    };
+  }, [currentUser, logOut]);
+  useEffect(() => {
     EventBus.on("setuser", (data) => {
       if (data.accessToken) {
         localStorage.setItem("user", JSON.stringify(data));
@@ -58,9 +66,9 @@ const App = () => {
       }
     });
     return () => {
-      EventBus.remove("logout");
+      EventBus.remove("setuser");
     };
-  }, [currentUser, logOut]);
+  }, []);
 
   return (
     <Routes>

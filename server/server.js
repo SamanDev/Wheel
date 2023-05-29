@@ -222,7 +222,7 @@ wheelNamespace.on("disconnect", (reason) => {
 wheelNamespace.use(async (socket, next) => {
   const user = socket.handshake.auth;
 
-  User.findById(user.id).then((res) => {
+  await User.findById(user.id).then((res) => {
     if (res?.username) {
       socket.userdata = res;
 
@@ -238,7 +238,7 @@ wheelNamespace.on("connection", (socket) => {
   socket.on("addchat", (data) => {
     socket.broadcast.emit("msg", { command: "chat", data: data });
   });
-  socket.on("addBet", (data) => {
+  socket.on("addBet", async (data) => {
     if (socket.userdata.username) {
       if (wheel.status == "Pending") {
         data.win = -1;
@@ -261,7 +261,7 @@ wheelNamespace.on("connection", (socket) => {
         } else {
           wheelusers.push(data);
         }
-        var newuser = User.findOneAndUpdate(
+        await User.findOneAndUpdate(
           { username: data.username },
           { $inc: { balance2: data.bet * -1 } }
         ).then((res) => {
@@ -276,16 +276,16 @@ wheelNamespace.on("connection", (socket) => {
     }
   });
   socket.on("getwheel", () => {
-    socket.emit("msg", {
-      command: "update",
-      data: wheel,
-    });
     wheelNamespace.emit("msg", {
       command: "online",
       data: wheelNamespace.sockets.size,
     });
     socket.emit("msg", { command: "setuser", data: socket.userdata });
     socket.emit("msg", { command: "users", data: wheelusers });
+    socket.emit("msg", {
+      command: "update",
+      data: wheel,
+    });
   });
 
   // getLast(socket);
@@ -509,7 +509,7 @@ const inc = () => {
           _d.balance2 = _d.balance2 + sumOfWin(newDatainc[property]);
 
           wheelNamespace.in(res.username).emit("msg", {
-            command: "user",
+            command: "setuser",
             data: _d,
           });
         }

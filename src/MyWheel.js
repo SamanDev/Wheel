@@ -24,6 +24,7 @@ function MNyWheel(prop) {
     });
     EventBus.on("user", (data) => {
       setUser(data);
+      setBalance(data?.balance2);
     });
 
     EventBus.on("balance", (data) => {
@@ -34,9 +35,7 @@ function MNyWheel(prop) {
       setUser(_user);
     });
   }, []);
-  useEffect(() => {
-    setBalance(user?.balance2);
-  }, [user?.balance2]);
+
   useEffect(() => {
     var bet = prop.bet;
     var nextbet = bet;

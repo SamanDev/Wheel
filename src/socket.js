@@ -15,10 +15,9 @@ export const socket = io(URL, {
 });
 function onConnect() {
   EventBus.dispatch("connect");
-  socket.emit("getwheel");
+
   socket.on("msg", ({ command, data }) => {
     if (command == "update") {
-      // setWheel(data);
       EventBus.dispatch("wheel", data);
     }
     if (command == "users") {
@@ -43,6 +42,7 @@ function onConnect() {
     if (command == "chat") {
       EventBus.dispatch("chat", data);
     }
+
     if (command == "disconnect") {
       socket.disconnect();
     }

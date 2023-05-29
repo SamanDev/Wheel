@@ -5,7 +5,6 @@ import EventBus from "../common/EventBus";
 import CountWheel from "./count";
 import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
-import { socket } from "../socket";
 var _l = [];
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
@@ -13,6 +12,7 @@ function getRandomArbitrary(min, max) {
 var degg = 360 / segments.length / 2 - 1;
 var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
 const updateWheel = (wheel, rndd) => {
+  if (!wheel?.status) return false;
   var t1 = new Date(wheel.date);
   var t2 = new Date();
   var dif = t1.getTime() - t2.getTime();
@@ -79,10 +79,9 @@ function MNyWheel(prop) {
       });
     });
   }
-  const [wheel, setWheel] = useState({});
+  const [wheel, setWheel] = useState(prop.wheel);
 
   useEffect(() => {
-    socket.emit("getwheel");
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
@@ -94,7 +93,7 @@ function MNyWheel(prop) {
       rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
     }
     updateWheel(wheel, rndd);
-  }, [wheel.status]);
+  }, [wheel]);
 
   return (
     <>

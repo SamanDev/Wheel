@@ -18,16 +18,19 @@ function CountWheel(prop) {
   }, [wheel.date]);
 
   const mytime = () => {
-    clearInterval(timer);
-    timer = setInterval(() => {
-      var t1 = new Date(wheel.date);
-      var t2 = new Date();
-      var dif = t1.getTime() - t2.getTime();
+    if (!wheel?.status) return false;
 
-      var Seconds_from_T1_to_T2 = dif / 1000;
-      var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+    clearTimeout(timer);
+    var t1 = new Date(wheel.date);
+    var t2 = new Date();
+    var dif = t1.getTime() - t2.getTime();
 
-      setTime(parseInt(Seconds_Between_Dates));
+    var Seconds_from_T1_to_T2 = dif / 1000;
+    var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+
+    setTime(parseInt(Seconds_Between_Dates));
+    timer = setTimeout(() => {
+      mytime();
     }, 1000);
   };
   return (

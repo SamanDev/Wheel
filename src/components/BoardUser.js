@@ -24,9 +24,6 @@ const BoardUser = () => {
     EventBus.on("disconnect", (data) => {
       setUserDC(true);
     });
-    EventBus.on("connect", (data) => {
-      setUserDC(false);
-    });
   }, []);
   if (userDC || !user?.accessToken) {
     return (

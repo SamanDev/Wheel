@@ -78,16 +78,6 @@ const TableExampleSingleLine = (prop) => {
         setUser(data);
       });
     }
-
-    return () => {
-      if (!prop.last) {
-        EventBus.remove("resetusers");
-        EventBus.remove("bets");
-        EventBus.remove("user");
-        EventBus.remove("users");
-        EventBus.remove("wheel");
-      }
-    };
   }, []);
   return (
     <>
