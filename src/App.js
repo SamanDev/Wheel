@@ -16,9 +16,9 @@ import Privacy from "./components/Privacy";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
+import { startServiceWorker } from "./utils/include";
 
 import EventBus from "./common/EventBus";
 import { socket } from "./socket";
@@ -50,6 +50,7 @@ const App = () => {
     };
   }, [currentUser, logOut]);
   useEffect(() => {
+    startServiceWorker();
     EventBus.on("setuser", (data) => {
       if (data.accessToken) {
         localStorage.setItem("user", JSON.stringify(data));

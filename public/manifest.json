@@ -1,17 +1,7 @@
 {
-  "short_name": "Wheel of Persia",
+  "short_name": "WheelofPersia",
   "name": "Wheel of Persia",
   "icons": [
-    {
-      "src": "assets/logo.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "assets/logo.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
     {
       "src": "assets/logo.png",
       "type": "image/png",
@@ -19,8 +9,10 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
-  "orientation": "vertical",
+  "display": "fullscreen",
+
+  "orientation": "portrait",
+  "description": "Wheel of Persia, a free and non-gambling game where you pick numbers on a wheel.",
   "theme_color": "#000000",
-  "background_color": "#000000"
+  "background_color": "#eeeeee"
 }

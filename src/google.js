@@ -26,7 +26,7 @@ function App() {
   const dispatch = useDispatch();
   const loginOk = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
+    onError: (error) => logOut(),
   });
   const handleLogin = (username, password) => {
     dispatch(login(username, password))
@@ -34,7 +34,7 @@ function App() {
         setLoading(false);
         window.location.href = "/play";
       })
-      .catch(() => {});
+      .catch((err) => logOut());
   };
   const handleRegister = (username, email, password, image) => {
     const refer = localStorage.getItem("refer");
@@ -42,7 +42,7 @@ function App() {
       .then(() => {
         handleLogin(username, password);
       })
-      .catch(() => {});
+      .catch((err) => logOut());
   };
 
   useEffect(() => {

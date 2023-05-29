@@ -34,7 +34,7 @@ export const getcolortext = (item) => {
   }
   return def;
 };
-export const Jetton = () => {
+export function Jetton() {
   return (
     <lord-icon
       src="/assets/icon/jeton.json"
@@ -43,12 +43,12 @@ export const Jetton = () => {
       style={{ width: 25, height: 23 }}
     ></lord-icon>
   );
-};
+}
 export const UsersIcon = (prop) => {
   return (
     <lord-icon
       src="/assets/icon/user.json"
-      trigger="morph"
+      trigger="loop"
       colors={
         prop.colors
           ? prop.colors
@@ -142,3 +142,25 @@ export const userBet = (wheel, username) => {
 
   return [bets, net];
 };
+export function startServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    // The URL constructor is available in all browsers that support SW.
+    const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
+
+    window.addEventListener("load", () => {
+      const swUrl = `${process.env.PUBLIC_URL}/firebase-messaging-sw.js`;
+
+      navigator.serviceWorker
+        .register(swUrl)
+        .then(function (registration) {
+          console.log("Registration successful, scope is:", registration.scope);
+        })
+        .catch(function (err) {
+          console.log("Service worker registration failed, error:", err);
+        });
+      if ("serviceWorker" in navigator) {
+        //navigator.serviceWorker.register("/sw.js?v=2");
+      }
+    });
+  }
+}

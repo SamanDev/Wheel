@@ -78,7 +78,7 @@ function ModalExampleModal(prop) {
         }}
       >
         <lord-icon
-          src="https://cdn.lordicon.com/lcwlrxqh.json"
+          src="/assets/icon/lcwlrxqh.json"
           trigger="loop"
           colors="primary:#b4b4b4,secondary:#08a88a"
           style={{ width: 250, height: 250 }}

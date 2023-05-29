@@ -20,4 +20,4 @@ root.render(
     </Provider>
   </GoogleOAuthProvider>
 );
-serviceWorker.unregister();
+//serviceWorker.unregister();
