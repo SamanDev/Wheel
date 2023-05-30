@@ -14,16 +14,12 @@ module.exports = function (app) {
     res.status(200).send();
   });
 
-  app.get(
-    "/api/user",
-    [authJwt.verifyToken, authJwt.getUser, authJwt.getWhell],
-    (req, res) => {
-      res.status(200).send({
-        user: req.userdata,
-        wheel: req.wheel,
-      });
-    }
-  );
+  app.get("/api/user", [authJwt.verifyToken], (req, res) => {
+    res.status(200).send({
+      user: req.userdata,
+      wheel: req.wheel,
+    });
+  });
 
   app.get(
     "/api/mod",

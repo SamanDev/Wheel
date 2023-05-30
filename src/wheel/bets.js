@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
-import { Button, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 import { socket } from "../socket";
 import {
-  segments,
   getcolor,
   getcolortext,
   segX,
   groupByMultipleFields,
-  groupBySingleField,
   sumOfBet,
-  sumOfWin,
   UsersIcon,
 } from "../utils/include";
 import $ from "jquery";
@@ -79,11 +76,9 @@ const getChipsCount = (item, user) => {
   for (let i = 0; i < count1; i++) {
     bets.push(50);
   }
-  return bets
-    .sort((a, b) => (a > b ? 1 : -1))
-    .map((chip, i) => {
-      return <PrintBet key={i} i={i} chip={chip} item={item} user={user} />;
-    });
+  return bets.map((chip, i) => {
+    return <PrintBet key={i} i={i} chip={chip} item={item} user={user} />;
+  });
 };
 const PrintBet = (prop) => {
   const item = prop.item;
@@ -91,7 +86,7 @@ const PrintBet = (prop) => {
   var user = prop.user;
   var _s =
     item.username == user.username
-      ? { marginTop: i * -3, marginLeft: i * -6 }
+      ? { marginTop: i * -5, marginLeft: i * -6 }
       : {
           marginTop: i * -3,
           marginLeft: i * 1 + 60,
@@ -158,12 +153,6 @@ function BetsWheel(prop) {
           });
         }
       }
-
-      if (wheel.status == "Spining" || wheel.status == "Done") {
-        stat.sort((a, b) => (a.win < b.win ? 1 : -1));
-      } else {
-        stat.sort((a, b) => (a.bet < b.bet ? 1 : -1));
-      }
     }
     setList(stat);
   }, [userbets]);
@@ -215,16 +204,10 @@ function BetsWheel(prop) {
               <div className="segx">x{seg}</div>
               <div className="segttotal">
                 {inf[1]}{" "}
-                <span>
-                  <UsersIcon
-                    colors={
-                      "outline:" +
-                      getcolor(seg) +
-                      ",primary:#777777,secondary:#444444"
-                    }
-                    style={{ width: 16, height: 16 }}
-                  />
-                </span>{" "}
+                <img
+                  src={"/assets/users.svg"}
+                  style={{ width: 16, height: 16 }}
+                />{" "}
                 {inf[0]}
               </div>
             </div>

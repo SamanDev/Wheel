@@ -11,7 +11,7 @@ const getToken = () => {
 };
 export const socket = io(URL, {
   auth: getToken(),
-  autoConnect: true,
+  autoConnect: false,
 });
 function onConnect() {
   EventBus.dispatch("connect");

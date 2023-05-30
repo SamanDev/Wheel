@@ -31,12 +31,11 @@ function MNyWheel(prop) {
     } else {
       setTimeout(() => {
         updateWheel();
-      }, 2000);
+      }, 1000);
     }
   };
   useEffect(() => {
     updateWheel();
-    return () => {};
   }, []);
   return (
     <>

@@ -1,27 +1,34 @@
 import React from "react";
+const getColor = (num) => {
+  if (num == "50") {
+    return "white";
+  }
+  if (num == "250") {
+    return "red";
+  }
+  if (num == "500") {
+    return "blue";
+  }
+  if (num == "1000") {
+    return "black";
+  }
+  if (num == "5000") {
+    return "green";
+  }
+};
 function App(prop) {
   return (
     <>
       <div
         onClick={() => {
-          prop.setBet(prop.num);
+          prop.setBet(prop.chip);
         }}
         style={prop.style}
-        className={prop.bet == prop.num ? "chips active" : "chips"}
+        className={prop.bet == prop.chip ? "chips active" : "chips"}
       >
-        <div className={prop.className}>
-          <p style={{ color: prop.textColor }}>
-            {prop.txt ? prop.txt : prop.num}
-          </p>
-          <lord-icon
-            src="/swvqwdea.json"
-            trigger="hover"
-            scale="65"
-            colors={prop.colors}
-            stroke={prop.stroke}
-            style={{ width: 70, height: 70, zIndex: -1 }}
-          ></lord-icon>
-        </div>
+        <div
+          className={"pokerchip " + getColor(prop.chip) + " " + prop.className}
+        ></div>
       </div>
     </>
   );

@@ -33,11 +33,20 @@ function CountWheel(prop) {
       mytime();
     }, 1000);
   };
+  if (!wheel?.status) {
+    return (
+      <div className="count">
+        <h2 className="text-shadows animate__animated  animate__bounceIn">
+          ...
+        </h2>
+      </div>
+    );
+  }
   return (
     <>
       {33 - time > 0 && time > 0 && (
         <>
-          <div className="betarea">
+          <div className="count">
             <h2 className="text-shadows animate__animated  animate__bounceIn">
               {32 - time}
             </h2>

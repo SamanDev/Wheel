@@ -47,10 +47,12 @@ overflow-x: hidden;
   position: relative;
   top:4px;
 }
+
+
 .seg .segttotal{
   position: absolute;
   font-size: 10px;
-  bottom: 7px;
+  bottom: 5px;
   opacity: 1;
 }
 .seg.none .segttotal{
@@ -232,7 +234,14 @@ display: flex;
   position: relative;
 }
 
-
+.count{
+  position: absolute;
+  margin: auto;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  padding: 0;
+}
 
 .bhdLno   {
   transition: all 1s ease;
@@ -242,10 +251,14 @@ display: flex;
   left: auto !important;
 }
 .mywhell .bhdLno  canvas {
-  transition: all 2s ease;
+  transition-property: transform;
+  transition-duration: 9s;
+  transition-timing-function: cubic-bezier(0.41,0.052,0.00000000001,0.00000000001,1) !important;
+
+
   overflow: hidden;
 border-radius: 1000px;
-  transition-timing-function: cubic-bezier(0.41,0.02,0.00000000001,0.00000000001,1) !important;
+  
 }
 .mywhell .bhdLno {
 
@@ -254,6 +267,7 @@ margin: auto;
 .mywhell .bhdLno >div{
   overflow: hidden;
   border-radius: 1000px;
+  transition: all 1s ease;
 margin: auto;
 }
 .mywhell .bhdLno > div:after {
@@ -265,7 +279,7 @@ margin: auto;
 	bottom: 0;
 	position: absolute;
 	z-index:1;
-	animation: slide 5s infinite ;
+	animation: slide 10s infinite ;
 	 
   /* 
   CSS Gradient - complete browser support from http://www.colorzilla.com/gradient-editor/ 
@@ -276,7 +290,7 @@ margin: auto;
 	background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* IE10+ */
 	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#007db9e8',GradientType=1 ); /* IE6-9 */
+
 }
 
 /* animation */
@@ -379,13 +393,13 @@ margin: auto;
   font-family: bungee, sans-serif !important;
   font-weight: 900;
 
-  font-size: calc(2rem + 5vw);
+  font-size: 100px;
   text-align: center;
   margin: 0;
   color: var(--color-primary);
   animation-duration: 1s !important;
   letter-spacing: 0.4rem;
-  line-height: 300px;
+  line-height: 430px;
 }
 .lsec > .segment,
 .rsec > .segment {
@@ -393,11 +407,8 @@ margin: auto;
 }
 .chiparea {
   position: absolute;
-  left: 30px;
-  bottom:0px;
-  z-index: 1000;
-  transform: scale(.82);
-  top:-35px
+  transform-origin: top center;
+  transform: scale(.32);
   
 }
 .chiparea .chips {
@@ -405,22 +416,24 @@ margin: auto;
   text-align: center;
   
   transform: scale(.8) translateX(35px);
-  transition: all 0.5s ease;
+  transition: all  1s ease;
   cursor: pointer;
   z-index: 1;
-  filter: drop-shadow(0px 0px 31px black)  !important;
+ 
 }
+
 .betarea .chips {
   position: absolute;
   top: 0;
   left: -20px;
   
-  transform: scale(0.6);
+  transform: scale(.22);
+
   transform-origin: top left;
   cursor: default;
   pointer-events: none;
   z-index: 2;
-  filter: drop-shadow(1px 1px 1px rgb(0, 0, 0)) !important;
+  filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.549))  !important;
 
 }
 .betarea.res .chips {
@@ -429,27 +442,15 @@ margin: auto;
 
 
 }
-.chiparea .chips.active {
-  filter: drop-shadow(1px 1px 20px rgb(255, 0, 0)) !important;
-  transform: scale(1)  translateX(10px);
-  z-index: 2;
- 
-}
-.chips p {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  font-size: 20px;
-  z-index: 2;
-  line-height: 69px;
-  
-}
-.chips p small {
+.chiparea .chips.active  {
 
-  font-size: 10px;
+  transform: scale(1.2)  translateX(10px);
+  z-index: 2;
 
-  
 }
+
+
+
 
 
 
@@ -512,4 +513,144 @@ bottom: 0;
   cursor: pointer;
   -webkit-box-shadow: inset 0 -2px #22303f;
   box-shadow: inset 0 -2px #22303f;
+}
+.pokerchip {
+  margin: 1em;
+  position: relative;
+  display: inline-block;
+  width: 151px;
+  height: 151px;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5), 0 0 3px 0 rgba(0, 0, 0, 0.4) inset;
+  border-radius: 50%;
+  background-size: 151px 151px;
+  background-position: center center;
+  
+}
+.pokerchip:before {
+  position: absolute;
+  content: "";
+  z-index: 1;
+  width: 117px;
+  height: 117px;
+  border-radius: 50%;
+  top: 9px;
+  left: 9px;
+  background-size: 151px 151px;
+  background-position: center center;
+}
+.pokerchip:after {
+  z-index: 2;
+  position: absolute;
+  content: "25";
+  text-align: center;
+  font: bold 50px/111px Arial;
+  white-space: pre;
+  width: 111px;
+  height: 111px;
+  border-radius: 50%;
+  top: 20px;
+  left: 20px;
+  text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.3), 1px 1px 0px rgba(255, 255, 255, 0.2);
+  font-size: 42px;
+}
+
+
+@-webkit-keyframes rotate-right {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-right {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+/* Colors */
+.pokerchip.gold {
+  transform-origin: top ;
+  transform: scale(.22);
+  position: absolute;
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #dddddd 0, #dddddd 97.4304px, #fff 97.4304px, #fff 113.4304px, #dddddd 113.4304px, #dddddd 151px);
+}
+.pokerchip.gold:before {
+  border: 8px solid #f08f08;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #da9318 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #C1C1C1 0, #C1C1C1 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #C1C1C1 110.7104px, #C1C1C1 151px);
+}
+.pokerchip.gold:after {
+  content: "";
+  background: #e0d500;
+  color: #777777;
+}
+.pokerchip.white {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #dddddd 0, #dddddd 97.4304px, #fff 97.4304px, #fff 113.4304px, #dddddd 113.4304px, #dddddd 151px);
+}
+.pokerchip.white:before {
+  border: 8px solid #dddddd;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #C1C1C1 0, #C1C1C1 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #C1C1C1 110.7104px, #C1C1C1 151px);
+}
+.pokerchip.white:after {
+  content: "50";
+  background: #dddddd;
+  color: #777777;
+}
+.pokerchip.red {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #800000 0, #800000 97.4304px, #fff 97.4304px, #fff 113.4304px, #800000 113.4304px, #800000 151px);
+}
+.pokerchip.red:before {
+  border: 8px solid #800000;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #6C0000 0, #6C0000 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #6C0000 110.7104px, #6C0000 151px);
+}
+.pokerchip.red:after {
+  content: "250";
+  background: #800000;
+  color: #ffffff;
+  
+}
+.pokerchip.blue {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #000099 0, #000099 97.4304px, #fff 97.4304px, #fff 113.4304px, #000099 113.4304px, #000099 151px);
+}
+.pokerchip.blue:before {
+  border: 8px solid #000099;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #00016C 0, #00016C 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #00016C 110.7104px, #00016C 151px);
+}
+.pokerchip.blue:after {
+  content: "500";
+  background: #000099;
+  color: #ffffff;
+ 
+}
+.pokerchip.green {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #008000 0, #008000 97.4304px, #fff 97.4304px, #fff 113.4304px, #008000 113.4304px, #008000 151px);
+}
+.pokerchip.green:before {
+  border: 8px solid #008000;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #016C00 0, #016C00 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #016C00 110.7104px, #016C00 151px);
+}
+.pokerchip.green:after {
+  content: "5K";
+  background: #008000;
+  color: #ffffff;
+}
+.pokerchip.black {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #222222 0, #222222 97.4304px, #fff 97.4304px, #fff 113.4304px, #222222 113.4304px, #222222 151px);
+}
+.pokerchip.black:before {
+  border: 8px solid #222222;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #000000 0, #000000 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #000000 110.7104px, #000000 151px);
+}
+.pokerchip.black:after {
+  content: "1k";
+  background: #222222;
+  color: #ffffff;
 }

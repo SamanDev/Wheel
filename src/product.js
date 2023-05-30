@@ -16,7 +16,7 @@ const CardExampleCardProps = (prop) => (
     fluid
     extra={
       <>
-        <div style={{ float: "left" }}>
+        <div style={{ float: "left", lineHeight: "22px" }}>
           <Jetton />
         </div>{" "}
         {prop.fee}{" "}

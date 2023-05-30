@@ -34,28 +34,20 @@ export const getcolortext = (item) => {
   }
   return def;
 };
-export function Jetton() {
+export function Jetton(prop) {
   return (
-    <lord-icon
-      src="/assets/icon/jeton.json"
-      trigger="morph"
-      colors="outline:#794628,primary:#e8b730,secondary:#e8b730"
-      style={{ width: 25, height: 23 }}
-    ></lord-icon>
+    <img
+      src={"/assets/chip.svg"}
+      style={prop.style ? prop.style : { width: 23, height: 23 }}
+    />
   );
 }
 export const UsersIcon = (prop) => {
   return (
-    <lord-icon
-      src="/assets/icon/user.json"
-      trigger="loop"
-      colors={
-        prop.colors
-          ? prop.colors
-          : "outline:#794628,primary:#e8b730,secondary:#e8b730"
-      }
-      style={prop.style ? prop.style : { width: 25, height: 23 }}
-    ></lord-icon>
+    <img
+      src={"/assets/users.svg"}
+      style={prop.style ? prop.style : { width: 23, height: 23 }}
+    />
   );
 };
 export function groupBySingleField(data, field) {
@@ -129,7 +121,7 @@ export const userBet = (wheel, username) => {
         bets = bets + item.bet;
       });
   } catch (error) {
-    if (wheel.length) {
+    if (wheel) {
       wheel
         .filter((user) => user.username == username)
         .map((item, i) => {

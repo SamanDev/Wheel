@@ -63,6 +63,8 @@ function App() {
           setProfile(res.data);
         })
         .catch((err) => logOut());
+    } else {
+      logOut();
     }
   }, [user]);
   useEffect(() => {
@@ -72,7 +74,7 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
-            window.location.href = "/play";
+            //window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(

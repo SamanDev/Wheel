@@ -64,8 +64,6 @@ function ModalExampleModal(prop) {
   useEffect(() => {
     if (wheel.status == "Spining") {
       setuserclass("animate__backInUp animate__animated");
-
-      setOpen(true);
     }
     if (wheel.status == "Done") {
       setuserclass("animate__backOutUp animate__animated");
@@ -74,6 +72,13 @@ function ModalExampleModal(prop) {
       }, 500);
     }
   }, [wheel]);
+  useEffect(() => {
+    if (userclass == "animate__backInUp animate__animated") {
+      setTimeout(() => {
+        setOpen(true);
+      }, 2000);
+    }
+  }, [userclass]);
   return (
     <Modal
       onClose={() => {

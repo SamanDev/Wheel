@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Statistic, Label } from "semantic-ui-react";
+import { Table, Statistic, Label, Icon } from "semantic-ui-react";
 
 import { Button, Image, List } from "semantic-ui-react";
 import Mod from "./modal";
@@ -37,7 +37,8 @@ const TableExampleSingleLine = (prop) => {
             <div
               style={{ float: "right", lineHeight: "25px", display: "flex" }}
             >
-              {item?.balance2} <Jetton />
+              {item?.balance2}{" "}
+              <img src={"/assets/chip.svg"} style={{ width: 25, height: 25 }} />
             </div>
           </List.Item>
         );

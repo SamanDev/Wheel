@@ -23,34 +23,6 @@ verifyToken = (req, res, next) => {
   });
 };
 
-getUser = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-    var _nu = user;
-
-    _nu.accessToken = req.accessToken;
-    req.userdata = _nu;
-    next();
-  });
-};
-getWhell = (req, res, next) => {
-  Wheel.findOne()
-    .sort({ date: -1 })
-
-    .exec((err, wheel) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
-
-      req.wheel = wheel;
-
-      next();
-    });
-};
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -116,8 +88,6 @@ isModerator = (req, res, next) => {
 const authJwt = {
   verifyToken,
 
-  getUser,
-  getWhell,
   isAdmin,
   isModerator,
 };

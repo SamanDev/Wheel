@@ -91,7 +91,7 @@ function ModalExampleModal(prop) {
           </span>{" "}
           for free.
           <br /> <br />
-          <ModalAds getchips={getchips} id={prop.id} />
+          <ModalAds getchips={getchips} id={user.id} />
           <Divider horizontal inverted>
             Or
           </Divider>
