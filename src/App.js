@@ -5,17 +5,15 @@ import "semantic-ui-css/semantic.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/App.css";
 import "animate.css";
-import Login from "./components/Login";
-import Register from "./components/Register";
+
 import Home from "./components/Home";
-import Profile from "./components/Profile";
+
 import About from "./components/About";
 import Invite from "./components/Invite";
 import Term from "./components/Term";
 import Privacy from "./components/Privacy";
 import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
+
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 import { startServiceWorker } from "./utils/include";
@@ -43,7 +41,6 @@ const App = () => {
     });
 
     return () => {
-      EventBus.remove("setuser");
       EventBus.remove("logout");
     };
   }, [currentUser, logOut]);
@@ -73,18 +70,12 @@ const App = () => {
 
   return (
     <Routes>
+      <Route path="/play" element={<BoardUser />} />
       <Route path="/" element={<Home />} />
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />
-      <Route path="/play" element={<BoardUser />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<Profile />} />
-
-      <Route path="/mod" element={<BoardModerator />} />
-      <Route path="/admin" element={<BoardAdmin />} />
     </Routes>
   );
 };

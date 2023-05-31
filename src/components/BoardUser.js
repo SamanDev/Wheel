@@ -14,9 +14,11 @@ const BoardUser = () => {
   useEffect(() => {
     if (!user?.accessToken) {
       window.location.href = "/";
+    } else {
+      socket.auth = user;
+      socket.connect();
     }
-    socket.auth = user;
-    socket.connect();
+
     return () => {
       setUserDC(true);
       socket.disconnect();

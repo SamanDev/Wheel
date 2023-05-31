@@ -118,7 +118,8 @@ function BetsWheel(prop) {
   );
   const [balance, setBalance] = useState(user?.balance2);
 
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(userbets);
+  const [con, setCon] = useState(false);
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -128,8 +129,13 @@ function BetsWheel(prop) {
       setUser(data);
       setBalance(data.balance2);
     });
+    EventBus.on("connect", (data) => {
+      setCon(data);
+    });
     EventBus.on("users", (data) => {
-      setuserbets(data);
+      if (userbets == []) {
+        setuserbets(data);
+      }
     });
     EventBus.on("bets", (data) => {
       if (data != []) {
@@ -141,6 +147,7 @@ function BetsWheel(prop) {
       setuserbets([]);
     });
     return () => {
+      setuserbets([]);
       EventBus.remove("wheel");
       EventBus.remove("user");
       EventBus.remove("users");
@@ -150,7 +157,7 @@ function BetsWheel(prop) {
   }, []);
   useEffect(() => {
     var stat = [];
-
+    localStorage.setItem("users", JSON.stringify(userbets));
     if (userbets?.length > 0) {
       var _gmode = groupByMultipleFields(userbets, "username", "position");
       for (const property in _gmode) {
@@ -164,13 +171,13 @@ function BetsWheel(prop) {
         }
       }
     }
+
     setList(stat);
-    localStorage.setItem("users", JSON.stringify(stat));
   }, [userbets]);
 
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
-    if (wheel?.status == "Pending") {
+    if (wheel?.status == "Pending" && con) {
       if (balance >= _b) {
         socket.emit("addBet", {
           bet: parseInt(_b),

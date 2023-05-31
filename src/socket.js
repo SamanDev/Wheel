@@ -13,13 +13,13 @@ const socket = io(URL, {
   autoConnect: false,
 });
 function onConnect() {
+  EventBus.dispatch("connect", true);
   socket.on("msg", ({ command, data }) => {
     if (command == "update") {
       localStorage.setItem("wheel", JSON.stringify(data));
       EventBus.dispatch("wheel", data);
     }
     if (command == "users") {
-      localStorage.setItem("users", JSON.stringify(data));
       EventBus.dispatch("users", data);
     }
     if (command == "bets") {

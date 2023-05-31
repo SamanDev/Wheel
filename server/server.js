@@ -217,18 +217,21 @@ wheelNamespace.on("disconnect", (reason) => {
 });
 wheelNamespace.use(async (socket, next) => {
   const user = socket.handshake.auth;
+  if (socket.userdata) {
+    next();
+  } else {
+    await User.findById(user.id).then((res) => {
+      if (res?.username) {
+        socket.userdata = res;
 
-  await User.findById(user.id).then((res) => {
-    if (res?.username) {
-      socket.userdata = res;
+        wheelNamespace.in(user.username).disconnectSockets(true);
 
-      wheelNamespace.in(user.username).disconnectSockets(true);
+        socket.join(user.username);
 
-      socket.join(user.username);
-
-      next();
-    }
-  });
+        next();
+      }
+    });
+  }
 });
 wheelNamespace.on("connection", (socket) => {
   socket.on("addchat", (data) => {
@@ -271,12 +274,13 @@ wheelNamespace.on("connection", (socket) => {
       }
     }
   });
+  socket.emit("msg", { command: "users", data: wheelusers });
   wheelNamespace.emit("msg", {
     command: "online",
     data: wheelNamespace.sockets.size,
   });
   socket.emit("msg", { command: "setuser", data: socket.userdata });
-  socket.emit("msg", { command: "users", data: wheelusers });
+
   socket.emit("msg", {
     command: "update",
     data: wheel,
@@ -302,6 +306,10 @@ const initial = async () => {
   } else if (defwheel?.status == "Spin") {
     setTimeout(() => {
       spinstop();
+    }, 3000);
+  } else if (defwheel?.status == "Spining") {
+    setTimeout(() => {
+      doneWheel();
     }, 3000);
   }
 
@@ -399,9 +407,8 @@ const spinstop = async () => {
     command: "update",
     data: wheel,
   });
-
+  wheelNamespace.emit("msg", { command: "users", data: wheelusers });
   if (wheelusers.length > 0) {
-    wheelNamespace.emit("msg", { command: "users", data: wheelusers });
     // _time = 3000;
     inc();
   }
