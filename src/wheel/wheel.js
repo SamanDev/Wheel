@@ -13,9 +13,9 @@ function getRandomArbitrary(min, max) {
 }
 var degg = 360 / segments.length / 2 - 1;
 var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
-const updateWheel = (wheel, rndd) => {
+const updateWheel = (wheel2, rndd) => {
+  const wheel = JSON.parse(localStorage.getItem("wheel"));
   if (!wheel?.status) return false;
-  console.log(wheel?.status);
   var t1 = new Date(wheel.date);
   var t2 = new Date();
   var dif = t1.getTime() - t2.getTime();
@@ -55,7 +55,7 @@ const updateWheel = (wheel, rndd) => {
               parseInt(wheel.startNum) * (360 / segments.length) + rndd
             ).toFixed(2) +
             "deg)",
-          transitionDuration: "1s",
+          transitionDuration: "0s",
         });
       }
     }
@@ -96,25 +96,28 @@ const updateWheel = (wheel, rndd) => {
     zIndex: -1,
   });
 };
-function MNyWheel(prop) {
-  if (_l.length == 0) {
-    segments.map((item, i) => {
-      _l.push({
-        style: {
-          backgroundColor: getcolor(item),
-          textColor: getcolortext(item),
-        },
 
-        option: "x" + item,
-      });
-    });
-  }
-  const [wheel, setWheel] = useState();
+segments.map((item, i) => {
+  _l.push({
+    style: {
+      backgroundColor: getcolor(item),
+      textColor: getcolortext(item),
+    },
+
+    option: "x" + item,
+  });
+});
+
+function MNyWheel(prop) {
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
+    setTimeout(() => {
+      updateWheel(wheel, rndd);
+    }, 100);
   }, []);
 
   useEffect(() => {
@@ -151,7 +154,7 @@ function MNyWheel(prop) {
           />
           {wheel?.status && (
             <>
-              <Modalwin wheel={wheel} />
+              <Modalwin />
               <Mod />
             </>
           )}

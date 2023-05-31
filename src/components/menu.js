@@ -2,13 +2,7 @@ import React, { Component } from "react";
 import { Menu, Divider } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 export default class MenuExampleVerticalText extends Component {
-  state = { activeItem: "closest" };
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-
   render() {
-    const { activeItem } = this.state;
-
     return (
       <>
         <Divider />

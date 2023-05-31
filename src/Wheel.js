@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Mywhell from "./MyWheel";
 
-export const apiPath = "";
-
-function App(prop) {
+function App() {
   return (
     <>
       <Mywhell />

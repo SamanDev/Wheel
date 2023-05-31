@@ -33,7 +33,7 @@ const bigLose = (list) => {
 var bigwin, biglose;
 function ModalExampleModal(prop) {
   const [open, setOpen] = useState(false);
-  const [wheel, setWheel] = useState(prop.wheel);
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
   const [user, setUser] = useState(prop.user);
   const [bets, setbets] = useState(userBet(wheel, user?.username));
   const [userbets, setuserbets] = useState([]);
@@ -79,6 +79,9 @@ function ModalExampleModal(prop) {
       }, 2000);
     }
   }, [userclass]);
+  if (!wheel?.status) {
+    return <div className="navbar-nav ml-auto"></div>;
+  }
   return (
     <Modal
       onClose={() => {

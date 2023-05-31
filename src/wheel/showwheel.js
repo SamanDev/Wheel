@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
 
-import EventBus from "../common/EventBus";
 import $ from "jquery";
-import Modalwin from "./modalshow";
 import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
 

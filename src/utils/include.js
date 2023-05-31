@@ -156,3 +156,6 @@ export function startServiceWorker() {
     });
   }
 }
+export const GetToken = () => {
+  return JSON.parse(localStorage.getItem("user"));
+};

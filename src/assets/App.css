@@ -241,6 +241,9 @@ display: flex;
   left: 0;
   z-index: 10;
   padding: 0;
+  top: 50%;
+  
+  transform: translateY(-50%);
 }
 
 .bhdLno   {
@@ -385,7 +388,7 @@ margin: auto;
 }
 
 .text-shadows {
-  
+ 
   text-shadow: 3px 3px 0 var(--color-secondary), 6px 6px 0 var(--color-tertiary),
     9px 9px var(--color-quaternary), 12px 12px 0 var(--color-quinary),
     0 0 10px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 1),
@@ -393,13 +396,15 @@ margin: auto;
   font-family: bungee, sans-serif !important;
   font-weight: 900;
 
-  font-size: 100px;
+  font-size: 80px;
   text-align: center;
+ 
   margin: 0;
   color: var(--color-primary);
   animation-duration: 1s !important;
   letter-spacing: 0.4rem;
-  line-height: 430px;
+  line-height: 130%;
+  
 }
 .lsec > .segment,
 .rsec > .segment {
@@ -416,7 +421,7 @@ margin: auto;
   text-align: center;
   
   transform: scale(.8) translateX(35px);
-  transition: all  1s ease;
+  transition: all  .3s ease;
   cursor: pointer;
   z-index: 1;
  

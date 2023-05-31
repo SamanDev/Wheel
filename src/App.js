@@ -21,7 +21,6 @@ import { clearMessage } from "./actions/message";
 import { startServiceWorker } from "./utils/include";
 
 import EventBus from "./common/EventBus";
-import { socket } from "./socket";
 const App = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -42,10 +41,9 @@ const App = () => {
     EventBus.on("logout", () => {
       logOut();
     });
-    EventBus.on("connect", (data) => {
-      socket.emit("getwheel");
-    });
+
     return () => {
+      EventBus.remove("setuser");
       EventBus.remove("logout");
     };
   }, [currentUser, logOut]);
@@ -57,13 +55,15 @@ const App = () => {
         EventBus.dispatch("user", data);
       } else {
         const userOld = JSON.parse(localStorage.getItem("user"));
-        var _user = data;
-        _user.accessToken = userOld.accessToken;
-        _user.id = userOld.id;
-        _user._id = userOld.id;
-        localStorage.setItem("user", JSON.stringify(_user));
+        if (userOld) {
+          var _user = data;
+          _user.accessToken = userOld.accessToken;
+          _user.id = userOld.id;
+          _user._id = userOld.id;
+          localStorage.setItem("user", JSON.stringify(_user));
 
-        EventBus.dispatch("user", _user);
+          EventBus.dispatch("user", _user);
+        }
       }
     });
     return () => {

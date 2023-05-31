@@ -6,9 +6,10 @@ function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
   const [online, setOnline] = useState(1);
-  const [balance, setBalance] = useState(oldduser?.balance2);
+  const [balance, setBalance] = useState(user?.balance2);
   useEffect(() => {
     EventBus.on("user", (data) => {
+      console.log("user", data);
       setUser(data);
       setBalance(data.balance2);
     });
@@ -18,6 +19,11 @@ function BetsWheel(prop) {
     EventBus.on("online", (data) => {
       setOnline(data);
     });
+    return () => {
+      EventBus.remove("user");
+      EventBus.remove("balance");
+      EventBus.remove("online");
+    };
   }, []);
   useEffect(() => {
     var newuser = oldduser;

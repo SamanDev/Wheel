@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
 import { Label } from "semantic-ui-react";
-import { socket } from "../socket";
+import socket from "../socket";
 import {
   getcolor,
   getcolortext,
@@ -86,7 +86,7 @@ const PrintBet = (prop) => {
   var user = prop.user;
   var _s =
     item.username == user.username
-      ? { marginTop: i * -5, marginLeft: i * -6 }
+      ? { marginTop: i * -5, marginLeft: i * -3 }
       : {
           marginTop: i * -3,
           marginLeft: i * 1 + 60,
@@ -110,9 +110,12 @@ const PrintBet = (prop) => {
 };
 
 function BetsWheel(prop) {
-  const [wheel, setWheel] = useState(prop.wheel);
-  const [user, setUser] = useState(prop.user);
-  const [userbets, setuserbets] = useState([]);
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const oldduser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(oldduser);
+  const [userbets, setuserbets] = useState(
+    JSON.parse(localStorage.getItem("users"))
+  );
   const [balance, setBalance] = useState(user?.balance2);
 
   const [list, setList] = useState([]);
@@ -137,11 +140,18 @@ function BetsWheel(prop) {
     EventBus.on("resetusers", (data) => {
       setuserbets([]);
     });
+    return () => {
+      EventBus.remove("wheel");
+      EventBus.remove("user");
+      EventBus.remove("users");
+      EventBus.remove("bets");
+      EventBus.remove("resetusers");
+    };
   }, []);
   useEffect(() => {
     var stat = [];
 
-    if (userbets.length > 0) {
+    if (userbets?.length > 0) {
       var _gmode = groupByMultipleFields(userbets, "username", "position");
       for (const property in _gmode) {
         for (const pos in _gmode[property]) {
@@ -155,6 +165,7 @@ function BetsWheel(prop) {
       }
     }
     setList(stat);
+    localStorage.setItem("users", JSON.stringify(stat));
   }, [userbets]);
 
   const addBet = (pos, bet) => {

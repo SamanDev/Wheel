@@ -217,7 +217,7 @@ wheelNamespace.on("disconnect", (reason) => {
 });
 wheelNamespace.use(async (socket, next) => {
   const user = socket.handshake.auth;
-  connsole.log(user);
+
   await User.findById(user.id).then((res) => {
     if (res?.username) {
       socket.userdata = res;

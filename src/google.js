@@ -7,14 +7,7 @@ import { register, login } from "./actions/auth";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import {
-  Button,
-  Icon,
-  Label,
-  Loader,
-  Segment,
-  Dimmer,
-} from "semantic-ui-react";
+import { Button, Icon, Label } from "semantic-ui-react";
 function App() {
   const [user, setUser] = useState(
     localStorage.getItem("guser")
@@ -100,11 +93,24 @@ function App() {
   };
   if (loading) {
     return (
-      <Segment className="load">
-        <Dimmer active>
-          <Loader size="massive">Loading</Loader>
-        </Dimmer>
-      </Segment>
+      <div className="navbar-nav ml-auto">
+        <Button
+          as="div"
+          labelPosition="right"
+          className="ltr"
+          style={{ margin: "10px auto" }}
+          disabled
+          fluid
+        >
+          <Button color="red" fluid>
+            <Icon name="spinner" loading />
+            Please wait...
+          </Button>
+          <Label as="a" basic color="red" pointing="left">
+            <Icon name="google" />
+          </Label>
+        </Button>
+      </div>
     );
   }
   return (
@@ -116,9 +122,10 @@ function App() {
             to={"/play"}
             labelPosition="right"
             className="ltr"
+            style={{ margin: "10px auto" }}
             fluid
           >
-            <Button color="red" fluid as={Link} to={"/play"}>
+            <Button color="green" fluid as={Link} to={"/play"}>
               <Icon name="heart" />
               Wheel NOW!
             </Button>
@@ -135,23 +142,22 @@ function App() {
           </Button>
         </>
       ) : (
-        <li className="nav-item">
-          <Button
-            as="div"
-            labelPosition="right"
-            className="ltr"
-            style={{ margin: "10px auto" }}
-            onClick={() => loginOk()}
-          >
-            <Button color="red" fluid>
-              <Icon name="heart" />
-              Sign in with GOOGLE
-            </Button>
-            <Label as="a" basic color="red" pointing="left">
-              <Icon name="google" />
-            </Label>
+        <Button
+          as="div"
+          labelPosition="right"
+          className="ltr"
+          style={{ margin: "10px auto" }}
+          onClick={() => loginOk()}
+          fluid
+        >
+          <Button color="red" fluid>
+            <Icon name="heart" />
+            Sign in with GOOGLE
           </Button>
-        </li>
+          <Label as="a" basic color="red" pointing="left">
+            <Icon name="google" />
+          </Label>
+        </Button>
       )}
     </div>
   );

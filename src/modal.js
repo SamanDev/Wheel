@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Segment, Statistic, Label } from "semantic-ui-react";
+import { Button, Modal, Segment, Statistic } from "semantic-ui-react";
 import List from "./List";
 import Mywhell from "./wheel/showwheel";
-import EventBus from "./common/EventBus";
-import BetsWheel from "./wheel/showbets";
-import { Jetton, userBet } from "./utils/include";
+import { userBet } from "./utils/include";
 import Modalwin from "./wheel/modalshow";
 import $ from "jquery";
 var sortByZIndex = function (a, b) {

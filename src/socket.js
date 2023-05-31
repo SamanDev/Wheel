@@ -1,26 +1,25 @@
 import { io } from "socket.io-client";
 import EventBus from "./common/EventBus";
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 // "undefined" means the URL will be computed from the `window.location` object
 const URL =
   process.env.NODE_ENV === "production"
     ? "https://sock.wheelofpersia.com/wheel"
     : "http://sock.wheelofpersia.com/wheel";
 
-const getToken = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
-export const socket = io(URL, {
-  auth: getToken(),
+const socket = io(URL, {
   autoConnect: false,
 });
 function onConnect() {
-  EventBus.dispatch("connect");
-
   socket.on("msg", ({ command, data }) => {
     if (command == "update") {
+      localStorage.setItem("wheel", JSON.stringify(data));
       EventBus.dispatch("wheel", data);
     }
     if (command == "users") {
+      localStorage.setItem("users", JSON.stringify(data));
       EventBus.dispatch("users", data);
     }
     if (command == "bets") {
@@ -53,3 +52,4 @@ function onDisConnect() {
 }
 socket.on("connect", onConnect);
 socket.on("disconnect", onDisConnect);
+export default socket;

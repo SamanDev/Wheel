@@ -5,13 +5,14 @@ import EventBus from "../common/EventBus";
 function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
-  const [wheel, setWheel] = useState({});
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
   const [balance, setBalance] = useState(oldduser?.balance2);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
     EventBus.on("user", (data) => {
+      console.log("user", data);
       setUser(data);
     });
     EventBus.on("balance", (data) => {
@@ -21,6 +22,11 @@ function BetsWheel(prop) {
       setBalance(data);
       setUser(newuser);
     });
+    return () => {
+      EventBus.remove("user");
+      EventBus.remove("balance");
+      EventBus.remove("wheel");
+    };
   }, []);
   useEffect(() => {
     var bet = prop.bet;

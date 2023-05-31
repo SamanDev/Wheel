@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Comment, Form, Icon } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import $ from "jquery";
-import { socket } from "../socket";
+import socket from "../socket";
 const addChat = (txt) => {
   if ($("#send").val() != "") {
     const user = JSON.parse(localStorage.getItem("user"));

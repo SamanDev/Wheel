@@ -4,7 +4,7 @@ import Mywhell from "../Wheel";
 
 import { Segment, Dimmer, Loader } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
-import { socket } from "../socket";
+import socket from "../socket";
 const BoardUser = () => {
   const user = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
@@ -15,12 +15,20 @@ const BoardUser = () => {
     if (!user?.accessToken) {
       window.location.href = "/";
     }
+    socket.auth = user;
     socket.connect();
+    return () => {
+      setUserDC(true);
+      socket.disconnect();
+    };
   }, []);
   useEffect(() => {
     EventBus.on("disconnect", (data) => {
       setUserDC(true);
     });
+    return () => {
+      EventBus.remove("disconnect");
+    };
   }, []);
   if (userDC || !user?.accessToken) {
     return (

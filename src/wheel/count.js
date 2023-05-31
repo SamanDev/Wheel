@@ -5,23 +5,36 @@ var timer;
 function CountWheel(prop) {
   const [time, setTime] = useState(0);
 
-  const [wheel, setWheel] = useState({});
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       setWheel(data);
     });
+
+    if (wheel?.status == "Pending") {
+      mytime();
+    }
+    return () => {
+      EventBus.remove("wheel");
+      clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
-    mytime();
-  }, [wheel.date]);
+    clearTimeout(timer);
+    setTime(30);
+    if (wheel?.status == "Pending") {
+      mytime();
+    }
+    return () => {
+      clearTimeout(timer);
+      setTime(30);
+    };
+  }, [wheel?.status]);
 
   const mytime = () => {
-    if (!wheel?.status) return false;
-
-    clearTimeout(timer);
-    var t1 = new Date(wheel.date);
+    var t1 = new Date(wheel?.date);
     var t2 = new Date();
     var dif = t1.getTime() - t2.getTime();
 
@@ -29,26 +42,27 @@ function CountWheel(prop) {
     var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
     setTime(parseInt(Seconds_Between_Dates));
+    console.log(Seconds_Between_Dates);
     timer = setTimeout(() => {
       mytime();
-    }, 1000);
+    }, 500);
   };
   if (!wheel?.status) {
     return (
       <div className="count">
         <h2 className="text-shadows animate__animated  animate__bounceIn">
-          ...
+          wait
         </h2>
       </div>
     );
   }
   return (
     <>
-      {33 - time > 0 && time > 0 && (
+      {30 - time > 0 && time < 30 && (
         <>
           <div className="count">
             <h2 className="text-shadows animate__animated  animate__bounceIn">
-              {32 - time}
+              {30 - time}
             </h2>
           </div>
         </>

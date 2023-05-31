@@ -11,7 +11,6 @@ const GridExampleDividedPhrase = (prop) => {
   );
 
   useEffect(() => {
-    console.log(bet);
     localStorage.setItem("setbet", bet);
   }, [bet]);
   return (
