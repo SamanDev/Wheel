@@ -211,13 +211,13 @@ const wheelNamespace = io.of("/wheel");
 wheelNamespace.on("disconnect", (reason) => {
   if (reason === "io server disconnect") {
     // the disconnection was initiated by the server, you need to reconnect manually
-    wheelNamespace.connect();
+    //wheelNamespace.connect();
   }
   console.log(reason); // else the socket will automatically try to reconnect
 });
 wheelNamespace.use(async (socket, next) => {
   const user = socket.handshake.auth;
-
+  connsole.log(user);
   await User.findById(user.id).then((res) => {
     if (res?.username) {
       socket.userdata = res;
@@ -271,17 +271,15 @@ wheelNamespace.on("connection", (socket) => {
       }
     }
   });
-  socket.on("getwheel", () => {
-    wheelNamespace.emit("msg", {
-      command: "online",
-      data: wheelNamespace.sockets.size,
-    });
-    socket.emit("msg", { command: "setuser", data: socket.userdata });
-    socket.emit("msg", { command: "users", data: wheelusers });
-    socket.emit("msg", {
-      command: "update",
-      data: wheel,
-    });
+  wheelNamespace.emit("msg", {
+    command: "online",
+    data: wheelNamespace.sockets.size,
+  });
+  socket.emit("msg", { command: "setuser", data: socket.userdata });
+  socket.emit("msg", { command: "users", data: wheelusers });
+  socket.emit("msg", {
+    command: "update",
+    data: wheel,
   });
 
   // getLast(socket);
@@ -401,8 +399,9 @@ const spinstop = async () => {
     command: "update",
     data: wheel,
   });
-  wheelNamespace.emit("msg", { command: "users", data: wheelusers });
+
   if (wheelusers.length > 0) {
+    wheelNamespace.emit("msg", { command: "users", data: wheelusers });
     // _time = 3000;
     inc();
   }
