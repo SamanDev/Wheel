@@ -133,7 +133,7 @@ function BetsWheel(prop) {
       setCon(data);
     });
     EventBus.on("users", (data) => {
-      if (userbets == []) {
+      if (userbets == [] || userbets == null) {
         setuserbets(data);
       }
     });
