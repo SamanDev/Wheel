@@ -114,7 +114,9 @@ function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
   const [userbets, setuserbets] = useState(
-    JSON.parse(localStorage.getItem("users"))
+    localStorage.getItem("users")
+      ? JSON.parse(localStorage.getItem("users"))
+      : []
   );
   const [balance, setBalance] = useState(user?.balance2);
 
