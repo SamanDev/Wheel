@@ -26,12 +26,10 @@ const Home = () => {
 
           <Google />
           <div className="adds">
-            <AdsComponent dataAdSlot="X2XXXXXXXX" />
+            <AdsComponent dataAdSlot="3569022726" />
           </div>
           <List />
-          <div className="adds">
-            <AdsComponent dataAdSlot="X4XXXXXXXX" />
-          </div>
+
           <Menu />
         </div>
       </div>
