@@ -1,11 +1,16 @@
 import React from "react";
-import { Tab } from "semantic-ui-react";
+import { Tab, Menu } from "semantic-ui-react";
 import LastList from "../Last";
 import Leaders from "../Leaders";
 import Gifts from "../Gifts";
 const panes = [
   {
-    menuItem: "Market",
+    menuItem: (
+      <Menu.Item as="div" key="Market">
+        Market
+      </Menu.Item>
+    ),
+
     render: () => (
       <Tab.Pane attached={false}>
         <Gifts />
@@ -13,7 +18,11 @@ const panes = [
     ),
   },
   {
-    menuItem: "Leaders",
+    menuItem: (
+      <Menu.Item as="div" key="Leaders">
+        Leaders
+      </Menu.Item>
+    ),
     render: () => (
       <Tab.Pane attached={false}>
         <Leaders size="mini" command="leaders" />
@@ -21,7 +30,11 @@ const panes = [
     ),
   },
   {
-    menuItem: "Last",
+    menuItem: (
+      <Menu.Item as="div" key="Last">
+        Last
+      </Menu.Item>
+    ),
     render: () => (
       <Tab.Pane attached={false}>
         <LastList size="mini" command="lastList" />

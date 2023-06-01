@@ -106,7 +106,7 @@ function App() {
             <Icon name="spinner" loading />
             Please wait...
           </Button>
-          <Label as="a" basic color="red" pointing="left">
+          <Label basic color="red" pointing="left">
             <Icon name="google" />
           </Label>
         </Button>
@@ -130,7 +130,6 @@ function App() {
               Wheel NOW!
             </Button>
             <Label
-              as="a"
               color="black"
               pointing="left"
               onClick={() => {
@@ -154,7 +153,7 @@ function App() {
             <Icon name="heart" />
             Sign in with GOOGLE
           </Button>
-          <Label as="a" basic color="red" pointing="left">
+          <Label basic color="red" pointing="left">
             <Icon name="google" />
           </Label>
         </Button>
