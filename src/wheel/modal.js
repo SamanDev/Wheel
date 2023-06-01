@@ -35,13 +35,14 @@ const getDelts = (item, betx, tit, num) => {
           textAlign: "center",
           zIndex: 120,
           color: "white",
-          textShadow: "0 0 5px black",
-          marginTop: "50px",
+          textShadow: "0 0 10px black",
+          marginTop: "70px",
+          fontSize: 16,
         }}
       >
         <br /> <b>{tit}</b> <br />
         {item?.bet * betx}
-        <Jetton />
+        <Jetton style={{ width: 20, height: 20, display: "inline" }} />
         <br />
         <small>{item?.username}</small>
       </span>

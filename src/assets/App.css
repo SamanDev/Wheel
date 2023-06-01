@@ -396,7 +396,7 @@ margin: auto;
   font-family: bungee, sans-serif !important;
   font-weight: 900;
 
-  font-size: calc(10vw);
+  font-size: min(max(35px, 10vw), 35px);
   text-align: center;
  
   margin: 0;
