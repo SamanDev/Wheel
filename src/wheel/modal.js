@@ -18,9 +18,75 @@ import {
   getcolor,
   getcolortext,
   Jetton,
+  groupByMultipleFields,
 } from "../utils/include";
+const getDelts = (item, betx, tit, num) => {
+  var outb = "black";
+  if (betx == -1) {
+    outb = getcolor(num);
+  }
+  return (
+    <>
+      <span
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          textAlign: "center",
+          zIndex: 120,
+          color: "white",
+          textShadow: "0 0 5px black",
+          marginTop: "50px",
+        }}
+      >
+        <br /> <b>{tit}</b> <br />
+        {item?.bet * betx}
+        <Jetton />
+        <br />
+        <small>{item?.username}</small>
+      </span>
+      <Image
+        circular
+        src={item?.image}
+        centered
+        style={{
+          width: "15vw",
+          height: "15vw",
+          maxWidth: "100px",
+          maxHeight: "100px",
+          transition: "all .5s ease-in",
+          background: getcolor(item?.position) + "70",
+          boxShadow:
+            "0 0 2px black,0 0 0 " +
+            getBorder(item?.bet * betx) +
+            "px  " +
+            getcolor(item?.position) +
+            ", 0 0 20px " +
+            getBorder(item?.bet * betx) +
+            "px " +
+            outb,
+        }}
+      />
+    </>
+  );
+};
+const getBorder = (bet) => {
+  var _b = bet;
+  if (_b < 0) {
+    _b = _b * -1;
+  }
+  if (_b / 50 > 20) return 20;
+  return _b / 50;
+};
 const bigWin = (list) => {
-  var _l = list.sort((a, b) => (a.win < b.win ? 1 : -1));
+  var _l = list
+    .filter((user) => user.win > 0)
+    .sort((a, b) => (a.win < b.win ? 1 : -1));
+  return _l[0];
+};
+const bigBet = (list) => {
+  var _l = list.sort((a, b) => (a.bet < b.bet ? 1 : -1));
+
   return _l[0];
 };
 const bigLose = (list) => {
@@ -30,15 +96,15 @@ const bigLose = (list) => {
 
   return _l[0];
 };
-var bigwin, biglose;
+var bigwin, biglose, bigbet;
 function ModalExampleModal(prop) {
-  const [open, setOpen] = useState(false);
+  const [bigbet, setBigBet] = useState([]);
   const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
   const [user, setUser] = useState(prop.user);
   const [bets, setbets] = useState(userBet(wheel, user?.username));
   const [userbets, setuserbets] = useState([]);
   const [userclass, setuserclass] = useState("");
-
+  const [list, setList] = useState(userbets);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       setWheel(data);
@@ -54,248 +120,137 @@ function ModalExampleModal(prop) {
     EventBus.on("resetusers", (data) => {
       setuserbets([]);
     });
-  }, []);
+    return () => {
+      setuserbets([]);
+      EventBus.remove("wheel");
 
+      EventBus.remove("users");
+      EventBus.remove("bets");
+      EventBus.remove("resetusers");
+    };
+  }, []);
   useEffect(() => {
-    setbets(userBet(userbets, user?.username));
-    bigwin = bigWin(userbets);
-    biglose = bigLose(userbets);
+    var stat = [];
+
+    if (userbets?.length > 0) {
+      var _gmode = groupByMultipleFields(userbets, "username", "position");
+
+      for (const property in _gmode) {
+        for (const pos in _gmode[property]) {
+          stat.push({
+            bet: sumOfBet(_gmode[property][pos]),
+            image: _gmode[property][pos][0].image,
+            position: parseInt(pos),
+            username: property,
+          });
+        }
+      }
+    }
+
+    setList(stat);
   }, [userbets]);
   useEffect(() => {
-    if (wheel.status == "Spining") {
-      setuserclass("animate__backInUp animate__animated");
-    }
-    if (wheel.status == "Done") {
-      setuserclass("animate__backOutUp animate__animated");
-      setTimeout(() => {
-        setOpen(false);
-      }, 500);
-    }
-  }, [wheel]);
+    setbets(userBet(list, user?.username));
+    bigwin = bigWin(userbets);
+    setBigBet(bigBet(list));
+    biglose = bigLose(userbets);
+  }, [list, userbets, wheel?.status]);
   useEffect(() => {
-    if (userclass == "animate__backInUp animate__animated") {
-      setTimeout(() => {
-        setOpen(true);
-      }, 2000);
+    setuserclass("animate__bounceIn animate__animated");
+  }, [bigbet]);
+  useEffect(() => {
+    if (wheel.status == "Spining") {
+      setuserclass("animate__bounceIn animate__animated");
     }
-  }, [userclass]);
+    if (wheel.status == "Done" || wheel.status == "Spin") {
+      setuserclass("animate__bounceOut animate__animated");
+    }
+  }, [wheel?.status]);
+
   if (!wheel?.status) {
     return <div className="navbar-nav ml-auto"></div>;
   }
   return (
-    <Modal
-      onClose={() => {
-        setOpen(false);
-      }}
-      onOpen={() => setOpen(true)}
-      open={open}
-      basic
-      size="mini"
-      closeOnDimmerClick={false}
-      className={userclass}
-    >
-      <Segment inverted size="mini">
+    <div className="count">
+      <div className={userclass}>
         {sumOfWin(userbets) > 0 ? (
           <>
-            <Image
-              circular
-              src={bigwin?.image}
-              centered
-              style={{ width: 150, height: 150 }}
-            />
-            <div
-              style={{
-                left: 0,
-                right: 0,
-                zIndex: 20,
-                textAlign: "center",
-              }}
-            >
-              <Statistic color="green" inverted size="mini">
-                <Statistic.Value>Big Winner</Statistic.Value>
-                <Statistic.Label>{bigwin?.username}</Statistic.Label>
-                <Statistic.Value>
-                  <Label
-                    size="massive"
-                    style={{
-                      background: getcolor(bigwin?.position),
-                      color: getcolortext(bigwin?.position),
-                      margin: "10px 10px",
-                      display: "block",
-                      textAlign: "center",
-                      lineHeight: "23px",
-                    }}
-                  >
-                    {bigwin?.win}{" "}
-                    <span
-                      style={{
-                        display: "inline",
-                        position: "relative",
-                        top: 4,
-                      }}
-                    >
-                      <Jetton />
-                    </span>
-                  </Label>
-                  <Label
-                    size="huge"
-                    style={{
-                      background: getcolor(bigwin?.position),
-                      color: getcolortext(bigwin?.position),
-                      margin: "10px 10px",
-                      display: "block",
-                      textAlign: "center",
-                      lineHeight: "23px",
-                    }}
-                  >
-                    {bigwin?.bet}{" "}
-                    <span
-                      style={{
-                        display: "inline",
-                        position: "relative",
-                        top: 4,
-                      }}
-                    >
-                      <Jetton />
-                    </span>{" "}
-                    x{segments[wheel.number]}
-                  </Label>
-                </Statistic.Value>
-              </Statistic>
-            </div>
-            <Divider />
+            {bigwin?.username && (
+              <>
+                {getDelts(
+                  bigwin,
+                  segments[wheel.number],
+                  "Big Winner",
+                  segments[wheel.number]
+                )}
+              </>
+            )}
           </>
         ) : (
           <>
-            <Image
-              src={
-                bets[1] > 0
-                  ? "/assets/win.jpg"
-                  : bets[0] > 0
-                  ? "/assets/lose.webp"
-                  : "/assets/nobet.webp"
-              }
-              fluid
-              circular
-            />
-            <Label
-              style={{
-                background: getcolor(segments[wheel.number]),
-                color: getcolortext(segments[wheel.number]),
-                margin: "0 30px",
-                display: "block",
-                textAlign: "center",
-              }}
-              size="massive"
-            >
-              x{segments[wheel.number]}
-            </Label>
-            <Divider />
+            {biglose?.username && (
+              <>{getDelts(biglose, -1, "Big Loser", segments[wheel.number])}</>
+            )}
           </>
         )}
 
-        <div style={{ textAlign: "center" }}>
-          {sumOfBet(userbets) > 0 && (
-            <>
-              {biglose?.username && (
-                <>
-                  <Statistic color="red" inverted size="mini">
-                    <Statistic.Value>
-                      <Image circular src={biglose?.image} centered />
-                      Big Looser
-                    </Statistic.Value>
-                    <Statistic.Label>{biglose?.username}</Statistic.Label>
-                    <Statistic.Value>
-                      <Label
-                        size="huge"
-                        style={{
-                          background: getcolor(biglose?.position),
-                          color: getcolortext(biglose?.position),
-                          margin: "10px 10px",
-                          display: "block",
-                          textAlign: "center",
-                          lineHeight: "23px",
-                        }}
-                      >
-                        {biglose?.bet}{" "}
-                        <span
-                          style={{
-                            display: "inline",
-                            position: "relative",
-                            top: 4,
-                          }}
-                        >
-                          <Jetton />
-                        </span>{" "}
-                        x{biglose?.position}
-                      </Label>
-                    </Statistic.Value>
-                  </Statistic>
-                  <Divider />
-                </>
-              )}
-            </>
-          )}
-          {sumOfWin(userbets) == 0 && (
-            <>
-              <Statistic color="grey" inverted size="mini">
-                <Statistic.Value>No Winner</Statistic.Value>
-                <Statistic.Label>Try Again</Statistic.Label>
-              </Statistic>
-              <Divider />
-            </>
-          )}
+        {(wheel?.status == "Pending" || wheel?.status == "Spin") && (
+          <>
+            {bigbet?.username && (
+              <div className={userclass}>
+                {getDelts(bigbet, 1, "Big Bet", segments[wheel.number])}
+              </div>
+            )}
+          </>
+        )}
 
-          {bets[1] > 0 ? (
-            <>
-              <Statistic color="violet" inverted size="small">
-                <Statistic.Value>{bets[1]}</Statistic.Value>
-                <Statistic.Label>You Won</Statistic.Label>
-                <Statistic.Value>
-                  <Label
-                    size="huge"
+        {bets[1] > 0 ? (
+          <>
+            <Statistic color="violet" inverted size="small">
+              <Statistic.Value>{bets[1]}</Statistic.Value>
+              <Statistic.Label>You Won</Statistic.Label>
+              <Statistic.Value>
+                <Label
+                  size="huge"
+                  style={{
+                    background: getcolor(bigwin?.position),
+                    color: getcolortext(bigwin?.position),
+                    margin: "10px 10px",
+                    display: "block",
+                    textAlign: "center",
+                    lineHeight: "23px",
+                  }}
+                >
+                  {bets[1] / segments[wheel.number]}{" "}
+                  <span
                     style={{
-                      background: getcolor(bigwin?.position),
-                      color: getcolortext(bigwin?.position),
-                      margin: "10px 10px",
-                      display: "block",
-                      textAlign: "center",
-                      lineHeight: "23px",
+                      display: "inline",
+                      position: "relative",
+                      top: 4,
                     }}
-                  >
-                    {bets[1] / segments[wheel.number]}{" "}
-                    <span
-                      style={{
-                        display: "inline",
-                        position: "relative",
-                        top: 4,
-                      }}
-                    >
-                      <Jetton />
-                    </span>{" "}
-                    x{segments[wheel.number]}
-                  </Label>
-                </Statistic.Value>
-              </Statistic>
-              <Divider />
-            </>
-          ) : (
-            bets[0] > 0 && (
-              <Statistic color="red" inverted size="mini">
-                <Statistic.Value>You Lose</Statistic.Value>
-                <Statistic.Label>Sorry...</Statistic.Label>
-                <Statistic.Value>
-                  {bets[0]}{" "}
-                  <span style={{ position: "relative", top: 4 }}>
-                    <Jetton />
-                  </span>
-                </Statistic.Value>
-              </Statistic>
-            )
-          )}
-        </div>
-      </Segment>
-    </Modal>
+                  ></span>{" "}
+                  x{segments[wheel.number]}
+                </Label>
+              </Statistic.Value>
+            </Statistic>
+            <Divider />
+          </>
+        ) : (
+          bets[0] > 0 && (
+            <Statistic color="red" inverted size="mini">
+              <Statistic.Value>You Lose</Statistic.Value>
+              <Statistic.Label>Sorry...</Statistic.Label>
+              <Statistic.Value>
+                {bets[0]}{" "}
+                <span style={{ position: "relative", top: 4 }}>
+                  <Jetton />
+                </span>
+              </Statistic.Value>
+            </Statistic>
+          )
+        )}
+      </div>
+    </div>
   );
 }
 

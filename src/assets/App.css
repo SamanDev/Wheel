@@ -5,11 +5,11 @@
 }
 
 :root {
-  --color-primary: #fff200;
-  --color-secondary: #f49b90;
-  --color-tertiary: #f28b7d;
-  --color-quaternary: #f07a6a;
-  --color-quinary: #5252eefb;
+  --color-primary: #fff200c9;
+  --color-secondary: #f49c90b5;
+  --color-tertiary: #f28b7d8a;
+  --color-quaternary: #f07a6a82;
+  --color-quinary: #5252ee6e;
   
 }
 html,body{
@@ -396,7 +396,7 @@ margin: auto;
   font-family: bungee, sans-serif !important;
   font-weight: 900;
 
-  font-size: 80px;
+  font-size: calc(10vw);
   text-align: center;
  
   margin: 0;

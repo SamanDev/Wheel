@@ -60,7 +60,7 @@ function CountWheel(prop) {
     <>
       {30 - time > 0 && time < 30 && (
         <>
-          <div className="count">
+          <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
             <h2 className="text-shadows animate__animated  animate__bounceIn">
               {30 - time}
             </h2>

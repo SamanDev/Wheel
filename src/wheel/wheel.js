@@ -148,7 +148,7 @@ function MNyWheel(prop) {
             innerBorderWidth={0}
             radiusLineColor={"#00000020"}
             radiusLineWidth={0}
-            textDistance={70}
+            textDistance={80}
             fontSize={20}
             data={_l}
           />
