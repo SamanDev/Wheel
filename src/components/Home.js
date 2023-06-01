@@ -11,7 +11,7 @@ const Home = () => {
     <div className="home">
       <div className="slider-thumb"></div>
       <div className="cadr">
-        <img src="/assets/logo.png" className="logo" />
+        <img src="/assets/logo.png" alt="Wheel of Persia" className="logo" />
         <div className="container">
           <p>
             Welcome to "Wheel of Persia," a <b>free and non-gambling game</b>{" "}
@@ -30,7 +30,7 @@ const Home = () => {
           </div>
           <List />
           <div className="adds">
-            <AdsComponent dataAdSlot="X2XXXXXXXX" />
+            <AdsComponent dataAdSlot="X4XXXXXXXX" />
           </div>
           <Menu />
         </div>

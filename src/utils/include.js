@@ -38,6 +38,7 @@ export function Jetton(prop) {
   return (
     <img
       src={"/assets/chip.svg"}
+      alt="chipicon"
       style={prop.style ? prop.style : { width: 23, height: 23 }}
     />
   );
@@ -46,6 +47,7 @@ export const UsersIcon = (prop) => {
   return (
     <img
       src={"/assets/users.svg"}
+      alt="usersicon"
       style={prop.style ? prop.style : { width: 23, height: 23 }}
     />
   );
