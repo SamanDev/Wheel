@@ -6,10 +6,6 @@ function ModalExampleModal(prop) {
 
   return (
     <Modal
-      onClose={() => {
-        setOpen(false);
-        prop.getchips(prop.id);
-      }}
       open={open}
       basic
       size="mini"
@@ -17,8 +13,13 @@ function ModalExampleModal(prop) {
       trigger={
         <Button
           color="facebook"
+          as="a"
+          href="https://www.highrevenuegate.com/p0ake70i?key=6aeb751abc96aca5a39e514589a55682"
+          target="_blank"
           onClick={() => {
-            setOpen(true);
+            //setOpen(true);
+            prop.getchips(prop.id);
+            prop.setOpenP(false);
           }}
         >
           <Icon name="video" /> Watch Ads

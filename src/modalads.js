@@ -85,7 +85,7 @@ function ModalExampleModal(prop) {
           </span>{" "}
           for free.
           <br /> <br />
-          <ModalAds getchips={getchips} id={user.id} />
+          <ModalAds getchips={getchips} id={user.id} setOpenP={setOpen} />
           <Divider horizontal inverted>
             Or
           </Divider>
