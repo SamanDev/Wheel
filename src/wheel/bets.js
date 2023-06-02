@@ -9,7 +9,6 @@ import {
   segX,
   groupByMultipleFields,
   sumOfBet,
-  UsersIcon,
 } from "../utils/include";
 import $ from "jquery";
 

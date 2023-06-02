@@ -1,5 +1,5 @@
 import React from "react";
-import { Comment, Icon, Image } from "semantic-ui-react";
+import { Comment, Image } from "semantic-ui-react";
 
 const CommentExampleMetadata = (prop) => (
   <Comment.Group size="mini">

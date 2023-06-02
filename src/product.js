@@ -1,14 +1,6 @@
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
-import {
-  sumOfBet,
-  sumOfWin,
-  userBet,
-  segments,
-  getcolor,
-  getcolortext,
-  Jetton,
-} from "./utils/include";
+import { Jetton } from "./utils/include";
 const CardExampleCardProps = (prop) => (
   <Card
     className="ltr"

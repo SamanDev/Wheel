@@ -1,26 +1,15 @@
 import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
-import EventBus from "../common/EventBus";
-import {
-  Button,
-  Header,
-  Segment,
-  Dimmer,
-  Loader,
-  Label,
-} from "semantic-ui-react";
-import { socket } from "../socket";
+import { Button, Label } from "semantic-ui-react";
 import {
   segments,
   getcolor,
   getcolortext,
   segX,
-  groupBySingleField,
   groupByMultipleFields,
   sumOfBet,
   sumOfWin,
 } from "../utils/include";
-import $ from "jquery";
 
 const haveBet = (pos, list, user) => {
   return list

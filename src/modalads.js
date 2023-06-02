@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Segment,
-  Statistic,
-  Label,
-  Icon,
-  Divider,
-} from "semantic-ui-react";
-import AdsComponent from "./adsComponent";
+import { Button, Modal, Segment, Icon, Divider } from "semantic-ui-react";
 import UserService from "./services/user.service";
 import EventBus from "./common/EventBus";
 import ModalAds from "./modalvideo";
-import { Jetton, UsersIcon } from "./utils/include";
+import { Jetton } from "./utils/include";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 const gettokens = (id) => {
   UserService.gettokens(id).then((response) => {

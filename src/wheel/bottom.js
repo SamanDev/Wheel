@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Image } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import BetsWheel from "./bets";
 
 import ChipsWheel from "./chips";

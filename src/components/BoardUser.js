@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Mywhell from "../Wheel";
+import Mywhell from "../MyWheel";
 
 import { Segment, Dimmer, Loader } from "semantic-ui-react";
 import EventBus from "../common/EventBus";

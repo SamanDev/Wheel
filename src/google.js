@@ -89,7 +89,9 @@ function App() {
     googleLogout();
     setProfile(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("users");
     localStorage.removeItem("guser");
+    localStorage.removeItem("wheel");
   };
   if (loading) {
     return (

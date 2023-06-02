@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Table, Statistic, Label, Icon } from "semantic-ui-react";
 
-import { Button, Image, List } from "semantic-ui-react";
-import Mod from "./modal";
+import { Image, List } from "semantic-ui-react";
 import ListService from "./services/list.service";
 import EventBus from "./common/EventBus";
-import { Jetton } from "./utils/include";
 
 const TableExampleSingleLine = (prop) => {
   const [lastList, setlastList] = useState([]);
-  const [user, setUser] = useState({});
+
   useEffect(() => {
     ListService.getPublicContent({
       command: prop.command,
@@ -20,11 +17,7 @@ const TableExampleSingleLine = (prop) => {
       setlastList([]);
     };
   }, [prop.command]);
-  useEffect(() => {
-    EventBus.on("user", (data) => {
-      setUser(data);
-    });
-  }, []);
+
   return (
     <List divided verticalAlign="middle" className="ltr">
       {lastList.map((item) => {

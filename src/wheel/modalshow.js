@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  Button,
   Modal,
   Segment,
   Statistic,
@@ -9,7 +8,6 @@ import {
   Label,
 } from "semantic-ui-react";
 
-import EventBus from "../common/EventBus";
 import {
   sumOfBet,
   sumOfWin,
