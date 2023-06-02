@@ -103,8 +103,6 @@ function ModalExampleModal(prop) {
             </Statistic>
           </Segment>
 
-          <Modalwin {...prop} last={true} />
-
           <Mywhell {...prop} last={true} />
 
           <Segment color="black" inverted size="mini" className="res">

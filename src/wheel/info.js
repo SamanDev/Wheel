@@ -9,7 +9,6 @@ function BetsWheel(prop) {
   const [balance, setBalance] = useState(user?.balance2);
   useEffect(() => {
     EventBus.on("user", (data) => {
-      console.log("user", data);
       setUser(data);
       setBalance(data.balance2);
     });

@@ -118,6 +118,9 @@ function MNyWheel(prop) {
     setTimeout(() => {
       updateWheel(wheel, rndd);
     }, 100);
+    return () => {
+      EventBus.remove("wheel");
+    };
   }, []);
 
   useEffect(() => {

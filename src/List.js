@@ -78,6 +78,13 @@ const TableExampleSingleLine = (prop) => {
         setUser(data);
       });
     }
+    return () => {
+      EventBus.remove("wheel");
+      EventBus.remove("user");
+      EventBus.remove("users");
+      EventBus.remove("bets");
+      EventBus.remove("resetusers");
+    };
   }, []);
   return (
     <>

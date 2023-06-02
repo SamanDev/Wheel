@@ -31,6 +31,9 @@ const TableExampleSingleLine = (prop) => {
     EventBus.on("user", (data) => {
       setUser(data);
     });
+    return () => {
+      EventBus.remove("user");
+    };
   }, []);
   return (
     <List divided verticalAlign="middle" className="ltr">

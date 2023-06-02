@@ -12,7 +12,6 @@ function BetsWheel(prop) {
       setWheel(data);
     });
     EventBus.on("user", (data) => {
-      console.log("user", data);
       setUser(data);
     });
     EventBus.on("balance", (data) => {
