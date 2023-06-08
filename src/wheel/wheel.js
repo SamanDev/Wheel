@@ -130,6 +130,7 @@ function MNyWheel(prop) {
       }, 200);
     }
     return () => {
+      setWheel({});
       clearInterval(lighter);
       EventBus.remove("wheel");
     };

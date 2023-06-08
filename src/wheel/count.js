@@ -16,9 +16,11 @@ function CountWheel(prop) {
 
     if (wheel?.status == "Pending") {
       clearTimeout(timer);
+
       mytime();
     }
     return () => {
+      setWheel({});
       EventBus.remove("wheel");
       clearTimeout(timer);
     };
@@ -26,7 +28,7 @@ function CountWheel(prop) {
 
   useEffect(() => {
     clearTimeout(timer);
-    //ssssssetTime(30);
+    setTime(30);
     if (wheel?.status == "Pending") {
       mytime();
     }
