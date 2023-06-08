@@ -9,7 +9,9 @@ function CountWheel(prop) {
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      setWheel(data);
+      if (data?.status) {
+        setWheel(data);
+      }
     });
 
     if (wheel?.status == "Pending") {

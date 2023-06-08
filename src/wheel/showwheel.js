@@ -48,13 +48,13 @@ function MNyWheel(prop) {
           startingOptionIndex={wheel.number}
           mustStartSpinning={false}
           outerBorderWidth={0}
-          outerBorderColor={"#eeeeee20"}
-          innerRadius={20}
-          innerBorderColor={"#00000020"}
+          outerBorderColor={"#eeeeee"}
+          innerRadius={1}
+          innerBorderColor={"#000000"}
           innerBorderWidth={0}
-          radiusLineColor={"#00000020"}
+          radiusLineColor={"#000000"}
           radiusLineWidth={0}
-          textDistance={70}
+          textDistance={80}
           fontSize={20}
           data={_l}
         />

@@ -9,7 +9,9 @@ function BetsWheel(prop) {
   const [balance, setBalance] = useState(oldduser?.balance2);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      setWheel(data);
+      if (data?.status) {
+        setWheel(data);
+      }
     });
     EventBus.on("user", (data) => {
       setUser(data);

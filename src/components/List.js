@@ -46,7 +46,7 @@ const panes = [
   },
   {
     menuItem: (
-      <Menu.Item as="div" key="Last" style={{ cursor: "pointer" }}>
+      <Menu.Item as="div" key="Best" style={{ cursor: "pointer" }}>
         Best
       </Menu.Item>
     ),

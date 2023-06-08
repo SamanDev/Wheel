@@ -140,7 +140,9 @@ function BetsWheel(prop) {
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      setWheel(data);
+      if (data?.status) {
+        setWheel(data);
+      }
     });
     EventBus.on("user", (data) => {
       setUser(data);

@@ -2,7 +2,7 @@
 .home {
     height: 100vh;
   
-    overflow: auto;
+    overflow-x: hidden;
     background-size: 300% 300%;
     background-image: linear-gradient(-45deg, #9f9f9f 0%, rgb(218, 218, 218) 25%, rgb(255, 255, 255) 51%, #cccccc 100%);
     -webkit-animation: AnimateBG 20s ease infinite;
@@ -16,7 +16,7 @@
     justify-content: center;
     margin: auto;
    position: relative;
-   
+ 
    transition: all 0.5s ease-in;
   }
   
