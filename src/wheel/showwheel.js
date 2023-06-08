@@ -4,36 +4,33 @@ import { Wheel } from "react-custom-roulette";
 import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
-
-function MNyWheel(prop) {
-  if (_l.length == 0) {
-    segments.map((item, i) => {
-      _l.push({
-        style: {
-          backgroundColor: getcolor(item),
-          textColor: getcolortext(item),
-        },
-
-        option: "x" + item,
-      });
+const updateWheel = (wheel) => {
+  var colornum = getcolor(segments[wheel.number]);
+  if ($(".showww .bhdLno >div").length) {
+    $(".showww .bhdLno >div").css({
+      border: "  10px solid " + colornum + "",
     });
+  } else {
+    setTimeout(() => {
+      updateWheel();
+    }, 1000);
   }
+};
+segments.map((item, i) => {
+  _l.push({
+    style: {
+      backgroundColor: getcolor(item),
+      textColor: getcolortext(item),
+    },
+
+    option: "x" + item,
+  });
+});
+function MNyWheel(prop) {
   const [wheel, setWheel] = useState(prop.wheel);
 
-  const updateWheel = () => {
-    var colornum = getcolor(segments[wheel.number]);
-    if ($(".showww .bhdLno >div").length) {
-      $(".showww .bhdLno >div").css({
-        border: "  10px solid " + colornum + "",
-      });
-    } else {
-      setTimeout(() => {
-        updateWheel();
-      }, 1000);
-    }
-  };
   useEffect(() => {
-    updateWheel();
+    updateWheel(wheel);
   }, []);
   return (
     <>
@@ -42,7 +39,7 @@ function MNyWheel(prop) {
         style={{ height: 300 }}
       >
         <div className="countover">
-          <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
+          <img src="/assets/cadr.png" src2="/assets/cadr2.png" />
         </div>
         <Wheel
           startingOptionIndex={wheel.number}

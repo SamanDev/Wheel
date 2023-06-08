@@ -153,7 +153,7 @@ const TableExampleSingleLine = (prop) => {
                           background: getcolor(item.position),
                           color: getcolortext(item.position),
                         }}
-                        size="small"
+                        size="mini"
                       >
                         x{item.position}
                       </Label>
@@ -161,7 +161,7 @@ const TableExampleSingleLine = (prop) => {
 
                     <Table.Cell>
                       {wheel?.status == "Spining" || wheel?.status == "Done" ? (
-                        <>{formatDollar(item.win)}</>
+                        <b>{formatDollar(item.win)}</b>
                       ) : (
                         <>-</>
                       )}

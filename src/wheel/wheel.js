@@ -47,7 +47,7 @@ const updateWheel = (wheel2, rndd) => {
               parseInt(wheel.startNum) * (360 / segments.length) + rndd
             ).toFixed(2) +
             "deg)",
-          transitionDuration: "0s",
+          transitionDuration: "1s",
         });
       } else {
         $(".mainwheel .bhdLno  canvas").css({
@@ -57,7 +57,7 @@ const updateWheel = (wheel2, rndd) => {
               parseInt(wheel.startNum) * (360 / segments.length) + rndd
             ).toFixed(2) +
             "deg)",
-          transitionDuration: "0s",
+          transitionDuration: "1s",
         });
       }
     }
@@ -124,10 +124,11 @@ function MNyWheel(prop) {
         setWheel(data);
       }
     });
-    setTimeout(() => {
-      updateWheel(wheel, rndd);
-    }, 200);
-
+    if (wheel?.status) {
+      setTimeout(() => {
+        updateWheel(wheel, rndd);
+      }, 200);
+    }
     return () => {
       clearInterval(lighter);
       EventBus.remove("wheel");

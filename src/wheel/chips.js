@@ -16,6 +16,7 @@ function BetsWheel(prop) {
     EventBus.on("user", (data) => {
       setUser(data);
     });
+
     EventBus.on("balance", (data) => {
       var newuser = oldduser;
       newuser.balance2 = data;

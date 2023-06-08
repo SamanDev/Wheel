@@ -135,7 +135,7 @@ function BetsWheel(prop) {
   const [userbets, setuserbets] = useState([]);
   const [balance, setBalance] = useState(user?.balance2);
 
-  const [list, setList] = useState(userbets);
+  const [list, setList] = useState([]);
   const [con, setCon] = useState(false);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ function BetsWheel(prop) {
       setCon(data);
     });
     EventBus.on("users", (data) => {
-      if (userbets == [] || userbets == null) {
+      if (list.length == 0) {
         setuserbets(data);
       }
     });
@@ -176,7 +176,7 @@ function BetsWheel(prop) {
   }, []);
   useEffect(() => {
     var stat = [];
-    localStorage.setItem("users", JSON.stringify(userbets));
+    //localStorage.setItem("users", JSON.stringify(userbets));
     if (userbets?.length > 0) {
       var _gmode = groupByMultipleFields(userbets, "username", "position");
       for (const property in _gmode) {
