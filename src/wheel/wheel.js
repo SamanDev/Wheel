@@ -11,10 +11,10 @@ var _l = [];
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
-var degg = 360 / segments.length / 2 - 0.75;
-//console.log(degg);
+var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
+console.log(degg);
 var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
-//var rndd = parseFloat(-6.2);
+//var rndd = parseFloat(degg);
 const updateWheel = (wheel2, rndd) => {
   const wheel = JSON.parse(localStorage.getItem("wheel"));
   if (!wheel?.status) return false;
