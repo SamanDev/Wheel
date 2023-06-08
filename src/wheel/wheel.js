@@ -140,7 +140,7 @@ function MNyWheel(prop) {
     if (wheel?.status == "Spin") {
       lighter = setInterval(() => {
         checkbox();
-      }, 200);
+      }, 500);
       rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
     } else {
       lighter = setInterval(() => {

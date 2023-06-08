@@ -5,6 +5,7 @@ import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
 var _l = [];
 const updateWheel = (wheel) => {
+  if (!wheel?.status) return false;
   var colornum = getcolor(segments[wheel.number]);
   if ($(".showww .bhdLno >div").length) {
     $(".showww .bhdLno >div").css({
@@ -12,7 +13,7 @@ const updateWheel = (wheel) => {
     });
   } else {
     setTimeout(() => {
-      updateWheel();
+      updateWheel(wheel);
     }, 1000);
   }
 };

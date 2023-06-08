@@ -15,6 +15,7 @@ function CountWheel(prop) {
     });
 
     if (wheel?.status == "Pending") {
+      clearTimeout(timer);
       mytime();
     }
     return () => {
@@ -25,7 +26,7 @@ function CountWheel(prop) {
 
   useEffect(() => {
     clearTimeout(timer);
-    setTime(30);
+    //ssssssetTime(30);
     if (wheel?.status == "Pending") {
       mytime();
     }
@@ -44,7 +45,7 @@ function CountWheel(prop) {
     var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
     setTime(parseInt(Seconds_Between_Dates));
-    console.log(Seconds_Between_Dates);
+
     timer = setTimeout(() => {
       mytime();
     }, 500);
