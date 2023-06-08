@@ -12,7 +12,7 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
-console.log(degg);
+//console.log(degg);
 var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
 //var rndd = parseFloat(degg);
 const updateWheel = (wheel2, rndd) => {
