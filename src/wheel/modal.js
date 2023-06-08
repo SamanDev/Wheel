@@ -19,6 +19,7 @@ import {
   getcolortext,
   Jetton,
   groupByMultipleFields,
+  formatDollar,
 } from "../utils/include";
 const getDelts = (item, betx, tit, num) => {
   var outb = "black";
@@ -41,7 +42,7 @@ const getDelts = (item, betx, tit, num) => {
         }}
       >
         <br /> <b>{tit}</b> <br />
-        {item?.bet * betx}
+        {formatDollar(item?.bet * betx)}
         <Jetton style={{ width: 20, height: 20, display: "inline" }} />
         <br />
         <small>{item?.username}</small>

@@ -79,8 +79,8 @@ function ModalExampleModal(prop) {
         ></lord-icon>
         <h1 className="text-center">LoW BaLanCe</h1>
         <Segment inverted size="mini">
-          You can watch ads and get 1000{" "}
-          <span style={{ position: "relative", top: 6 }}>
+          You can watch ads and get 1,000{" "}
+          <span style={{ position: "relative", top: -1 }}>
             <Jetton />
           </span>{" "}
           for free.
@@ -92,8 +92,8 @@ function ModalExampleModal(prop) {
           {user?.tokens.length && (
             <>
               You have {user.tokens.length} tokens to use. each token will give
-              you 5000
-              <span style={{ position: "relative", top: 6 }}>
+              you 5,000
+              <span style={{ position: "relative", top: -1 }}>
                 <Jetton />
               </span>{" "}
               <br /> <br />
@@ -111,8 +111,8 @@ function ModalExampleModal(prop) {
               </Divider>
             </>
           )}
-          Invite friends via your invite link and get 5000{" "}
-          <span style={{ position: "relative", top: 6 }}>
+          Invite friends via your invite link and get 5,000{" "}
+          <span style={{ position: "relative", top: -1 }}>
             <Jetton />
           </span>{" "}
           for each them.

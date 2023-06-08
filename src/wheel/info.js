@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EventBus from "../common/EventBus";
-import { Jetton, UsersIcon } from "../utils/include";
+import { Jetton, UsersIcon, formatDollar } from "../utils/include";
 
 function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
@@ -46,7 +46,12 @@ function BetsWheel(prop) {
           <span>
             <Jetton />
           </span>{" "}
-          <span> {balance == -1 ? user?.balance2 : balance}</span>
+          <span>
+            {" "}
+            {balance == -1
+              ? formatDollar(user?.balance2)
+              : formatDollar(balance)}
+          </span>
         </div>
         <div></div>
       </div>

@@ -161,3 +161,29 @@ export function startServiceWorker() {
 export const GetToken = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
+export function formatDollar(num) {
+  var p = num.toFixed(2).split(".");
+  if (p[1] == "00") {
+    return (
+      "" +
+      p[0]
+        .split("")
+        .reverse()
+        .reduce(function (acc, num, i, orig) {
+          return num + (num != "-" && i && !(i % 3) ? "," : "") + acc;
+        }, "")
+    );
+  } else {
+    return (
+      "" +
+      p[0]
+        .split("")
+        .reverse()
+        .reduce(function (acc, num, i, orig) {
+          return num + (num != "-" && i && !(i % 3) ? "," : "") + acc;
+        }, "") +
+      "." +
+      p[1]
+    );
+  }
+}

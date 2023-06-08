@@ -22,9 +22,9 @@ function MNyWheel(prop) {
 
   const updateWheel = () => {
     var colornum = getcolor(segments[wheel.number]);
-    if ($(".showww .bhdLno").length) {
-      $(".showww .bhdLno").css({
-        filter: "drop-shadow(0px 0px 10px " + colornum + ")",
+    if ($(".showww .bhdLno >div").length) {
+      $(".showww .bhdLno >div").css({
+        border: "  10px solid " + colornum + "",
       });
     } else {
       setTimeout(() => {
@@ -37,7 +37,13 @@ function MNyWheel(prop) {
   }, []);
   return (
     <>
-      <div className="animate__animated  animate__rollIn showww">
+      <div
+        className="animate__animated  animate__rollIn showww"
+        style={{ height: 300 }}
+      >
+        <div className="countover">
+          <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
+        </div>
         <Wheel
           startingOptionIndex={wheel.number}
           mustStartSpinning={false}

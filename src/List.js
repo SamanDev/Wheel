@@ -12,6 +12,7 @@ import {
   getcolor,
   getcolortext,
   getPrize,
+  formatDollar,
 } from "./utils/include";
 
 const TableExampleSingleLine = (prop) => {
@@ -101,9 +102,13 @@ const TableExampleSingleLine = (prop) => {
             <Table.HeaderCell>
               Users {<>{count(groupBySingleField(userbets, "username"))}</>}
             </Table.HeaderCell>
-            <Table.HeaderCell>Bet {<>{wheel?.total}</>}</Table.HeaderCell>
+            <Table.HeaderCell>
+              Bet {<>{formatDollar(wheel?.total)}</>}
+            </Table.HeaderCell>
 
-            <Table.HeaderCell>Win {<>{wheel?.net}</>}</Table.HeaderCell>
+            <Table.HeaderCell>
+              Win {<>{formatDollar(wheel?.net)}</>}
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
       </Table>
@@ -113,7 +118,10 @@ const TableExampleSingleLine = (prop) => {
             {userbets?.length > 0 && (
               <>
                 {list.map((item, i) => (
-                  <Table.Row key={item.username + i}>
+                  <Table.Row
+                    disabled={item.win == 0 ? true : false}
+                    key={item.username + i}
+                  >
                     <Table.Cell
                       style={
                         item.username == user?.username
@@ -136,9 +144,9 @@ const TableExampleSingleLine = (prop) => {
                     <Table.Cell>
                       <div
                         className="ltr"
-                        style={{ width: 40, display: "inline-block" }}
+                        style={{ width: 60, display: "inline-block" }}
                       >
-                        {item.bet}
+                        {formatDollar(item.bet)}
                       </div>
                       <Label
                         style={{
@@ -147,27 +155,13 @@ const TableExampleSingleLine = (prop) => {
                         }}
                         size="small"
                       >
-                        {item.position}x
+                        x{item.position}
                       </Label>
                     </Table.Cell>
 
                     <Table.Cell>
                       {wheel?.status == "Spining" || wheel?.status == "Done" ? (
-                        <>
-                          <Label
-                            style={{
-                              background: getcolor(
-                                getPrize(segments[wheel.number], item.position)
-                              ),
-                              color: getcolortext(
-                                getPrize(segments[wheel.number], item.position)
-                              ),
-                            }}
-                            size="small"
-                          >
-                            {parseFloat(item.win)}
-                          </Label>
-                        </>
+                        <>{formatDollar(item.win)}</>
                       ) : (
                         <>-</>
                       )}

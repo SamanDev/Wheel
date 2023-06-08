@@ -9,6 +9,7 @@ import {
   segX,
   groupByMultipleFields,
   sumOfBet,
+  formatDollar,
 } from "../utils/include";
 import $ from "jquery";
 
@@ -41,8 +42,26 @@ const haveBet = (pos, list, user) => {
 };
 const getChipsCount = (item, user) => {
   var bet = item.bet;
-  var count50 = bet / 5000;
+  var count500 = bet / 50000;
   var bets = [];
+  count500 = parseInt(count500);
+
+  for (let i = 0; i < count500; i++) {
+    bets.push(50000);
+  }
+  bet = bet - count500 * 50000;
+
+  var count250 = bet / 25000;
+
+  count250 = parseInt(count250);
+
+  for (let i = 0; i < count250; i++) {
+    bets.push(25000);
+  }
+  bet = bet - count250 * 25000;
+
+  var count50 = bet / 5000;
+
   count50 = parseInt(count50);
 
   for (let i = 0; i < count50; i++) {
@@ -75,6 +94,7 @@ const getChipsCount = (item, user) => {
   for (let i = 0; i < count1; i++) {
     bets.push(50);
   }
+
   return bets.map((chip, i) => {
     return <PrintBet key={i} i={i} chip={chip} item={item} user={user} />;
   });
@@ -112,11 +132,7 @@ function BetsWheel(prop) {
   const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
-  const [userbets, setuserbets] = useState(
-    localStorage.getItem("users")
-      ? JSON.parse(localStorage.getItem("users"))
-      : []
-  );
+  const [userbets, setuserbets] = useState([]);
   const [balance, setBalance] = useState(user?.balance2);
 
   const [list, setList] = useState(userbets);
@@ -227,7 +243,9 @@ function BetsWheel(prop) {
                   src={"/assets/users.svg"}
                   style={{ width: 16, height: 16 }}
                 />{" "}
-                {inf[0]}
+                {inf[0] <= 1000
+                  ? formatDollar(inf[0])
+                  : formatDollar(inf[0] / 1000) + "K"}
               </div>
             </div>
             <div className="betarea">{haveBet(seg, list, user)}</div>

@@ -48,12 +48,15 @@ overflow-x: hidden;
   top:4px;
 }
 
-
+.ui.card>.extra, .ui.cards>.card>.extra{
+  color: #272727;
+}
 .seg .segttotal{
   position: absolute;
   font-size: 10px;
   bottom: 5px;
   opacity: 1;
+  width: 200px;
 }
 .seg.none .segttotal{
   bottom: -40px;
@@ -245,6 +248,34 @@ display: flex;
   
   transform: translateY(-50%);
 }
+.countover {
+  position: relative;
+  margin: auto;
+  width: 80vw;
+  max-width: 445px;
+  height: 0;
+
+  z-index: 10;
+  padding: 0;
+
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: all 1s ease;
+  
+}
+.countover img{
+  position: absolute;
+  margin: auto;
+  
+  z-index: 10;
+  padding: 0;
+  width: 100%;
+ 
+ 
+
+  transition: all 1s ease;
+  transform: scale(1.17);
+}
 
 .bhdLno   {
   transition: all 1s ease;
@@ -253,7 +284,7 @@ display: flex;
 .modal{
   left: auto !important;
 }
-.mywhell .bhdLno  canvas {
+.bhdLno  canvas {
   transition-property: transform;
   transition-duration: 9s;
   transition-timing-function: cubic-bezier(0.41,0.052,0.00000000001,0.00000000001,1) !important;
@@ -263,17 +294,17 @@ display: flex;
 border-radius: 1000px;
   
 }
-.mywhell .bhdLno {
+ .bhdLno {
 
 margin: auto;
 }
-.mywhell .bhdLno >div{
+ .bhdLno >div{
   overflow: hidden;
   border-radius: 1000px;
   transition: all 1s ease;
 margin: auto;
 }
-.mywhell .bhdLno > div:after {
+ .bhdLno > div:after {
   opacity: 1;
 	content:'';
   top:0;
@@ -307,7 +338,7 @@ margin: auto;
 .mywhell.mytrue {
   transform: scale(1);
 }
-.mywhell im2g {
+.bhdLno img {
   display: none;
 }
 .res .mywhell{
@@ -657,5 +688,29 @@ bottom: 0;
 .pokerchip.black:after {
   content: "1k";
   background: #222222;
+  color: #ffffff;
+}
+.pokerchip.bnfsh {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #710080 0, #710080 97.4304px, #fff 97.4304px, #fff 113.4304px, #710080 113.4304px, #710080 151px);
+}
+.pokerchip.bnfsh:before {
+  border: 8px solid #710080;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #016C00 0, #016C00 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #d2b10a 110.7104px, #d2b10a 151px);
+}
+.pokerchip.bnfsh:after {
+  content: "25K";
+  background: #710080;
+  color: #ffffff;
+}
+.pokerchip.golds {
+  background-image: linear-gradient(0deg, transparent 0, transparent 67.5px, #fff 67.5px, #fff 83.5px, transparent 83.5px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 97.4304px, #fff 97.4304px, #fff 113.4304px, transparent 113.4304px, transparent 151px), linear-gradient(120deg, #d2b10a 0, #d2b10a 97.4304px, #fff 97.4304px, #fff 113.4304px, #d2b10a 113.4304px, #d2b10a 151px);
+}
+.pokerchip.golds:before {
+  border: 8px solid #d2b10a;
+  background-image: linear-gradient(0deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(30deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(60deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(90deg, transparent 0, transparent 69.5px, #EBEBEB 69.5px, #EBEBEB 81.5px, transparent 81.5px, transparent 151px), linear-gradient(120deg, transparent 0, transparent 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, transparent 110.7104px, transparent 151px), linear-gradient(150deg, #d2b10a 0, #d2b10a 98.7104px, #EBEBEB 98.7104px, #EBEBEB 110.7104px, #d2b10a 110.7104px, #d2b10a 151px);
+}
+.pokerchip.golds:after {
+  content: "50K";
+  background: #d2b10a;
   color: #ffffff;
 }

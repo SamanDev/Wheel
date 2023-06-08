@@ -83,17 +83,17 @@ const updateWheel = (wheel2, rndd) => {
       }
     }
   }
-  var colornum = getcolor(segments[wheel.startNum]);
+  var colornum = " 10px solid " + getcolor(segments[wheel.startNum]);
   if (wheel.status == "Spin") {
-    colornum = "#000000";
+    colornum = "2px solid #000000";
   }
 
   if (wheel.status != "Spin" && wheel.status != "Pending") {
-    colornum = getcolor(segments[wheel.number]);
+    colornum = " 10px solid " + getcolor(segments[wheel.number]);
   }
   $(".mainwheel .bhdLno >div").css({
-    filter: "drop-shadow(0px 0px 40px " + colornum + ")",
-    zIndex: -1,
+    border: colornum,
+    zIndex: 1,
   });
 };
 
@@ -107,7 +107,12 @@ segments.map((item, i) => {
     option: "x" + item,
   });
 });
-
+function checkbox() {
+  var c2 = $("#cadr").attr("src2");
+  $("#cadr").attr("src2", $("#cadr").attr("src"));
+  $("#cadr").attr("src", c2);
+}
+var lighter;
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
 
@@ -117,15 +122,25 @@ function MNyWheel(prop) {
     });
     setTimeout(() => {
       updateWheel(wheel, rndd);
-    }, 100);
+    }, 400);
+
     return () => {
+      clearInterval(lighter);
       EventBus.remove("wheel");
     };
   }, []);
 
   useEffect(() => {
+    clearInterval(lighter);
     if (wheel?.status == "Spin") {
+      lighter = setInterval(() => {
+        checkbox();
+      }, 200);
       rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
+    } else {
+      lighter = setInterval(() => {
+        checkbox();
+      }, 1000);
     }
     updateWheel(wheel, rndd);
   }, [wheel?.status]);
@@ -141,12 +156,15 @@ function MNyWheel(prop) {
       >
         <div className="animate__animated  animate__rollIn">
           <CountWheel {...prop} />
+          <div className="countover">
+            <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
+          </div>
           <Wheel
             startingOptionIndex={0}
             mustStartSpinning={false}
             outerBorderWidth={0}
             outerBorderColor={"#eeeeee20"}
-            innerRadius={20}
+            innerRadius={10}
             innerBorderColor={"#00000020"}
             innerBorderWidth={0}
             radiusLineColor={"#00000020"}

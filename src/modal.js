@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, Segment, Statistic } from "semantic-ui-react";
 import List from "./List";
 import Mywhell from "./wheel/showwheel";
-import { userBet } from "./utils/include";
-import Modalwin from "./wheel/modalshow";
+import { userBet, formatDollar } from "./utils/include";
 import $ from "jquery";
 var sortByZIndex = function (a, b) {
   return a.style.zIndex - b.style.zIndex;
@@ -28,6 +27,13 @@ function ModalExampleModal(prop) {
         open={open}
         basic
         closeIcon={true}
+        size="small"
+        style={{
+          height: "90vh",
+          overflow: "hidden",
+          width: 445,
+          maxWidth: "90vw",
+        }}
         trigger={
           <Button size="mini" color="black" className="show">
             Show
@@ -36,24 +42,24 @@ function ModalExampleModal(prop) {
       >
         <div
           style={{
-            height: "100vh",
-            overflow: "auto",
+            height: "90vh",
+            overflow: "hidden",
+            overflowY: "auto",
+            width: 445,
+            maxWidth: "90vw",
           }}
         >
           <Segment
             inverted
             size="mini"
-            compact
             className="animate__slideInRight animate__animated "
             style={{
-              zIndex: 10,
-              position: "absolute",
               textAlign: "center",
               overflow: "hidden",
             }}
           >
             <Statistic color="violet" inverted size="mini">
-              <Statistic.Value>{item.total}</Statistic.Value>
+              <Statistic.Value>{formatDollar(item.total)}</Statistic.Value>
               <Statistic.Label>Bets</Statistic.Label>
             </Statistic>
             <Statistic
@@ -65,10 +71,10 @@ function ModalExampleModal(prop) {
                   : "red"
               }
             >
-              <Statistic.Value>{item.net}</Statistic.Value>
+              <Statistic.Value>{formatDollar(item.net)}</Statistic.Value>
               <Statistic.Label>Win</Statistic.Label>
             </Statistic>
-
+            <br />
             <Statistic
               color={parseFloat(userBets[0]).toFixed(2) > 0 ? "orange" : "grey"}
               inverted
@@ -79,7 +85,7 @@ function ModalExampleModal(prop) {
                   : { opacity: 1 }
               }
             >
-              <Statistic.Value>{userBets[0]}</Statistic.Value>
+              <Statistic.Value>{formatDollar(userBets[0])}</Statistic.Value>
               <Statistic.Label>You</Statistic.Label>
             </Statistic>
             <Statistic
@@ -98,7 +104,7 @@ function ModalExampleModal(prop) {
                   : { opacity: 1 }
               }
             >
-              <Statistic.Value>{userBets[1]}</Statistic.Value>
+              <Statistic.Value>{formatDollar(userBets[1])}</Statistic.Value>
               <Statistic.Label>Win</Statistic.Label>
             </Statistic>
           </Segment>

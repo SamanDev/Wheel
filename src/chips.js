@@ -15,6 +15,12 @@ const getColor = (num) => {
   if (num == "5000") {
     return "green";
   }
+  if (num == "25000") {
+    return "bnfsh";
+  }
+  if (num == "50000") {
+    return "golds";
+  }
 };
 function App(prop) {
   return (
