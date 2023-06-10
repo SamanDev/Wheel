@@ -141,12 +141,12 @@ function MNyWheel(prop) {
     if (wheel?.status == "Spin") {
       lighter = setInterval(() => {
         checkbox();
-      }, 500);
+      }, 200);
       rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
     } else {
       lighter = setInterval(() => {
         checkbox();
-      }, 1000);
+      }, 1500);
     }
     updateWheel(wheel, rndd);
   }, [wheel?.status]);
@@ -161,7 +161,12 @@ function MNyWheel(prop) {
         }
       >
         <div className="animate__animated  animate__rollIn">
-          <CountWheel {...prop} />
+          {wheel?.status == "Pending" && (
+            <>
+              <CountWheel {...prop} />
+            </>
+          )}
+
           <div className="countover">
             <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
           </div>
@@ -179,7 +184,8 @@ function MNyWheel(prop) {
             fontSize={20}
             data={_l}
           />
-          {wheel?.status && (
+
+          {wheel?.status == "Pending" && (
             <>
               <Modalwin />
               <Mod />
