@@ -109,7 +109,9 @@ function ModalExampleModal(prop) {
   const [list, setList] = useState(userbets);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      setWheel(data);
+      if (data?.status) {
+        setWheel(data);
+      }
     });
     EventBus.on("users", (data) => {
       setuserbets(data);

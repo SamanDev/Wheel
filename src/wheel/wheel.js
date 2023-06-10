@@ -15,8 +15,7 @@ var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
 //console.log(degg);
 var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
 //var rndd = parseFloat(degg);
-const updateWheel = (wheel2, rndd) => {
-  const wheel = JSON.parse(localStorage.getItem("wheel"));
+const updateWheel = (wheel, rndd) => {
   if (!wheel?.status) return false;
   var t1 = new Date(wheel.date);
   var t2 = new Date();
@@ -26,7 +25,7 @@ const updateWheel = (wheel2, rndd) => {
   var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
   if (wheel?.status == "Spin") {
-    $(".mainwheel .bhdLno canvas").css({
+    $(".mainwheel .bhdLno").css({
       transform:
         "rotate(-" +
         parseFloat(
@@ -39,8 +38,8 @@ const updateWheel = (wheel2, rndd) => {
     });
   } else {
     if (wheel.status == "Pending") {
-      if ($(".mainwheel .bhdLno canvas").attr("style")) {
-        $(".mainwheel .bhdLno  canvas").css({
+      if ($(".mainwheel .bhdLno").attr("style")) {
+        $(".mainwheel .bhdLno").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -50,7 +49,7 @@ const updateWheel = (wheel2, rndd) => {
           transitionDuration: "1s",
         });
       } else {
-        $(".mainwheel .bhdLno  canvas").css({
+        $(".mainwheel .bhdLno").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -62,8 +61,8 @@ const updateWheel = (wheel2, rndd) => {
       }
     }
     if (wheel.status == "Done" || wheel?.status == "Spining") {
-      if ($(".mainwheel .bhdLno canvas").attr("style")) {
-        $(".mainwheel .bhdLno canvas").css({
+      if ($(".mainwheel .bhdLno ").attr("style")) {
+        $(".mainwheel .bhdLno ").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -73,7 +72,7 @@ const updateWheel = (wheel2, rndd) => {
           transitionDuration: "0s",
         });
       } else {
-        $(".mainwheel .bhdLno canvas").css({
+        $(".mainwheel .bhdLno ").css({
           transform:
             "rotate(-" +
             parseFloat(

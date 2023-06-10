@@ -278,16 +278,16 @@ display: flex;
 }
 
 .bhdLno   {
-  transition: all 1s ease;
-
+  
+  transition-property: transform;
+  transition-duration: 9s;
+  transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1) !important;
 }
 .modal{
   left: auto !important;
 }
 .bhdLno  canvas {
-  transition-property: transform;
-  transition-duration: 9s;
-  transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1) !important;
+ 
   overflow: hidden;
 
   
