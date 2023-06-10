@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useLocation } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
@@ -24,7 +24,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   let location = useLocation();
-
+  const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     if (["/login", "/register"].includes(location.pathname)) {
       dispatch(clearMessage()); // clear message when changing location
@@ -76,6 +76,7 @@ const App = () => {
       // Stash the event so it can be triggered later.
       window.deferredPrompt = e;
       // Update UI to notify the user they can add to home screen
+      setRefresh(1);
     });
     addBtn.addEventListener("click", async () => {
       console.log("👍", "butInstall-clicked");
@@ -84,6 +85,7 @@ const App = () => {
         // The deferred prompt isn't available.
         return;
       }
+      console.log(promptEvent);
       // Show the install prompt.
       promptEvent.prompt();
       // Log the result
@@ -94,9 +96,9 @@ const App = () => {
       window.deferredPrompt = null;
     });
     window.addEventListener("appinstalled", (event) => {
+      setRefresh(0);
       window.deferredPrompt = null;
     });
-    //$(".add-button").trigger("click");
   }, []);
   return (
     <Routes>

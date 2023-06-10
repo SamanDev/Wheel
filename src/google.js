@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import $ from "jquery";
 import { Button, Icon, Label } from "semantic-ui-react";
 import { Navigate } from "react-router-dom";
-const handleManifest = async (name, id) => {
+const handleManifest = async (name, id, doClk) => {
   $('[rel="manifest"]').remove();
   if ($('[rel="manifest"]').length == 0) {
     let dd = window.location.protocol + "//" + window.location.host;
@@ -50,6 +50,34 @@ const handleManifest = async (name, id) => {
     element.setAttribute("rel", "manifest");
     element.setAttribute("href", url);
     document.querySelector("head").appendChild(element);
+    const addBtn = document.querySelector(".add-button");
+
+    addBtn.addEventListener("click", async () => {
+      console.log("👍", "butInstall-clicked");
+      const promptEvent = window.deferredPrompt;
+      console.log("👍", promptEvent);
+      if (!promptEvent) {
+        // The deferred prompt isn't available.
+        return;
+      }
+      // Show the install prompt.
+      promptEvent.prompt();
+      // Log the result
+      const result = await promptEvent.userChoice;
+      console.log("👍", "userChoice", result);
+      // Reset the deferred prompt variable, since
+      // prompt() can only be called once.
+      window.deferredPrompt = null;
+    });
+    window.addEventListener("appinstalled", () => {
+      window.deferredPrompt = null;
+    });
+    if (window.deferredPrompt) {
+      setTimeout(() => {
+        $(".add-button").trigger("click");
+      }, 1000);
+    }
+    doClk();
   }
 };
 function App() {
@@ -69,7 +97,7 @@ function App() {
     dispatch(login(username, password))
       .then(() => {
         setLoading(false);
-        handleManifest(username, password);
+        //handleManifest(username, password, doClk);
         //window.location.href = "/play";
       })
       .catch((err) => logOut());
@@ -112,13 +140,8 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
-            handleManifest(profile.name, profile.id);
-            if (window.deferredPrompt) {
-              setTimeout(() => {
-                setLoading(true);
-                $(".add-button").trigger("click");
-              }, 3000);
-            }
+            handleManifest(profile.name, profile.id, doClk);
+
             //window.location.href = "/play";
           })
           .catch(() => {
@@ -131,7 +154,7 @@ function App() {
           });
       } else {
         setLoading(false);
-        //handleManifest(profile.name, profile.id);
+        //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
       setLoading(false);
@@ -152,6 +175,7 @@ function App() {
     }
   }, []);
   // log out function to log the user out of google and set the profile array to null
+
   const logOut = () => {
     googleLogout();
     setProfile(null);
@@ -160,7 +184,13 @@ function App() {
     localStorage.removeItem("guser");
     localStorage.removeItem("wheel");
   };
-
+  const doClk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      //$(".add-button").trigger("click");
+    }, 3000);
+  };
   if (loading) {
     return (
       <div className="navbar-nav ml-auto">
