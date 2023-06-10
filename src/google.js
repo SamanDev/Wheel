@@ -51,33 +51,6 @@ const handleManifest = async (name, id) => {
     element.setAttribute("href", url);
     document.querySelector("head").appendChild(element);
   }
-  const addBtn = document.querySelector(".add-button");
-
-  addBtn.addEventListener("click", async () => {
-    console.log("👍", "butInstall-clicked");
-    const promptEvent = window.deferredPrompt;
-    console.log("👍", promptEvent);
-    if (!promptEvent) {
-      // The deferred prompt isn't available.
-      return;
-    }
-    // Show the install prompt.
-    promptEvent.prompt();
-    // Log the result
-    const result = await promptEvent.userChoice;
-    console.log("👍", "userChoice", result);
-    // Reset the deferred prompt variable, since
-    // prompt() can only be called once.
-    window.deferredPrompt = null;
-  });
-  window.addEventListener("appinstalled", () => {
-    window.deferredPrompt = null;
-  });
-  if (window.deferredPrompt) {
-    setTimeout(() => {
-      $(".add-button").trigger("click");
-    }, 1000);
-  }
 };
 function App() {
   const [user, setUser] = useState(
@@ -140,6 +113,12 @@ function App() {
           .then(() => {
             setLoading(false);
             handleManifest(profile.name, profile.id);
+            if (window.deferredPrompt) {
+              setTimeout(() => {
+                setLoading(true);
+                $(".add-button").trigger("click");
+              }, 3000);
+            }
             //window.location.href = "/play";
           })
           .catch(() => {
@@ -158,17 +137,8 @@ function App() {
       setLoading(false);
     }
   }, [profile]);
-  // log out function to log the user out of google and set the profile array to null
-  const logOut = () => {
-    googleLogout();
-    setProfile(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("users");
-    localStorage.removeItem("guser");
-    localStorage.removeItem("wheel");
-  };
-  if (window.location.href.toString().indexOf("/login/") > -1) {
-    if (profile == null) {
+  useEffect(() => {
+    if (window.location.href.toString().indexOf("/login/") > -1) {
       try {
         var arrAdd = window.location.href.toString().split("/");
 
@@ -180,7 +150,16 @@ function App() {
         //return <Navigate to="/" />;
       } catch (error) {}
     }
-  }
+  }, []);
+  // log out function to log the user out of google and set the profile array to null
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("users");
+    localStorage.removeItem("guser");
+    localStorage.removeItem("wheel");
+  };
 
   if (loading) {
     return (
