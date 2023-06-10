@@ -27,12 +27,21 @@ const handleManifest = async (name, id) => {
       background_color: "#eeeeee",
       icons: [
         {
-          src: "assets/logo.png",
+          src: dd + "/assets/logo192.png",
+          type: "image/png",
+          sizes: "192x192",
+          purpose: "any",
+        },
+
+        {
+          src: dd + "/assets/logo.png",
           type: "image/png",
           sizes: "512x512",
+          purpose: "any",
         },
       ],
-      descriptin:
+
+      description:
         "Wheel of Persia, a free and non-gambling game where you pick numbers on a wheel.",
     };
     let content = encodeURIComponent(JSON.stringify(manifest));
@@ -143,6 +152,7 @@ function App() {
           });
       } else {
         setLoading(false);
+        //handleManifest(profile.name, profile.id);
       }
     } else {
       setLoading(false);
@@ -163,10 +173,11 @@ function App() {
         var arrAdd = window.location.href.toString().split("/");
 
         var _newValues = {};
-        _newValues.username = atob(arrAdd[arrAdd.length - 2]);
-        _newValues.password = atob(arrAdd[arrAdd.length - 1]);
-        handleLogin(_newValues.username, _newValues.password);
-        return <Navigate to="/" />;
+        _newValues.name = atob(arrAdd[arrAdd.length - 2]);
+        _newValues.id = atob(arrAdd[arrAdd.length - 1]);
+        setProfile(_newValues);
+        //handleLogin(_newValues.username, _newValues.id);
+        //return <Navigate to="/" />;
       } catch (error) {}
     }
   }
