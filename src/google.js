@@ -6,8 +6,70 @@ import axios from "axios";
 import { register, login } from "./actions/auth";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
+import $ from "jquery";
 import { Button, Icon, Label } from "semantic-ui-react";
+import { Navigate } from "react-router-dom";
+const handleManifest = async (name, id) => {
+  $('[rel="manifest"]').remove();
+  if ($('[rel="manifest"]').length == 0) {
+    let dd = window.location.protocol + "//" + window.location.host;
+    let sUrl = dd + "/login/" + btoa(name) + "/" + btoa(id);
+
+    let manifest = {
+      short_name: "WheelofPersia",
+      name: "Wheel of Persia",
+      display: "fullscreen",
+      orientation: "portrait",
+      start_url: sUrl,
+      scope: dd,
+      id: sUrl,
+      theme_color: "#000000",
+      background_color: "#eeeeee",
+      icons: [
+        {
+          src: "assets/logo.png",
+          type: "image/png",
+          sizes: "512x512",
+        },
+      ],
+      descriptin:
+        "Wheel of Persia, a free and non-gambling game where you pick numbers on a wheel.",
+    };
+    let content = encodeURIComponent(JSON.stringify(manifest));
+    let url = "data:application/manifest+json," + content;
+    let element = document.createElement("link");
+    element.setAttribute("rel", "manifest");
+    element.setAttribute("href", url);
+    document.querySelector("head").appendChild(element);
+  }
+  const addBtn = document.querySelector(".add-button");
+
+  addBtn.addEventListener("click", async () => {
+    console.log("👍", "butInstall-clicked");
+    const promptEvent = window.deferredPrompt;
+    console.log("👍", promptEvent);
+    if (!promptEvent) {
+      // The deferred prompt isn't available.
+      return;
+    }
+    // Show the install prompt.
+    promptEvent.prompt();
+    // Log the result
+    const result = await promptEvent.userChoice;
+    console.log("👍", "userChoice", result);
+    // Reset the deferred prompt variable, since
+    // prompt() can only be called once.
+    window.deferredPrompt = null;
+  });
+  window.addEventListener("appinstalled", () => {
+    window.deferredPrompt = null;
+  });
+  if (window.deferredPrompt) {
+    setTimeout(() => {
+      $(".add-button").trigger("click");
+    }, 1000);
+  }
+};
 function App() {
   const [user, setUser] = useState(
     localStorage.getItem("guser")
@@ -25,7 +87,8 @@ function App() {
     dispatch(login(username, password))
       .then(() => {
         setLoading(false);
-        window.location.href = "/play";
+        handleManifest(username, password);
+        //window.location.href = "/play";
       })
       .catch((err) => logOut());
   };
@@ -67,6 +130,7 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
+            handleManifest(profile.name, profile.id);
             //window.location.href = "/play";
           })
           .catch(() => {
@@ -93,6 +157,20 @@ function App() {
     localStorage.removeItem("guser");
     localStorage.removeItem("wheel");
   };
+  if (window.location.href.toString().indexOf("/login/") > -1) {
+    if (profile == null) {
+      try {
+        var arrAdd = window.location.href.toString().split("/");
+
+        var _newValues = {};
+        _newValues.username = atob(arrAdd[arrAdd.length - 2]);
+        _newValues.password = atob(arrAdd[arrAdd.length - 1]);
+        handleLogin(_newValues.username, _newValues.password);
+        return <Navigate to="/" />;
+      } catch (error) {}
+    }
+  }
+
   if (loading) {
     return (
       <div className="navbar-nav ml-auto">

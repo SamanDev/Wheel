@@ -113,7 +113,7 @@ const Home = () => {
                 <p>
                   Contact Us If you have any questions, comments, or concerns
                   about this Privacy Policy or our privacy practices, please
-                  contact us at [Insert Contact Information].
+                  contact us at info@wheelofpersia.com.
                 </p>
               </li>
             </ol>
