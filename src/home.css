@@ -37,6 +37,12 @@
     animation: loading 8s linear infinite;
 filter: drop-shadow(0 0 10px rgba(0,0,0,06));
   }
+  .rota{
+    
+    animation: loading .5s linear infinite;
+
+  }
+  
   .ltr{
     direction: ltr !important;
     font-family: bungee, sans-serif !important;
@@ -73,6 +79,7 @@ filter: drop-shadow(0 0 10px rgba(0,0,0,06));
       transform: rotate(360deg);
     }
    }
+   
   
    .slider-thumb {
     position: absolute;

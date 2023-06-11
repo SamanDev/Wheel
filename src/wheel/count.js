@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import $ from "jquery";
 import EventBus from "../common/EventBus";
 var timer;
 function CountWheel(prop) {
   const [time, setTime] = useState(0);
 
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState({});
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -30,6 +30,8 @@ function CountWheel(prop) {
     clearTimeout(timer);
     setTime(30);
     if (wheel?.status == "Pending") {
+      $(".mainwheel .bhdLno").removeClass("rotaslw");
+      $(".wheelstylee").html("");
       mytime();
     }
     return () => {
@@ -37,6 +39,20 @@ function CountWheel(prop) {
       setTime(30);
     };
   }, [wheel?.status]);
+  useEffect(() => {
+    if (30 - time < 20 && time != 30) {
+      if ($(".wheelstylee").html() == "") {
+        $(".mainwheel .bhdLno").addClass("rotaslw");
+        $(".wheelstylee").html(
+          "<style>.rotaslw{animation: loadingslow " +
+            (39 - time) +
+            "s cubic-bezier(0.215, 0.610, 0.355, 1);}@keyframes loadingslow {  0% { transform: rotate(0deg);  }  100% {  transform: rotate(" +
+            (39 - time) * 360 +
+            "deg);     }</style>"
+        );
+      }
+    }
+  }, [time]);
 
   const mytime = () => {
     var t1 = new Date(wheel?.date);

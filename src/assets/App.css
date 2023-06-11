@@ -278,10 +278,8 @@ display: flex;
 }
 
 .bhdLno   {
-  
-  transition-property: transform;
-  transition-duration: 9s;
-  transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1) !important;
+  transition: all 1s ease;
+
 }
 .modal{
   left: auto !important;
@@ -302,7 +300,7 @@ margin: auto;
   transition: border 1s ease;
 margin: auto;
 }
- .bhdLno > div:after {
+.mywhell:not(.mytrue) .bhdLno:not(.rotaslw) > div:after {
   opacity: 1;
 	content:'';
   top:0;
@@ -311,7 +309,7 @@ margin: auto;
 	bottom: 0;
 	position: absolute;
 	z-index:1;
-	animation: slide 10s infinite ;
+	animation: slide 3s infinite ;
 	 
  
   background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(128,186,232,0) 99%, rgba(125,185,232,0) 100%); /* FF3.6+ */

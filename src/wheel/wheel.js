@@ -25,21 +25,19 @@ const updateWheel = (wheel, rndd) => {
   var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
   if (wheel?.status == "Spin") {
-    $(".mainwheel .bhdLno").css({
+    $(".mainwheel .bhdLno canvas").css({
       transform:
         "rotate(-" +
         parseFloat(
-          parseInt(wheel.number) * (360 / segments.length) +
-            (40 - time) * 360 +
-            rndd
+          parseInt(wheel.number) * (360 / segments.length) + rndd
         ).toFixed(2) +
         "deg)",
       transitionDuration: 40 - time + "s",
     });
   } else {
     if (wheel.status == "Pending") {
-      if ($(".mainwheel .bhdLno").attr("style")) {
-        $(".mainwheel .bhdLno").css({
+      if ($(".mainwheel .bhdLno canvas").attr("style")) {
+        $(".mainwheel .bhdLno canvas").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -49,7 +47,7 @@ const updateWheel = (wheel, rndd) => {
           transitionDuration: "1s",
         });
       } else {
-        $(".mainwheel .bhdLno").css({
+        $(".mainwheel .bhdLno canvas").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -61,8 +59,8 @@ const updateWheel = (wheel, rndd) => {
       }
     }
     if (wheel.status == "Done" || wheel?.status == "Spining") {
-      if ($(".mainwheel .bhdLno ").attr("style")) {
-        $(".mainwheel .bhdLno ").css({
+      if ($(".mainwheel .bhdLno canvas").attr("style")) {
+        $(".mainwheel .bhdLno canvas").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -72,7 +70,7 @@ const updateWheel = (wheel, rndd) => {
           transitionDuration: "0s",
         });
       } else {
-        $(".mainwheel .bhdLno ").css({
+        $(".mainwheel .bhdLno canvas").css({
           transform:
             "rotate(-" +
             parseFloat(
@@ -140,12 +138,12 @@ function MNyWheel(prop) {
     if (wheel?.status == "Spin") {
       lighter = setInterval(() => {
         checkbox();
-      }, 200);
+      }, 500);
       rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
     } else {
       lighter = setInterval(() => {
         checkbox();
-      }, 1500);
+      }, 5000);
     }
     updateWheel(wheel, rndd);
   }, [wheel?.status]);
@@ -160,15 +158,12 @@ function MNyWheel(prop) {
         }
       >
         <div className="animate__animated  animate__rollIn">
-          {wheel?.status == "Pending" && (
-            <>
-              <CountWheel {...prop} />
-            </>
-          )}
+          <CountWheel {...prop} />
 
           <div className="countover">
             <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
           </div>
+          <div className="wheelstylee"></div>
           <Wheel
             startingOptionIndex={0}
             mustStartSpinning={false}
