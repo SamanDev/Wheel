@@ -16,84 +16,85 @@ var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
 var rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
 //var rndd = parseFloat(degg);
 const updateWheel = (wheel, rndd) => {
-  if (!wheel?.status) return false;
-  var t1 = new Date(wheel.date);
-  var t2 = new Date();
-  var dif = t1.getTime() - t2.getTime();
+  if (wheel?.status) {
+    var t1 = new Date(wheel.date);
+    var t2 = new Date();
+    var dif = t1.getTime() - t2.getTime();
 
-  var Seconds_from_T1_to_T2 = dif / 1000;
-  var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
+    var Seconds_from_T1_to_T2 = dif / 1000;
+    var time = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
-  if (wheel?.status == "Spin") {
-    $(".mainwheel .bhdLno canvas").css({
-      transform:
-        "rotate(-" +
-        parseFloat(
-          parseInt(wheel.number) * (360 / segments.length) + rndd
-        ).toFixed(2) +
-        "deg)",
-      transitionDuration: 40 - time + "s",
+    if (wheel?.status == "Spin") {
+      $(".mainwheel .bhdLno canvas").css({
+        transform:
+          "rotate(-" +
+          parseFloat(
+            parseInt(wheel.number) * (360 / segments.length) + rndd
+          ).toFixed(2) +
+          "deg)",
+        transitionDuration: 39 - time + "s",
+      });
+    } else {
+      if (wheel.status == "Pending") {
+        if ($(".mainwheel .bhdLno canvas").attr("style")) {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.startNum) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        } else {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.startNum) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        }
+      }
+      if (wheel.status == "Done" || wheel?.status == "Spining") {
+        if ($(".mainwheel .bhdLno canvas").attr("style")) {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.number) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "0s",
+          });
+        } else {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.number) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        }
+      }
+    }
+    var colornum = " 10px solid " + getcolor(segments[wheel.startNum]);
+    if (wheel.status == "Spin") {
+      colornum = "2px solid #000000";
+    }
+
+    if (wheel.status != "Spin" && wheel.status != "Pending") {
+      colornum = " 10px solid " + getcolor(segments[wheel.number]);
+    }
+    $(".mainwheel .bhdLno >div").css({
+      border: colornum,
+      zIndex: 1,
     });
-  } else {
-    if (wheel.status == "Pending") {
-      if ($(".mainwheel .bhdLno canvas").attr("style")) {
-        $(".mainwheel .bhdLno canvas").css({
-          transform:
-            "rotate(-" +
-            parseFloat(
-              parseInt(wheel.startNum) * (360 / segments.length) + rndd
-            ).toFixed(2) +
-            "deg)",
-          transitionDuration: "1s",
-        });
-      } else {
-        $(".mainwheel .bhdLno canvas").css({
-          transform:
-            "rotate(-" +
-            parseFloat(
-              parseInt(wheel.startNum) * (360 / segments.length) + rndd
-            ).toFixed(2) +
-            "deg)",
-          transitionDuration: "1s",
-        });
-      }
-    }
-    if (wheel.status == "Done" || wheel?.status == "Spining") {
-      if ($(".mainwheel .bhdLno canvas").attr("style")) {
-        $(".mainwheel .bhdLno canvas").css({
-          transform:
-            "rotate(-" +
-            parseFloat(
-              parseInt(wheel.number) * (360 / segments.length) + rndd
-            ).toFixed(2) +
-            "deg)",
-          transitionDuration: "0s",
-        });
-      } else {
-        $(".mainwheel .bhdLno canvas").css({
-          transform:
-            "rotate(-" +
-            parseFloat(
-              parseInt(wheel.number) * (360 / segments.length) + rndd
-            ).toFixed(2) +
-            "deg)",
-          transitionDuration: "1s",
-        });
-      }
-    }
   }
-  var colornum = " 10px solid " + getcolor(segments[wheel.startNum]);
-  if (wheel.status == "Spin") {
-    colornum = "2px solid #000000";
-  }
-
-  if (wheel.status != "Spin" && wheel.status != "Pending") {
-    colornum = " 10px solid " + getcolor(segments[wheel.number]);
-  }
-  $(".mainwheel .bhdLno >div").css({
-    border: colornum,
-    zIndex: 1,
-  });
 };
 
 segments.map((item, i) => {
@@ -113,7 +114,7 @@ function checkbox() {
 }
 var lighter;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState({});
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -124,46 +125,40 @@ function MNyWheel(prop) {
     if (wheel?.status) {
       setTimeout(() => {
         updateWheel(wheel, rndd);
-      }, 200);
+      }, 2000);
     }
     return () => {
-      setWheel({});
-      clearInterval(lighter);
       EventBus.remove("wheel");
+      setWheel({});
     };
   }, []);
 
   useEffect(() => {
-    clearInterval(lighter);
-    if (wheel?.status == "Spin") {
-      lighter = setInterval(() => {
-        checkbox();
-      }, 500);
-      rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
-    } else {
-      lighter = setInterval(() => {
-        checkbox();
-      }, 5000);
+    if (wheel?.status) {
+      clearInterval(lighter);
+      if (wheel?.status == "Spin") {
+        lighter = setInterval(() => {
+          checkbox();
+        }, 1500);
+        rndd = parseFloat(getRandomArbitrary(degg * -1, degg));
+      } else {
+        lighter = setInterval(() => {
+          checkbox();
+        }, 5000);
+      }
+      updateWheel(wheel, rndd);
     }
-    updateWheel(wheel, rndd);
   }, [wheel?.status]);
 
   return (
     <>
-      <div
-        className={
-          wheel?.status == "Spin"
-            ? "mainwheel mywhell mytrue"
-            : "mainwheel mywhell"
-        }
-      >
+      <div className={"mainwheel mywhell"}>
         <div className="animate__animated  animate__rollIn">
           <CountWheel {...prop} />
-
           <div className="countover">
             <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
           </div>
-          <div className="wheelstylee"></div>
+
           <Wheel
             startingOptionIndex={0}
             mustStartSpinning={false}
@@ -179,7 +174,7 @@ function MNyWheel(prop) {
             data={_l}
           />
 
-          {wheel?.status == "Pending" && (
+          {wheel?.status && wheel?.status != "Spin" && (
             <>
               <Modalwin />
               <Mod />

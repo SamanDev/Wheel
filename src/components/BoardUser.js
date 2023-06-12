@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Mywhell from "../MyWheel";
 
-import { Segment, Dimmer, Loader } from "semantic-ui-react";
+import { Segment, Dimmer, Icon, Header, Button } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import socket from "../socket";
 const BoardUser = () => {
@@ -34,11 +34,21 @@ const BoardUser = () => {
   }, []);
   if (userDC || !user?.accessToken) {
     return (
-      <Segment className="loadarea">
-        <Dimmer active>
-          <Loader size="massive">Connection lost</Loader>
-        </Dimmer>
-      </Segment>
+      <Dimmer active as={Segment} blurring className="loadarea">
+        <Header as="h2" icon inverted>
+          <Icon name="ban" color="red" />
+          Connection lost!
+        </Header>
+        <br />
+        <Button
+          onClick={() => {
+            window.location.reload();
+          }}
+          color="orange"
+        >
+          Reconnect
+        </Button>
+      </Dimmer>
     );
   }
   return (

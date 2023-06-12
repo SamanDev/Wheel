@@ -13,60 +13,64 @@ function CountWheel(prop) {
         setWheel(data);
       }
     });
-
-    if (wheel?.status == "Pending") {
-      clearTimeout(timer);
-
+    if (wheel?.status) {
       mytime();
     }
     return () => {
-      setWheel({});
       EventBus.remove("wheel");
-      clearTimeout(timer);
     };
   }, []);
 
   useEffect(() => {
-    clearTimeout(timer);
-    setTime(30);
-    if (wheel?.status == "Pending") {
+    mytime();
+
+    if (wheel?.status == "Spining") {
+      $(".mainwheel").removeClass("mytrue");
       $(".mainwheel .bhdLno").removeClass("rotaslw");
       $(".wheelstylee").html("");
-      mytime();
-    }
-    return () => {
       clearTimeout(timer);
-      setTime(30);
-    };
+    }
   }, [wheel?.status]);
   useEffect(() => {
-    if (30 - time < 20 && time != 30) {
+    $(".bhdLno img").remove();
+    clearTimeout(timer);
+    if (30 - time <= 20 && 30 - time >= 0 && time != 30) {
       if ($(".wheelstylee").html() == "") {
+        $(".mainwheel").addClass("mytrue");
         $(".mainwheel .bhdLno").addClass("rotaslw");
         $(".wheelstylee").html(
-          "<style>.rotaslw{animation: loadingslow " +
-            (39 - time) +
-            "s cubic-bezier(0.215, 0.610, 0.355, 1);}@keyframes loadingslow {  0% { transform: rotate(0deg);  }  100% {  transform: rotate(" +
-            (39 - time) * 360 +
+          "<style>.rotaslw{animation-timing-function: cubic-bezier(0.1, -0.07, 0.001, 1);animation-name: loadingslow ;animation-duration:" +
+            (40 - time) +
+            "s  ;}@keyframes loadingslow {  0% { transform: rotate(0deg);  }  100% {  transform: rotate(" +
+            (60 - time) * 360 +
             "deg);     }</style>"
         );
       }
     }
+
+    if (30 - time >= 0) {
+      timer = setTimeout(() => {
+        mytime();
+      }, 1000);
+    }
   }, [time]);
 
   const mytime = () => {
-    var t1 = new Date(wheel?.date);
-    var t2 = new Date();
-    var dif = t1.getTime() - t2.getTime();
+    if (wheel?.status) {
+      var t1 = new Date(wheel?.date);
+      var t2 = new Date();
+      var dif = t1.getTime() - t2.getTime();
 
-    var Seconds_from_T1_to_T2 = dif / 1000;
-    var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
-
-    setTime(parseInt(Seconds_Between_Dates));
-
-    timer = setTimeout(() => {
-      mytime();
-    }, 500);
+      var Seconds_from_T1_to_T2 = dif / 1000;
+      var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+      if (time != parseInt(Seconds_Between_Dates)) {
+        setTime(parseInt(Seconds_Between_Dates));
+      }
+    } else {
+      setTimeout(() => {
+        mytime();
+      }, 1000);
+    }
   };
   if (!wheel?.status) {
     return (
@@ -79,7 +83,7 @@ function CountWheel(prop) {
   }
   return (
     <>
-      {30 - time > 0 && time < 30 && (
+      {30 - time >= 0 && time < 30 && (
         <>
           <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
             <h2 className="text-shadows animate__animated  animate__bounceIn">
