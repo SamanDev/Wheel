@@ -122,12 +122,14 @@ function MNyWheel(prop) {
         setWheel(data);
       }
     });
+
     if (wheel?.status) {
       setTimeout(() => {
         updateWheel(wheel, rndd);
       }, 2000);
     }
     return () => {
+      clearInterval(lighter);
       EventBus.remove("wheel");
       setWheel({});
     };
@@ -174,7 +176,7 @@ function MNyWheel(prop) {
             data={_l}
           />
 
-          {wheel?.status && wheel?.status != "Spin" && (
+          {wheel?.status && (
             <>
               <Modalwin />
               <Mod />
