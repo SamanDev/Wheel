@@ -282,6 +282,7 @@ tr .ui,
 
 .bhdLno {
   margin: auto;
+  border-radius: 1000px;
 }
 .bhdLno > div {
   overflow: hidden;
@@ -289,6 +290,7 @@ tr .ui,
   transition: border 1s ease;
   margin: auto;
 }
+
 .bhdLno:not(.rotaslw) > div:after {
   opacity: 1;
   content: "";
@@ -580,6 +582,10 @@ tr .ui,
   text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.3),
     1px 1px 0px rgba(255, 255, 255, 0.2);
   font-size: 42px;
+}
+canvas {
+  width: 101% !important;
+  height: 101% !important;
 }
 
 /* Colors */

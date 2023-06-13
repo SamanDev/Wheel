@@ -22,32 +22,30 @@ function MNyWheel(prop) {
   return (
     <>
       <div className={"mainwheel mywhell"}>
-        <div className="animate__animated ">
-          <CountWheel {...prop} />
-          <div className="countover">
-            <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
-          </div>
-
-          <Wheel
-            startingOptionIndex={0}
-            mustStartSpinning={false}
-            outerBorderWidth={0}
-            outerBorderColor={"#eeeeee"}
-            innerRadius={10}
-            innerBorderColor={"#000000"}
-            innerBorderWidth={0}
-            radiusLineColor={"#000000"}
-            radiusLineWidth={0}
-            textDistance={80}
-            fontSize={20}
-            data={_l}
-          />
-
-          <>
-            <Modalwin />
-            <Mod />
-          </>
+        <CountWheel {...prop} />
+        <div className="countover">
+          <img src="/assets/cadr.png" src2="/assets/cadr2.png" id="cadr" />
         </div>
+
+        <Wheel
+          startingOptionIndex={0}
+          mustStartSpinning={false}
+          outerBorderWidth={0}
+          outerBorderColor={"#eeeeee"}
+          innerRadius={10}
+          innerBorderColor={"#000000"}
+          innerBorderWidth={0}
+          radiusLineColor={"#000000"}
+          radiusLineWidth={0}
+          textDistance={80}
+          fontSize={20}
+          data={_l}
+        />
+
+        <>
+          <Modalwin />
+          <Mod />
+        </>
       </div>
     </>
   );

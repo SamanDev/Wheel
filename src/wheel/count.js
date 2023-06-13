@@ -67,18 +67,6 @@ const updateWheel = (wheel, rndd, time) => {
         }
       }
     }
-    var colornum = "15px solid " + getcolor(segments[wheel.startNum]);
-    if (wheel.status == "Spin") {
-      colornum = "0px solid #000000";
-    }
-
-    if (wheel.status != "Spin" && wheel.status != "Pending") {
-      colornum = "15px solid " + getcolor(segments[wheel.number]);
-    }
-    $(".mainwheel .bhdLno >div").css({
-      border: colornum,
-      zIndex: 1,
-    });
   }
 };
 function CountWheel(prop) {
@@ -104,6 +92,8 @@ function CountWheel(prop) {
 
   useEffect(() => {
     if (wheel?.status == "Pending") {
+      $(".mainwheel .bhdLno").removeClass("rotaslw");
+      $(".wheelstylee").html("");
       clearInterval(lighter);
       lighter = setInterval(() => {
         checkbox();
@@ -113,7 +103,7 @@ function CountWheel(prop) {
     } else {
       $(".mainwheel").removeClass("mytrue");
     }
-    if (wheel?.status != "Spin" && wheel?.status) {
+    if (wheel?.status == "Done") {
       $(".mainwheel .bhdLno").removeClass("rotaslw");
       $(".wheelstylee").html("");
     }
@@ -163,10 +153,9 @@ function CountWheel(prop) {
             (40 - time) +
             "s  ;}@keyframes loadingslow {  0% { transform: rotate(-" +
             parseFloat(
-              parseInt(wheel.startNum) * (360 / segments.length) +
-                parseFloat(rndd)
+              parseInt(wheel.startNum) * (360 / segments.length)
             ).toFixed(2) +
-            "deg);  }  100% {  transform: rotate(" +
+            "deg);  }  100% {  transform: rotate(-" +
             parseFloat((40 - time) * 360).toFixed(2) +
             "deg);     }</style>"
         );
@@ -199,9 +188,7 @@ function CountWheel(prop) {
   if (!wheel?.status) {
     return (
       <div className="count">
-        <h2 className="text-shadows animate__animated  animate__bounceIn">
-          wait
-        </h2>
+        <h2 className="text-shadows">wait</h2>
       </div>
     );
   }
@@ -210,9 +197,7 @@ function CountWheel(prop) {
       {30 - time >= 0 && time < 30 && (
         <>
           <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
-            <h2 className="text-shadows animate__animated  animate__bounceIn">
-              {30 - time}
-            </h2>
+            <h2 className="text-shadows">{30 - time}</h2>
           </div>
         </>
       )}
