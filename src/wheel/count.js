@@ -1,9 +1,89 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
+import { segments, getcolor } from "../utils/include";
 import EventBus from "../common/EventBus";
 var timer;
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
+
+var rndd2 = parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2);
+function checkbox() {
+  var c2 = $("#cadr").attr("src2");
+  $("#cadr").attr("src2", $("#cadr").attr("src"));
+  $("#cadr").attr("src", c2);
+}
+var lighter;
+const updateWheel = (wheel, rndd, time) => {
+  console.log(wheel, rndd, time);
+  if (wheel?.status) {
+    if (wheel?.status == "Spin") {
+    } else {
+      if (wheel.status == "Pending") {
+        if ($(".mainwheel .bhdLno canvas").attr("style")) {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.startNum) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        } else {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.startNum) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        }
+      }
+      if (wheel.status == "Done" || wheel.status == "Spining") {
+        if ($(".mainwheel .bhdLno canvas").attr("style")) {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.number) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        } else {
+          $(".mainwheel .bhdLno canvas").css({
+            transform:
+              "rotate(-" +
+              parseFloat(
+                parseInt(wheel.number) * (360 / segments.length) + rndd
+              ).toFixed(2) +
+              "deg)",
+            transitionDuration: "1s",
+          });
+        }
+      }
+    }
+    var colornum = "15px solid " + getcolor(segments[wheel.startNum]);
+    if (wheel.status == "Spin") {
+      colornum = "0px solid #000000";
+    }
+
+    if (wheel.status != "Spin" && wheel.status != "Pending") {
+      colornum = "15px solid " + getcolor(segments[wheel.number]);
+    }
+    $(".mainwheel .bhdLno >div").css({
+      border: colornum,
+      zIndex: 1,
+    });
+  }
+};
 function CountWheel(prop) {
   const [time, setTime] = useState(0);
+  const [rndd, setRndd] = useState(rndd2);
 
   const [wheel, setWheel] = useState({});
 
@@ -13,42 +93,87 @@ function CountWheel(prop) {
         setWheel(data);
       }
     });
-    if (wheel?.status) {
-      mytime();
-    }
+
     return () => {
+      clearInterval(lighter);
+      clearTimeout(timer);
+      setWheel({});
       EventBus.remove("wheel");
     };
   }, []);
 
   useEffect(() => {
-    mytime();
+    if (wheel?.status == "Pending") {
+      clearInterval(lighter);
+      lighter = setInterval(() => {
+        checkbox();
+      }, 2500);
 
-    if (wheel?.status == "Spining") {
+      setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
+    } else {
       $(".mainwheel").removeClass("mytrue");
+    }
+    if (wheel?.status != "Spin" && wheel?.status) {
       $(".mainwheel .bhdLno").removeClass("rotaslw");
       $(".wheelstylee").html("");
-      clearTimeout(timer);
+    }
+
+    if (wheel?.status) {
+      mytime();
+      updateWheel(wheel, parseFloat(rndd), time);
     }
   }, [wheel?.status]);
   useEffect(() => {
     $(".bhdLno img").remove();
     clearTimeout(timer);
-    if (30 - time <= 20 && 30 - time >= 0 && time != 30) {
+    if (time > 10 && time < 59) {
       if ($(".wheelstylee").html() == "") {
+        if (wheel?.status != "Done") {
+          var num =
+            (wheel?.serverCode * wheel?.startNum +
+              wheel?.serverCode * ((wheel?.serverSec + 30) % 60)) %
+            segments.length;
+          clearInterval(lighter);
+          lighter = setInterval(() => {
+            checkbox();
+          }, 500);
+        }
+        if (
+          wheel?.status == "Done" ||
+          wheel.status == "Spining" ||
+          wheel.status == "Spin"
+        ) {
+          var num = wheel?.number;
+        }
+
         $(".mainwheel").addClass("mytrue");
         $(".mainwheel .bhdLno").addClass("rotaslw");
+        $(".mainwheel .bhdLno canvas").removeAttr("style");
+        $(".mainwheel .bhdLno canvas").css({
+          transform:
+            "rotate(-" +
+            parseFloat(
+              parseInt(num) * (360 / segments.length) + parseFloat(rndd)
+            ).toFixed(2) +
+            "deg)",
+          transitionDuration: 40 - time + "s",
+        });
         $(".wheelstylee").html(
-          "<style>.rotaslw{animation-timing-function: cubic-bezier(0.1, -0.07, 0.001, 1);animation-name: loadingslow ;animation-duration:" +
+          "<style>.rotaslw{animation-timing-function: cubic-bezier(0.1, -0.1, 0.001, 1);animation-name: loadingslow ;animation-duration:" +
             (40 - time) +
-            "s  ;}@keyframes loadingslow {  0% { transform: rotate(0deg);  }  100% {  transform: rotate(" +
-            (60 - time) * 360 +
+            "s  ;}@keyframes loadingslow {  0% { transform: rotate(-" +
+            parseFloat(
+              parseInt(wheel.startNum) * (360 / segments.length) +
+                parseFloat(rndd)
+            ).toFixed(2) +
+            "deg);  }  100% {  transform: rotate(" +
+            parseFloat((40 - time) * 360).toFixed(2) +
             "deg);     }</style>"
         );
       }
     }
 
-    if (30 - time >= 0) {
+    if (time <= 59) {
       timer = setTimeout(() => {
         mytime();
       }, 1000);
@@ -59,15 +184,14 @@ function CountWheel(prop) {
     if (wheel?.status) {
       var t1 = new Date(wheel?.date);
       var t2 = new Date();
-      var dif = t1.getTime() - t2.getTime();
+      var dif = t2.getTime() - t1.getTime();
 
       var Seconds_from_T1_to_T2 = dif / 1000;
       var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
-      if (time != parseInt(Seconds_Between_Dates)) {
-        setTime(parseInt(Seconds_Between_Dates));
-      }
+
+      setTime(parseInt(Seconds_Between_Dates));
     } else {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         mytime();
       }, 1000);
     }

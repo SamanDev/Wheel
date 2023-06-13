@@ -279,9 +279,7 @@ tr .ui,
 .modal {
   left: auto !important;
 }
-.bhdLno canvas {
-  overflow: hidden;
-}
+
 .bhdLno {
   margin: auto;
 }
@@ -291,7 +289,7 @@ tr .ui,
   transition: border 1s ease;
   margin: auto;
 }
-.mywhell:not(.mytrue) .bhdLno:not(.rotaslw) > div:after {
+.bhdLno:not(.rotaslw) > div:after {
   opacity: 1;
   content: "";
   top: 0;

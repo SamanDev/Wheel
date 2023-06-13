@@ -117,7 +117,7 @@ function BetsWheel(prop) {
         }
       }
 
-      if (wheel.status == "Spining" || wheel.status == "Done") {
+      if (wheel?.status == "Spining" || wheel?.status == "Done") {
         stat.sort((a, b) => (a.win < b.win ? 1 : -1));
       } else {
         stat.sort((a, b) => (a.bet < b.bet ? 1 : -1));

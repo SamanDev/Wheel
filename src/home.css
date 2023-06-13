@@ -2,6 +2,11 @@
   height: 100vh;
 
   overflow-x: hidden;
+}
+.home:not(.wheel) {
+  height: 100vh;
+
+  overflow-x: hidden;
   background-size: 300% 300%;
   background-image: linear-gradient(
     -45deg,

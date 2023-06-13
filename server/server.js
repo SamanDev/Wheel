@@ -364,7 +364,7 @@ const createWheelData = async () => {
 };
 const spin = async () => {
   const d = new Date();
-  let seconds = d.getSeconds();
+  let seconds = (wheel?.serverSec + 30) % 60;
 
   wheel.serverSec = seconds;
   let newPrizeNumbern = getPrizePos(wheel);

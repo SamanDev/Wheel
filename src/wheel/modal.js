@@ -163,10 +163,10 @@ function ModalExampleModal(prop) {
     setuserclass("animate__bounceIn animate__animated");
   }, [bigbet]);
   useEffect(() => {
-    if (wheel.status == "Spining") {
+    if (wheel?.status == "Spining") {
       setuserclass("animate__bounceIn animate__animated");
     }
-    if (wheel.status == "Done" || wheel.status == "Spin") {
+    if (wheel?.status == "Done" || wheel?.status == "Spin") {
       setuserclass("animate__bounceOut animate__animated");
     }
   }, [wheel?.status]);
