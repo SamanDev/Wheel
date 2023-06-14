@@ -37,8 +37,9 @@ function BetsWheel(prop) {
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <Icon
             name="arrow alternate circle left outline"
-            size="large"
-            color="red"
+            size="big"
+            color="grey"
+            inverted
           />
         </Link>
         <b>{user?.username}</b>
