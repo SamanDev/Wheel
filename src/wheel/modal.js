@@ -160,7 +160,9 @@ function ModalExampleModal(prop) {
     biglose = bigLose(userbets);
   }, [list, userbets, wheel?.status]);
   useEffect(() => {
-    setuserclass("animate__bounceIn animate__animated");
+    if (wheel?.status == "Pending") {
+      setuserclass("animate__bounceIn animate__animated");
+    }
   }, [bigbet]);
   useEffect(() => {
     if (wheel?.status == "Spining") {

@@ -168,6 +168,7 @@ function BetsWheel(prop) {
     });
     return () => {
       setuserbets([]);
+      setCon(false);
       EventBus.remove("wheel");
       EventBus.remove("user");
       EventBus.remove("users");
@@ -198,19 +199,28 @@ function BetsWheel(prop) {
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
     if (wheel?.status == "Pending" && con) {
+      var t1 = new Date(wheel?.date);
+      var t2 = new Date();
+      var dif = t2.getTime() - t1.getTime();
+
+      var Seconds_from_T1_to_T2 = dif / 1000;
+      var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+
       if (balance >= _b) {
-        socket.emit("addBet", {
-          bet: parseInt(_b),
-          position: parseInt(pos),
-        });
-        setBalance((prev) => prev - _b);
-        EventBus.dispatch("balance", balance - _b);
-        EventBus.dispatch("bets", {
-          bet: parseInt(_b),
-          position: parseInt(pos),
-          username: user.username,
-          image: user.image,
-        });
+        if (parseInt(Seconds_Between_Dates) < 30) {
+          socket.emit("addBet", {
+            bet: parseInt(_b),
+            position: parseInt(pos),
+          });
+          setBalance((prev) => prev - _b);
+          EventBus.dispatch("balance", balance - _b);
+          EventBus.dispatch("bets", {
+            bet: parseInt(_b),
+            position: parseInt(pos),
+            username: user.username,
+            image: user.image,
+          });
+        }
       } else {
         $(".showads").trigger("click");
       }

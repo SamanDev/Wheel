@@ -240,6 +240,8 @@ tr .ui,
   left: 0;
   padding-top: 30px;
   position: relative;
+  height: 80vw;
+  max-height: 445px;
 }
 
 .count {
@@ -258,7 +260,6 @@ tr .ui,
   margin: auto;
   width: 80vw;
   max-width: 445px;
-  height: 0;
 
   z-index: 10;
   padding: 0;

@@ -44,6 +44,8 @@ const updateWheel = (wheel, rndd, time) => {
         }
       }
       if (wheel.status == "Done" || wheel.status == "Spining") {
+        $(".mainwheel .bhdLno").removeClass("rotaslw");
+        $(".wheelstylee").html("");
         if ($(".mainwheel .bhdLno canvas").attr("style")) {
           $(".mainwheel .bhdLno canvas").css({
             transform:
@@ -73,7 +75,7 @@ function CountWheel(prop) {
   const [time, setTime] = useState(0);
   const [rndd, setRndd] = useState(rndd2);
 
-  const [wheel, setWheel] = useState({});
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -100,6 +102,7 @@ function CountWheel(prop) {
       }, 2500);
 
       setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
+      $(".mainwheel").removeClass("mytrue");
     } else {
       $(".mainwheel").removeClass("mytrue");
     }

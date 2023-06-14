@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import EventBus from "../common/EventBus";
+import { Icon } from "semantic-ui-react";
 import { Jetton, UsersIcon, formatDollar } from "../utils/include";
-
+import { Link } from "react-router-dom";
 function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
@@ -33,6 +34,13 @@ function BetsWheel(prop) {
   return (
     <>
       <div className="info">
+        <Link to={"/"} style={{ textDecoration: "none" }}>
+          <Icon
+            name="arrow alternate circle left outline"
+            size="large"
+            color="red"
+          />
+        </Link>
         <b>{user?.username}</b>
         <div style={{ float: "right" }}>
           <span>{online}</span>{" "}

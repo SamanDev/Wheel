@@ -1,9 +1,9 @@
-.home {
+div.home {
   height: 100vh;
 
   overflow-x: hidden;
 }
-.home:not(.wheel) {
+div.home:not(.wheel) {
   height: 100vh;
 
   overflow-x: hidden;

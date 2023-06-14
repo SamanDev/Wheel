@@ -201,8 +201,9 @@ function App() {
           style={{ margin: "10px auto" }}
           disabled
           fluid
+          size="huge"
         >
-          <Button color="red" fluid>
+          <Button color="red" fluid size="huge">
             <Icon name="spinner" loading />
             Please wait...
           </Button>
@@ -221,11 +222,19 @@ function App() {
             as="div"
             to={"/play"}
             labelPosition="right"
-            className="ltr"
             style={{ margin: "10px auto" }}
             fluid
+            size="huge"
+            className=" ltr "
           >
-            <Button color="green" fluid as={Link} to={"/play"}>
+            <Button
+              color="green"
+              size="huge"
+              fluid
+              as={Link}
+              to={"/play"}
+              className="animate__flash  animate__animated  animate__infinite"
+            >
               <Icon name="heart" />
               Wheel NOW!
             </Button>
@@ -244,13 +253,13 @@ function App() {
         <Button
           as="div"
           labelPosition="right"
-          className="ltr"
           style={{ margin: "10px auto" }}
           onClick={() => loginOk()}
           fluid
+          size="huge"
+          className="animate__pulse ltr animate__animated  animate__infinite"
         >
-          <Button color="red" fluid>
-            <Icon name="heart" />
+          <Button color="red" fluid size="huge">
             Sign in with GOOGLE
           </Button>
           <Label basic color="red" pointing="left">
