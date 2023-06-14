@@ -11,7 +11,9 @@ function ChatWheel(prop) {
         setuserbets((current) => [...current, data]);
       }
     });
-    EventBus.remove("chat");
+    return () => {
+      EventBus.remove("chat");
+    };
   }, []);
   useEffect(() => {
     document.getElementById("chatarea").scroll({
@@ -34,7 +36,6 @@ function ChatWheel(prop) {
       }}
     >
       {userbets.map((cmd, i) => {
-        console.log(cmd);
         return (
           <Comment
             key={i}

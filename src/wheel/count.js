@@ -116,7 +116,7 @@ function CountWheel(prop) {
   useEffect(() => {
     $(".bhdLno img").remove();
     clearTimeout(timer);
-    if (time > 10 && time < 59) {
+    if (time > 15) {
       if ($(".wheelstylee").html() == "") {
         if (wheel?.status != "Done") {
           var num =
@@ -194,10 +194,10 @@ function CountWheel(prop) {
   }
   return (
     <>
-      {30 - time >= 0 && time < 30 && (
+      {15 - time >= 0 && time < 15 && (
         <>
           <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
-            <h2 className="text-shadows">{30 - time}</h2>
+            <h2 className="text-shadows">{15 - time}</h2>
           </div>
         </>
       )}

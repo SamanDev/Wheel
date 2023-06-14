@@ -18,6 +18,7 @@ const getchips = (id) => {
 function ModalExampleModal(prop) {
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [link, setLink] = useState("");
 
@@ -37,6 +38,7 @@ function ModalExampleModal(prop) {
   useEffect(() => {
     EventBus.on("user", (data) => {
       setUser(data);
+      setOpen(false);
     });
     return () => {
       EventBus.remove("user");
@@ -85,7 +87,12 @@ function ModalExampleModal(prop) {
           </span>{" "}
           for free.
           <br /> <br />
-          <ModalAds getchips={getchips} id={user.id} setOpenP={setOpen} />
+          <ModalAds
+            disabled={loading}
+            getchips={getchips}
+            id={user.id}
+            setOpenP={setOpen}
+          />
           <Divider horizontal inverted>
             Or
           </Divider>
@@ -101,7 +108,10 @@ function ModalExampleModal(prop) {
                 color="teal"
                 onClick={() => {
                   gettokens(user.tokens[0]);
+                  setLoading(true);
                 }}
+                loading={loading}
+                disabled={loading}
               >
                 <Icon name="free code camp" />
                 Use Token

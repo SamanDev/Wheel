@@ -201,12 +201,15 @@ tr .ui,
 .mywhell .betarea .button {
   cursor: default;
 }
-.mywhell.mytrue .betarea .b0:not(.active),
-.mywhell .betarea .b0:not(.active) {
-  background: rgb(0, 0, 0, 0.1) !important;
-
-  cursor: default;
-  color: rgba(255, 255, 255, 0.6) !important;
+.label.pen {
+  transition: all 1s ease !important;
+}
+.label.pen.animate__animated {
+  position: relative;
+  z-index: 10;
+}
+.label.pen.b0 {
+  filter: grayscale(100%);
 }
 .mywhell .betarea .button.active {
   box-shadow: 0 0 20px 10px rgba(222, 238, 0, 0.5);
@@ -262,7 +265,7 @@ tr .ui,
 
   object-fit: contain;
   flex-shrink: 0;
-  transition: all 1s ease;
+  transition: transform 1s ease;
 }
 .countover img {
   position: absolute;
@@ -272,7 +275,7 @@ tr .ui,
   padding: 0;
   width: 100%;
 
-  transition: all 1s ease;
+  transition: transform 0s ease;
   transform: scale(1.17);
 }
 

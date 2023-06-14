@@ -10,6 +10,7 @@ import {
   groupByMultipleFields,
   sumOfBet,
   formatDollar,
+  segments,
 } from "../utils/include";
 import $ from "jquery";
 
@@ -228,6 +229,13 @@ function BetsWheel(prop) {
             onClick={() => {
               addBet(seg, prop.bet);
             }}
+            className={
+              wheel?.status == "Spining" && segments[wheel?.number] == seg
+                ? "animate__tada animate__animated animate__repeat-3 pen"
+                : wheel?.status == "Spining"
+                ? "b0 pen"
+                : "pen"
+            }
             style={{
               background: getcolor(seg),
               color: getcolortext(seg),
