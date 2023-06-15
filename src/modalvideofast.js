@@ -6,8 +6,8 @@ function ModalExampleModal(prop) {
   useEffect(() => {
     if (prop.open) {
       var pers = setInterval(() => {
-        setPer((prev) => prev + 5);
-      }, 1000);
+        setPer((prev) => prev + 20);
+      }, 500);
     } else {
       setPer(0);
     }
@@ -16,11 +16,7 @@ function ModalExampleModal(prop) {
       clearInterval(pers);
     };
   }, [prop.open]);
-  useEffect(() => {
-    if (per == 100) {
-      prop.getchips(prop.id);
-    }
-  }, [per]);
+
   return (
     <Modal
       open={prop.open}
@@ -29,7 +25,6 @@ function ModalExampleModal(prop) {
       closeOnDimmerClick={false}
       closeIcon={per >= 110 ? true : false}
       onClose={() => {
-        prop.setOpenads(false);
         prop.setOpen(false);
       }}
     >

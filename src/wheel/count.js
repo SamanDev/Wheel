@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import $ from "jquery";
 import { segments, getcolor } from "../utils/include";
 import EventBus from "../common/EventBus";
+import ModalAds from "../modalvideofast";
 var timer;
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
@@ -94,6 +95,7 @@ function CountWheel(prop) {
   const [time, setTime] = useState(0);
   const [rndd, setRndd] = useState(rndd2);
 
+  const [openads, setOpenads] = useState(false);
   const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
 
   useEffect(() => {
@@ -113,6 +115,9 @@ function CountWheel(prop) {
 
   useEffect(() => {
     if (wheel?.status == "Pending") {
+      if (wheel?.startNum == 0) {
+        setOpenads(true);
+      }
       $(".mainwheel .bhdLno").removeClass("rotaslw");
       $(".wheelstylee").html("");
       clearInterval(lighter);
@@ -216,6 +221,7 @@ function CountWheel(prop) {
   }
   return (
     <>
+      <ModalAds open={openads} setOpen={setOpenads} />
       {15 - time >= 0 && time < 15 && (
         <>
           <div className="count" style={{ zIndex: 11, marginTop: -70 }}>

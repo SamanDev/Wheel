@@ -91,17 +91,22 @@ body {
   top: auto;
   height: auto;
 }
+.ui.modal > .close {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
 .ui.mini.modal .segment.mini {
   padding: 20px 20px;
 }
-[type="adsense"] {
+[type="adsense"][height="800"] {
   background: rgba(255, 255, 255, 0.1);
 
   position: relative;
   overflow: hidden;
-  height: 100%;
-  min-height: 50vh;
+  width: 360px;
+  height: 800px;
+  min-height: 800px;
   display: block;
+  margin: auto;
 }
 [type="adsense"]::before {
   opacity: 1;
