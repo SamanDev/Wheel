@@ -4,8 +4,8 @@ const app = express();
 
 var corsOptions = {
   origin: [
-    "https://www.wheelofpersia.com",
-    "http://www.wheelofpersia.com",
+    "https://wheelofpersia.com",
+    "http://wheelofpersia.com",
     "http://localhost:3000",
   ],
 };
@@ -53,16 +53,20 @@ db.mongoose
 // simple route
 
 // routes
-
+var userswinLisr = "";
 app.get("/lastlist", async (req, res) => {
   if (req.query.l == "users") {
     res.json(wheelusers);
   } else if (req.query.l == "leaders") {
-    const userswin = await User.find()
+    if (userswinLisr == "") {
+      const userswin = await User.find()
 
-      .limit(10)
-      .sort({ balance2: -1 });
-    res.json(userswin);
+        .limit(10)
+        .sort({ balance2: -1 });
+      userswinLisr = userswin;
+    }
+
+    res.json(userswinLisr);
   } else {
     var sortig = { date: -1, total: -1 };
     if (req.query.l != "myList") {
@@ -105,10 +109,12 @@ app.get("/gettokens", (req, res) => {
   Tokens.findByIdAndDelete(req.query.id, function (err, docs) {
     if (err) {
       console.log(err);
+      res.json("no access");
     } else {
       if (docs?.rid) {
-        User.findByIdAndUpdate(
-          docs.rid,
+        User.findOneAndUpdate(
+          { _id: docs.rid, balance2: { $lt: 5000 } },
+
           {
             $inc: { balance2: 5000 },
             $pull: { tokens: req.query.id },
@@ -117,6 +123,7 @@ app.get("/gettokens", (req, res) => {
           function (err, resp) {
             if (err) {
               console.log(err);
+              res.json("no access");
             } else {
               var _d = resp;
               _d.balance2 = _d.balance2 + 5000;
@@ -128,12 +135,12 @@ app.get("/gettokens", (req, res) => {
         );
       } else {
         User.find(
-          { tokens: req.query.id },
+          { tokens: req.query.id, balance2: { $lt: 5000 } },
 
           function (err, resp) {
-            console.log(JSON.stringify(resp));
             if (err) {
               console.log(err);
+              res.json("no access");
             } else {
               var _d = resp;
 
@@ -141,6 +148,8 @@ app.get("/gettokens", (req, res) => {
                 _d.tokens = removeItemOnce(_d.tokens, req.query.id);
 
                 res.json(_d);
+              } else {
+                res.json("no access");
               }
             }
           }
@@ -150,14 +159,19 @@ app.get("/gettokens", (req, res) => {
   });
 });
 app.get("/getchip", (req, res) => {
-  var newuserinc = User.findByIdAndUpdate(req.query.id, {
-    $inc: { balance2: 1000 },
-  }).then((resp) => {
+  var newuserinc = User.findOneAndUpdate(
+    { _id: req.query.id, balance2: { $lt: 1000 } },
+    {
+      $inc: { balance2: 1000 },
+    }
+  ).then((resp) => {
     if (resp?.username) {
       var _d = resp;
       _d.balance2 = _d.balance2 + 1000;
 
       res.json(_d);
+    } else {
+      res.json("no access");
     }
   });
 });
@@ -423,6 +437,7 @@ const spinstop = async () => {
   }, _time);
 };
 const doneWheel = async () => {
+  userswinLisr = "";
   var _time = 3000;
   wheel.status = "Done";
   wheelNamespace.emit("msg", {

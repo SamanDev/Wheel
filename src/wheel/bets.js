@@ -222,7 +222,7 @@ function BetsWheel(prop) {
           });
         }
       } else {
-        $(".showads").trigger("click");
+        $("#showadsmod").trigger("click");
       }
     }
   };

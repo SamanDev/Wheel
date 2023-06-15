@@ -16,7 +16,6 @@ function checkbox() {
 }
 var lighter;
 const updateWheel = (wheel, rndd, time) => {
-  console.log(wheel, rndd, time);
   if (wheel?.status) {
     if (wheel?.status == "Spin") {
     } else {
@@ -69,6 +68,26 @@ const updateWheel = (wheel, rndd, time) => {
         }
       }
     }
+    updateWheelborder(wheel);
+  }
+};
+const updateWheelborder = (wheel) => {
+  if (!wheel?.status) return false;
+  var colornum = getcolor(segments[wheel.number]);
+  if (wheel?.status == "Spin") {
+    colornum = "#000000";
+  }
+  if (wheel?.status == "Pending") {
+    colornum = getcolor(segments[wheel.startNum]);
+  }
+  if ($(".mainwheel .bhdLno >div").length) {
+    $(".mainwheel .bhdLno >div").css({
+      border: "  10px solid " + colornum + "",
+    });
+  } else {
+    setTimeout(() => {
+      updateWheelborder(wheel);
+    }, 1000);
   }
 };
 function CountWheel(prop) {

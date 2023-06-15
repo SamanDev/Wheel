@@ -18,16 +18,24 @@ const TableExampleSingleLine = (prop) => {
   }, [prop.command]);
   if (lastList.length == 0) {
     return (
-      <Segment basic style={{ height: 300 }}>
-        <Dimmer active inverted>
-          <Loader size="large">Loading</Loader>
+      <Segment inverted={prop.inverted} basic style={{ height: 300 }}>
+        <Dimmer active inverted={!prop.inverted}>
+          <Loader size="large" inverted={!prop.inverted}>
+            Loading
+          </Loader>
         </Dimmer>
       </Segment>
     );
   }
 
   return (
-    <List divided verticalAlign="middle" className="ltr">
+    <List
+      divided
+      verticalAlign="middle"
+      className="ltr"
+      celled
+      inverted={prop.inverted}
+    >
       {lastList.map((item) => {
         return (
           <List.Item key={item._id}>

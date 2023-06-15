@@ -34,7 +34,7 @@ const BoardUser = () => {
   }, []);
   if (userDC || !user?.accessToken) {
     return (
-      <Dimmer active as={Segment} blurring className="loadarea">
+      <Dimmer active className="loadarea" style={{ paddingTop: "10%" }}>
         <Header as="h2" icon inverted>
           <Icon name="ban" color="red" />
           Connection lost!

@@ -128,7 +128,11 @@ function App() {
         .then((res) => {
           setProfile(res.data);
         })
-        .catch((err) => logOut());
+        .catch((err) => {
+          if (!localStorage.getItem("user")) {
+            logOut();
+          }
+        });
     } else {
       logOut();
     }
@@ -231,8 +235,8 @@ function App() {
               color="green"
               size="huge"
               fluid
-              as={Link}
-              to={"/play"}
+              as={"a"}
+              href={"/play"}
               className="animate__flash  animate__animated  animate__infinite"
             >
               <Icon name="heart" />

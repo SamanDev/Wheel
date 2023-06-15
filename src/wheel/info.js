@@ -3,6 +3,9 @@ import EventBus from "../common/EventBus";
 import { Icon } from "semantic-ui-react";
 import { Jetton, UsersIcon, formatDollar } from "../utils/include";
 import { Link } from "react-router-dom";
+import Mod from "./modalinv";
+import Modads from "./modalads";
+import ModLeader from "./modalleader";
 function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
@@ -33,15 +36,23 @@ function BetsWheel(prop) {
 
   return (
     <>
-      <div className="info">
+      <div className="infobtn">
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <Icon
             name="arrow alternate circle left outline"
-            size="big"
             color="grey"
+            circular
             inverted
           />
         </Link>
+        <br />
+        <Mod />
+        <br />
+        <Modads />
+        <br />
+        <ModLeader />
+      </div>
+      <div className="info" style={{ marginLeft: 40 }}>
         <b>{user?.username}</b>
         <div style={{ float: "right" }}>
           <span>{online}</span>{" "}

@@ -71,13 +71,39 @@ body {
   position: relative;
   z-index: 12;
 }
-.adds {
-  background: rgba(0, 0, 0, 0.1);
-  margin: 10px auto;
+.ui.progress .bar {
+  min-width: 10px !important;
+  transition: all 1s linear;
+}
+
+.ui.mini.modal {
+  width: 95%;
+  margin: 0 !important;
+  max-width: 400px;
+  padding: 0px;
+  top: auto;
+  height: auto;
+}
+.ui.modal {
+  margin: 0 !important;
+
+  padding: 0px !important;
+  top: auto;
+  height: auto;
+}
+.ui.mini.modal .segment.mini {
+  padding: 20px 20px;
+}
+[type="adsense"] {
+  background: rgba(255, 255, 255, 0.1);
+
   position: relative;
   overflow: hidden;
+  height: 100%;
+  min-height: 50vh;
+  display: block;
 }
-.adds::before {
+[type="adsense"]::before {
   opacity: 1;
   content: "google ads";
   top: 0;
@@ -142,6 +168,15 @@ body {
   font-family: bungee, sans-serif;
   line-height: 25px;
   height: 25px;
+}
+.infobtn {
+  position: absolute;
+  z-index: 10;
+  padding: 5px 5px;
+}
+.infobtn .icon {
+  font-size: 16px;
+  margin-bottom: 5px;
 }
 .info b {
   display: inline-block;
