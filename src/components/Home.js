@@ -11,7 +11,13 @@ const Home = () => {
     <div className="home">
       <div className="slider-thumb"></div>
       <div className="cadr">
-        <img src="/assets/logo.png" alt="Wheel of Persia" className="logo" />
+        <img
+          src="/assets/logo.png"
+          width="220"
+          height="220"
+          alt="Wheel of Persia"
+          className="logo"
+        />
         <div className="container">
           <p>
             Welcome to "Wheel of Persia," a <b>free and non-gambling game</b>{" "}
@@ -25,11 +31,13 @@ const Home = () => {
           </p>
 
           <Google />
-          <div className="adds">
-            <AdsComponent dataAdSlot="3569022726" />
+          <div>
+            <AdsComponent dataAdSlot="6044212052" />
           </div>
           <List />
-
+          <div>
+            <AdsComponent dataAdSlot="6044212052" />
+          </div>
           <Menu />
         </div>
       </div>

@@ -16,13 +16,13 @@ const Home = () => {
               protecting your personal information. This Privacy Policy outlines
               how we collect, use, disclose, and safeguard your information when
               you visit our website{" "}
-              <a href="https://www.wheelofpersia.com" target="_new">
-                https://www.wheelofpersia.com
+              <a href="https://wheelofpersia.com" target="_new">
+                https://wheelofpersia.com
               </a>{" "}
-              ("Website"). Please read this Privacy Policy carefully to
-              understand our practices regarding your personal data and how we
-              will treat it. By using our Website, you consent to the terms of
-              this Privacy Policy.
+              . Please read this Privacy Policy carefully to understand our
+              practices regarding your personal data and how we will treat it.
+              By using our Website, you consent to the terms of this Privacy
+              Policy.
             </p>
             <ol>
               <li>

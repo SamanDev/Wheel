@@ -108,6 +108,17 @@ body {
   display: block;
   margin: auto;
 }
+[type="adsense"][height="320"] {
+  background: rgba(0, 0, 0, 0.5);
+
+  position: relative;
+  overflow: hidden;
+
+  height: 320px;
+  min-height: 320px;
+  display: block;
+  margin: auto;
+}
 [type="adsense"]::before {
   opacity: 1;
   content: "google ads";

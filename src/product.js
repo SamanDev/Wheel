@@ -11,14 +11,13 @@ const CardExampleCardProps = (prop) => {
       fluid
       extra={
         <>
-          <div style={{ float: "left", lineHeight: "22px" }}>
-            <Jetton />
-          </div>{" "}
-          {prop.fee}{" "}
+          <div style={{ float: "left", lineHeight: "30px" }}>
+            <Jetton /> {prop.fee}{" "}
+          </div>
           {user?.accessToken ? (
             <Button
               color="orange"
-              size="mini"
+              size="small"
               floated="right"
               onClick={() => {
                 alert(
@@ -34,7 +33,7 @@ const CardExampleCardProps = (prop) => {
               onClick={() => {
                 $(".navbar-nav .button").trigger("click");
               }}
-              size="mini"
+              size="small"
               floated="right"
             >
               Login to order
