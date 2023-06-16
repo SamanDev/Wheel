@@ -119,7 +119,7 @@ body {
   display: block;
   margin: auto;
 }
-[type="adsense"]::before {
+[type="adsense"][height]::before {
   opacity: 1;
   content: "google ads";
   top: 0;
