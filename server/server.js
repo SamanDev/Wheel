@@ -67,6 +67,10 @@ app.get("/lastlist", async (req, res) => {
     }
 
     res.json(userswinLisr);
+  } else if (req.query.l == "wheelid") {
+    const userswin = await Wheel.findById(req.query.id)
+    .populate("wheelusers");
+    res.json(userswin);
   } else {
     var sortig = { date: -1, total: -1 };
     if (req.query.l != "myList") {

@@ -4,20 +4,30 @@ import List from "./List";
 import Mywhell from "./wheel/showwheel";
 import { userBet, formatDollar } from "./utils/include";
 import $ from "jquery";
+import ListService from "./services/list.service";
 var sortByZIndex = function (a, b) {
   return a.style.zIndex - b.style.zIndex;
 };
 
 function ModalExampleModal(prop) {
   const [open, setOpen] = React.useState(false);
-  const users = prop.wheel;
+
+  const [wheel, setWheel] = useState(prop.wheel);
   const item = prop.wheel;
   const [user, setUser] = useState(prop.user);
 
-  var userBets = userBet(users, user?.username);
+  var userBets = userBet(wheel, user?.username);
   useEffect(() => {
     var sorted = $(".modals").sort(sortByZIndex);
     $("body").append(sorted[0]);
+    if (open) {
+      ListService.getPublicContent({
+        command: "wheelid&id=" + prop.wheel._id,
+      }).then((response) => {
+        setWheel(response.data);
+        userBets = userBet(response.data, user?.username);
+      });
+    }
   }, [open]);
   return (
     <>
@@ -113,7 +123,7 @@ function ModalExampleModal(prop) {
 
           <Segment color="black" inverted size="mini" className="res">
             <div className="table rsec">
-              <List {...prop} last={true} />
+              <List {...prop} wheel={wheel} last={true} />
             </div>
           </Segment>
         </div>

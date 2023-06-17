@@ -37,7 +37,7 @@ const getDelts = (item, betx, tit, num) => {
           zIndex: 120,
           color: "white",
           textShadow: "0 0 10px black",
-          marginTop: "70px",
+          marginTop: "30px",
           fontSize: 16,
         }}
       >
@@ -56,6 +56,7 @@ const getDelts = (item, betx, tit, num) => {
           height: "15vw",
           maxWidth: "100px",
           maxHeight: "100px",
+
           transition: "all .5s ease-in",
           background: getcolor(item?.position) + "70",
           boxShadow:
@@ -208,52 +209,6 @@ function ModalExampleModal(prop) {
               </div>
             )}
           </>
-        )}
-
-        {bets[1] > 0 ? (
-          <>
-            <Statistic color="violet" inverted size="small">
-              <Statistic.Value>{bets[1]}</Statistic.Value>
-              <Statistic.Label>You Won</Statistic.Label>
-              <Statistic.Value>
-                <Label
-                  size="huge"
-                  style={{
-                    background: getcolor(bigwin?.position),
-                    color: getcolortext(bigwin?.position),
-                    margin: "10px 10px",
-                    display: "block",
-                    textAlign: "center",
-                    lineHeight: "23px",
-                  }}
-                >
-                  {bets[1] / segments[wheel.number]}{" "}
-                  <span
-                    style={{
-                      display: "inline",
-                      position: "relative",
-                      top: 4,
-                    }}
-                  ></span>{" "}
-                  x{segments[wheel.number]}
-                </Label>
-              </Statistic.Value>
-            </Statistic>
-            <Divider />
-          </>
-        ) : (
-          bets[0] > 0 && (
-            <Statistic color="red" inverted size="mini">
-              <Statistic.Value>You Lose</Statistic.Value>
-              <Statistic.Label>Sorry...</Statistic.Label>
-              <Statistic.Value>
-                {bets[0]}{" "}
-                <span style={{ position: "relative", top: 4 }}>
-                  <Jetton />
-                </span>
-              </Statistic.Value>
-            </Statistic>
-          )
         )}
       </div>
     </div>

@@ -10,7 +10,7 @@ import {
   sumOfBet,
   sumOfWin,
 } from "../utils/include";
-
+import ListService from "../services/list.service";
 const haveBet = (pos, list, user) => {
   return list
     .filter(
@@ -99,6 +99,13 @@ function BetsWheel(prop) {
   const [balance, setBalance] = useState(user?.balance2);
 
   const [list, setList] = useState([]);
+  useEffect(() => {
+    ListService.getPublicContent({
+      command: "wheelid&id=" + wheel._id,
+    }).then((response) => {
+      setuserbets(response.data.wheelusers);
+    });
+  }, []);
 
   useEffect(() => {
     var stat = [];

@@ -32,6 +32,9 @@ body {
 .seg * {
   transition: all 0.5s ease-in;
 }
+.seg {
+  margin-left: -15px;
+}
 
 .seg .segx {
   position: relative;
@@ -60,10 +63,7 @@ body {
   bottom: -40px;
   opacity: 0;
 }
-.wheel {
-  background: black;
-  background-image: none !important;
-}
+
 .comment *:not(input) {
   color: #eee !important;
 }
@@ -164,6 +164,15 @@ body {
   position: absolute;
   font-size: 100px;
   color: #fff;
+}
+td b {
+  width: 80px;
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+}
+.ui.comments .comment .text {
+  width: 80%;
 }
 .info {
   position: absolute;
@@ -304,6 +313,17 @@ tr .ui,
   padding: 0;
   top: 50%;
 
+  margin-top: 30px;
+}
+.count img.circular {
+  position: absolute;
+  margin: auto;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  padding: 0;
+  top: 50%;
+
   transform: translateY(-50%);
 }
 .countover {
@@ -329,6 +349,8 @@ tr .ui,
 
   transition: transform 0s ease;
   transform: scale(1.17);
+  border-radius: 1000px 0 1000px 1000px;
+  overflow: hidden;
 }
 
 .modal {
@@ -414,7 +436,7 @@ tr .ui,
 }
 
 .tablelist {
-  height: 38vh;
+  height: 35vh;
   margin: 0 !important;
   overflow: auto;
   position: relative;

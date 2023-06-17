@@ -3,6 +3,7 @@ import { Wheel } from "react-custom-roulette";
 
 import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
+
 var _l = [];
 const updateWheel = (wheel) => {
   if (!wheel?.status) return false;

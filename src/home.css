@@ -1,6 +1,7 @@
 div.home {
   height: 100vh;
-
+  background: #000 url("assets/bg.jpg");
+  background-size: cover;
   overflow-x: hidden;
 }
 div.home:not(.wheel) {
@@ -38,13 +39,12 @@ p {
 }
 
 .logo {
-  width: 50%;
   position: relative;
   z-index: 1;
   margin: 30px auto;
   display: block;
   animation: loading 8s linear infinite;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 06));
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 06));
 }
 .rota {
   animation: loading 0.5s linear infinite;

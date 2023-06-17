@@ -33,6 +33,7 @@ function ChatWheel(prop) {
         overflow: "auto",
         marginTop: 30,
         overflowX: "hidden",
+        zIndex: 100,
       }}
     >
       {userbets.map((cmd, i) => {

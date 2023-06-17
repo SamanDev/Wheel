@@ -15,15 +15,15 @@ const GridExampleDividedPhrase = (prop) => {
   }, [bet]);
   return (
     <>
-      <Grid columns="three" divided>
+      <Grid columns="three">
         <Grid.Row style={{ margin: 0 }}>
-          <Grid.Column>
+          <Grid.Column style={{ padding: 0, overflow: "hidden" }}>
             <BetsWheel bet={bet} setBet={setBet} />
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column style={{ padding: 0 }}>
             <ChatWheel />
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column style={{ padding: 0 }}>
             <ChipsWheel bet={bet} setBet={setBet} />
           </Grid.Column>
         </Grid.Row>

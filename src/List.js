@@ -17,9 +17,10 @@ import {
 
 const TableExampleSingleLine = (prop) => {
   const [wheel, setWheel] = useState(prop.wheel);
-  const [userbets, setuserbets] = useState(prop.wheel?.wheelusers);
+  const [userbets, setuserbets] = useState([]);
   const [list, setList] = useState([]);
   const [user, setUser] = useState(prop.user);
+
   useEffect(() => {
     if (!prop.last) {
       ListService.getPublicContent({
@@ -34,6 +35,11 @@ const TableExampleSingleLine = (prop) => {
       }
     };
   }, [prop.command]);
+  useEffect(() => {
+    if (prop.last) {
+      setuserbets(prop.wheel.wheelusers);
+    }
+  }, [prop.wheel]);
   useEffect(() => {
     var stat = [];
 
@@ -53,10 +59,16 @@ const TableExampleSingleLine = (prop) => {
       }
       stat.sort((a, b) => (a.bet < b.bet ? 1 : -1));
       if (wheel?.status == "Spining" || wheel?.status == "Done") {
-        stat.sort((a, b) => (a.win < b.win ? 1 : -1));
+        stat.sort(function (a, b) {
+          if (a.win === b.win) {
+            // Price is only important when cities are the same
+            return b.bet - a.bet;
+          }
+          return a.win < b.win ? 1 : -1;
+        });
       }
     }
-
+    console.log(stat);
     setList(stat);
   }, [userbets]);
   useEffect(() => {

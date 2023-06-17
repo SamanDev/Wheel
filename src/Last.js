@@ -70,8 +70,7 @@ const TableExampleSingleLine = (prop) => {
                 >
                   {segments[item.number]}x
                 </Label>
-                <UsersIcon />{" "}
-                {<>{count(groupBySingleField(item?.wheelusers, "username"))}</>}{" "}
+                <UsersIcon /> {<>{item?.wheelusers.length}</>}{" "}
               </div>
               <div
                 style={{ float: "right", lineHeight: "25px", display: "flex" }}
