@@ -60,7 +60,7 @@ app.get("/lastlist", async (req, res) => {
   } else if (req.query.l == "leaders") {
     if (userswinLisr == "") {
       const userswin = await User.find()
-
+        .projection({ username: 1, image: 1, balance2: 1 })
         .limit(10)
         .sort({ balance2: -1 });
       userswinLisr = userswin;

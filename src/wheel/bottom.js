@@ -17,7 +17,7 @@ const GridExampleDividedPhrase = (prop) => {
     <>
       <Grid columns="three">
         <Grid.Row style={{ margin: 0 }}>
-          <Grid.Column style={{ padding: 0, overflow: "hidden" }}>
+          <Grid.Column style={{ padding: 0 }}>
             <BetsWheel bet={bet} setBet={setBet} />
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>

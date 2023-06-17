@@ -139,7 +139,7 @@ function CountWheel(prop) {
       mytime();
       updateWheel(wheel, parseFloat(rndd), time);
     }
-  }, [wheel?.status]);
+  }, [wheel]);
   useEffect(() => {
     $(".bhdLno img").remove();
     clearTimeout(timer);
