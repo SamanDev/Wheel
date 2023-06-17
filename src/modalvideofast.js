@@ -30,6 +30,16 @@ function ModalExampleModal(prop) {
     >
       <Progress percent={per} active color="green" attached="top" />
       <Segment inverted size="small" style={{ margin: 0 }}>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+          }}
+        >
+          <img src="/assets/sepi.png" style={{ margin: "auto" }} />
+        </div>
         <amp-ad
           layout="fixed"
           width="360"
