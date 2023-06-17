@@ -45,7 +45,7 @@ const updateWheel = (wheel, rndd, time) => {
       }
       if (wheel.status == "Done" || wheel.status == "Spining") {
         $(".mainwheel .bhdLno").removeClass("rotaslw");
-        $(".wheelstylee").html("");
+        $(".ws").html("");
         if ($(".mainwheel .bhdLno canvas").attr("style")) {
           $(".mainwheel .bhdLno canvas").css({
             transform:
@@ -119,7 +119,7 @@ function CountWheel(prop) {
         setOpenads(true);
       }
       $(".mainwheel .bhdLno").removeClass("rotaslw");
-      $(".wheelstylee").html("");
+      $(".ws").html("");
       clearInterval(lighter);
       lighter = setInterval(() => {
         checkbox();
@@ -132,7 +132,7 @@ function CountWheel(prop) {
     }
     if (wheel?.status == "Done") {
       $(".mainwheel .bhdLno").removeClass("rotaslw");
-      $(".wheelstylee").html("");
+      $(".ws").html("");
     }
 
     if (wheel?.status) {
@@ -144,7 +144,7 @@ function CountWheel(prop) {
     $(".bhdLno img").remove();
     clearTimeout(timer);
     if (time > 15) {
-      if ($(".wheelstylee").html() == "") {
+      if ($(".ws").html() == "") {
         if (wheel?.status != "Done") {
           var num =
             (wheel?.serverCode * wheel?.startNum +
@@ -175,7 +175,7 @@ function CountWheel(prop) {
             "deg)",
           transitionDuration: 40 - time + "s",
         });
-        $(".wheelstylee").html(
+        $(".ws").html(
           "<style>.rotaslw{animation-timing-function: cubic-bezier(0.1, -0.1, 0.001, 1);animation-name: loadingslow ;animation-duration:" +
             (40 - time) +
             "s  ;}@keyframes loadingslow {  0% { transform: rotate(-" +

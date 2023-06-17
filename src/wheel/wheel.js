@@ -46,6 +46,7 @@ function MNyWheel(prop) {
           <Modalwin />
           <Mod />
         </>
+        <div className="ws"></div>
       </div>
     </>
   );

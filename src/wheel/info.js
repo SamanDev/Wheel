@@ -73,7 +73,6 @@ function BetsWheel(prop) {
               : formatDollar(balance)}
           </span>
         </div>
-        <div className="wheelstylee"></div>
       </div>
     </>
   );
