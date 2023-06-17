@@ -20,14 +20,15 @@ const Home = () => {
         />
         <div className="container">
           <p>
-            Welcome to "Wheel of Persia," a <b>free and non-gambling game</b>{" "}
-            where you pick numbers on a wheel. If your number hits, you win
-            multiples of your bid. But here's the twist: you can cash out your
-            chips for real prizes and unlock new wheels.
+            Hey there, welcome to <b>"Wheel of Persia"!</b> It's a cool game
+            where you choose numbers on a wheel and if you hit the right one,
+            you win more than what you bid. But wait, there's more! You can
+            trade in your chips for actual prizes and open up new wheels to play
+            on.
           </p>
           <p>
-            It's all about <b>luck, strategy, and the thrill of winning</b> big
-            in <b>"Wheel of Persia"!</b>
+            It's all about being lucky, having a plan, and the excitement of
+            winning big in "Wheel of Persia"!
           </p>
 
           <Google />
