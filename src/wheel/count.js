@@ -163,6 +163,7 @@ function CountWheel(prop) {
           var num = wheel?.number;
         }
 
+        $(".chipps").addClass("animate__backOutRight");
         $(".mainwheel").addClass("mytrue");
         $(".mainwheel .bhdLno").addClass("rotaslw");
         $(".mainwheel .bhdLno canvas").removeAttr("style");

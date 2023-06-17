@@ -57,8 +57,8 @@ function BetsWheel(prop) {
     <div
       className={
         wheel?.status != "Pending"
-          ? " animate__animated animate__backOutRight"
-          : " animate__animated animate__backInRight"
+          ? "chipps animate__animated animate__backOutRight"
+          : "chipps animate__animated animate__backInRight"
       }
     >
       {" "}

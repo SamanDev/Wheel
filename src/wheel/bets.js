@@ -207,7 +207,7 @@ function BetsWheel(prop) {
       var Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
       if (balance >= _b) {
-        if (parseInt(Seconds_Between_Dates) < 30) {
+        if (parseInt(Seconds_Between_Dates) < 15) {
           socket.emit("addBet", {
             bet: parseInt(_b),
             position: parseInt(pos),
