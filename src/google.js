@@ -132,6 +132,7 @@ function App() {
           if (!localStorage.getItem("user")) {
             logOut();
           }
+          logOut();
         });
     } else {
       logOut();
