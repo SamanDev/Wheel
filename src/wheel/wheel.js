@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
 
 import CountWheel from "./count";
-import Mod from "../modalads";
+
 import Modalwin from "./modal";
 import EventBus from "../common/EventBus";
 import { segments, getcolor, getcolortext } from "../utils/include";
@@ -20,7 +20,7 @@ segments.map((item, i) => {
 });
 var Seconds_Between_Dates;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState();
+  const [wheel, setWheel] = useState({});
   const [mustspin, setMustSpin] = useState(false);
 
   useEffect(() => {
@@ -51,22 +51,28 @@ function MNyWheel(prop) {
       }
       setMustSpin(true);
     } else {
-      if (wheel?.status != "Spining") {
+      if (wheel?.status == "Done") {
         setMustSpin(false);
       }
     }
   }, [wheel?.status]);
-
+  if (!wheel?.status) {
+    return (
+      <div className={"mainwheel mywhell"}>
+        <CountWheel {...prop} />
+      </div>
+    );
+  }
   return (
     <>
       <div className={"mainwheel mywhell"}>
         <>
-          <CountWheel {...prop} />
+          <CountWheel wheel={wheel} {...prop} />
           <div className="countover">
             <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
           </div>
           <Wheel
-            startingOptionIndex={wheel?.number}
+            startingOptionIndex={wheel?.startNum}
             mustStartSpinning={mustspin}
             data={_l}
             prizeNumber={wheel?.number}
@@ -85,7 +91,6 @@ function MNyWheel(prop) {
 
         <>
           <Modalwin />
-          <Mod />
         </>
         <div className="ws"></div>
       </div>

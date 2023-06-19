@@ -73,13 +73,13 @@ const updateWheel = (wheel, rndd, time) => {
   }
 };
 const updateWheelborder = (wheel) => {
-  if (!wheel?.status) return false;
-  var colornum = getcolor(segments[wheel.number]);
+  //if (!wheel?.status) return false;
+  var colornum = getcolor(segments[wheel?.number]);
   if (wheel?.status == "Spin") {
     colornum = "#000000";
   }
   if (wheel?.status == "Pending") {
-    colornum = getcolor(segments[wheel.startNum]);
+    colornum = getcolor(segments[wheel?.startNum]);
   }
   if ($(".mainwheel .bhdLno >div").length) {
     $(".mainwheel .bhdLno >div").css({
@@ -96,7 +96,7 @@ function CountWheel(prop) {
   const [rndd, setRndd] = useState(0);
 
   const [openads, setOpenads] = useState(false);
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState(prop.wheel);
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -108,7 +108,7 @@ function CountWheel(prop) {
     return () => {
       clearInterval(lighter);
       clearTimeout(timer);
-      setWheel({});
+
       EventBus.remove("wheel");
     };
   }, []);
@@ -128,66 +128,30 @@ function CountWheel(prop) {
       //setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
       $(".mainwheel").removeClass("mytrue");
     } else {
-      $(".mainwheel").removeClass("mytrue");
+      //$(".mainwheel").removeClass("mytrue");
     }
     if (wheel?.status == "Done") {
       // $(".mainwheel .bhdLno").removeClass("rotaslw");
       // $(".ws").html("");
     }
 
-    if (wheel?.status) {
-      mytime();
-      updateWheelborder(wheel);
-      //updateWheel(wheel, parseFloat(rndd), time);
-    }
+    mytime();
+    updateWheelborder(wheel);
+    //updateWheel(wheel, parseFloat(rndd), time);
   }, [wheel]);
   useEffect(() => {
-    $(".bhdLno img").remove();
     clearTimeout(timer);
     if (time > 15) {
       if ($(".ws").html() == "") {
         if (wheel?.status != "Done") {
-          var num =
-            (wheel?.serverCode * wheel?.startNum +
-              wheel?.serverCode * ((wheel?.serverSec + 30) % 60)) %
-            segments.length;
           clearInterval(lighter);
           lighter = setInterval(() => {
             checkbox();
           }, 500);
         }
-        if (
-          wheel?.status == "Done" ||
-          wheel.status == "Spining" ||
-          wheel.status == "Spin"
-        ) {
-          var num = wheel?.number;
-        }
 
         $(".chipps").addClass("animate__backOutRight");
         $(".mainwheel").addClass("mytrue");
-        /* $(".mainwheel .bhdLno").addClass("rotaslw");
-        $(".mainwheel .bhdLno canvas").removeAttr("style");
-        $(".mainwheel .bhdLno canvas").css({
-          transform:
-            "rotate(-" +
-            parseFloat(
-              parseInt(num) * (360 / segments.length) + parseFloat(rndd)
-            ).toFixed(2) +
-            "deg)",
-          transitionDuration: 40 - time + "s",
-        });
-        $(".ws").html(
-          "<style>.rotaslw{animation-timing-function: cubic-bezier(0.1, -0.1, 0.001, 1);animation-name: loadingslow ;animation-duration:" +
-            (40 - time) +
-            "s  ;}@keyframes loadingslow {  0% { transform: rotate(-" +
-            parseFloat(
-              parseInt(wheel.startNum) * (360 / segments.length)
-            ).toFixed(2) +
-            "deg);  }  100% {  transform: rotate(-" +
-            parseFloat((40 - time) * 360).toFixed(2) +
-            "deg);     }</style>"
-        ); */
       }
     }
 
