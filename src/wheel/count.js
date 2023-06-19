@@ -137,6 +137,7 @@ function CountWheel(prop) {
 
     if (wheel?.status) {
       mytime();
+      updateWheelborder(wheel);
       //updateWheel(wheel, parseFloat(rndd), time);
     }
   }, [wheel]);
