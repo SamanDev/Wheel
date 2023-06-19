@@ -64,6 +64,7 @@ function MNyWheel(prop) {
             <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
           </div>
           <Wheel
+            startingOptionIndex={wheel?.number}
             mustStartSpinning={mustspin}
             data={_l}
             prizeNumber={wheel?.number}
