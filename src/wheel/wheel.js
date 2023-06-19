@@ -26,7 +26,7 @@ function MNyWheel(prop) {
   const [prizeNumber, setPrizeNumber] = useState(0);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      if (data?.status && data?.status != "Spining") {
+      if (data?.status) {
         setWheel(data);
       }
     });
@@ -45,7 +45,7 @@ function MNyWheel(prop) {
       var Seconds_from_T1_to_T2 = dif / 1000;
       Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
 
-      Seconds_Between_Dates = 38 - Seconds_Between_Dates;
+      Seconds_Between_Dates = 35 - Seconds_Between_Dates;
       Seconds_Between_Dates = Seconds_Between_Dates / 10;
       if (Seconds_Between_Dates < 0.01) {
         Seconds_Between_Dates = 0.01;
@@ -53,6 +53,8 @@ function MNyWheel(prop) {
       }
       setPrizeNumber(wheel.number);
       setMustSpin(true);
+    } else {
+      setMustSpin(false);
     }
   }, [wheel?.status]);
   if (!wheel?.status) {
@@ -71,7 +73,6 @@ function MNyWheel(prop) {
             <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
           </div>
           <Wheel
-            startingOptionIndex={prizeNumber}
             mustStartSpinning={mustspin}
             data={_l}
             prizeNumber={prizeNumber}
@@ -84,10 +85,6 @@ function MNyWheel(prop) {
             radiusLineWidth={0}
             textDistance={80}
             fontSize={20}
-            onStopSpinning={() => {
-              setMustSpin(false);
-              // $(".started-spinning").removeClass("started-spinning");
-            }}
             spinDuration={Seconds_Between_Dates}
           />
         </>

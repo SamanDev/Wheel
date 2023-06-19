@@ -6,7 +6,7 @@ function ModalExampleModal(prop) {
   useEffect(() => {
     if (prop.open) {
       var pers = setInterval(() => {
-        setPer((prev) => prev + 5);
+        setPer((prev) => prev + 20);
       }, 1000);
     } else {
       setPer(0);

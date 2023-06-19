@@ -73,7 +73,7 @@ const updateWheel = (wheel, rndd, time) => {
   }
 };
 const updateWheelborder = (wheel) => {
-  //if (!wheel?.status) return false;
+  if (!wheel?.status) return false;
   var colornum = getcolor(segments[wheel?.number]);
   if (wheel?.status == "Spin") {
     colornum = "#000000";
@@ -126,17 +126,13 @@ function CountWheel(prop) {
       }, 2500);
 
       //setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
-      $(".mainwheel").removeClass("mytrue");
+      // $(".mainwheel").removeClass("mytrue");
     } else {
       //$(".mainwheel").removeClass("mytrue");
     }
-    if (wheel?.status == "Done") {
-      // $(".mainwheel .bhdLno").removeClass("rotaslw");
-      // $(".ws").html("");
-    }
 
     mytime();
-    updateWheelborder(wheel);
+    //updateWheelborder(wheel);
     //updateWheel(wheel, parseFloat(rndd), time);
   }, [wheel]);
   useEffect(() => {

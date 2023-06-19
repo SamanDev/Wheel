@@ -1,6 +1,6 @@
 div.home {
   height: 100vh;
-  background: #000 url("assets/bg.jpg");
+  background: #000 url("assets/bgn.jpg");
   background-size: cover;
   overflow-x: hidden;
 }
