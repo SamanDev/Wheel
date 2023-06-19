@@ -101,7 +101,7 @@ function MNyWheel(prop) {
         </>
 
         <>
-          <Modalwin />
+          <Modalwin wheel={wheel} />
         </>
         <div className="ws"></div>
       </div>

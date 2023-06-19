@@ -102,7 +102,7 @@ const bigLose = (list) => {
 var bigwin, biglose, bigbet;
 function ModalExampleModal(prop) {
   const [bigbet, setBigBet] = useState([]);
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState(prop.wheel);
   const [user, setUser] = useState(prop.user);
   const [bets, setbets] = useState(userBet(wheel, user?.username));
   const [userbets, setuserbets] = useState([]);
@@ -167,7 +167,7 @@ function ModalExampleModal(prop) {
   }, [bigbet]);
   useEffect(() => {
     if (wheel?.status == "Spining") {
-      //setuserclass("animate__bounceIn animate__animated");
+      setuserclass("animate__bounceIn animate__animated");
     }
     if (wheel?.status == "Done" || wheel?.status == "Spin") {
       setuserclass("animate__bounceOut animate__animated");
