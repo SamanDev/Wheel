@@ -21,6 +21,7 @@ segments.map((item, i) => {
 
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState();
+  const [mustspin, setMustSpin] = useState(false);
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -34,33 +35,38 @@ function MNyWheel(prop) {
       EventBus.remove("wheel");
     };
   }, []);
+  useEffect(() => {
+    if (wheel?.status == "Spin") {
+      setMustSpin(true);
+    } else {
+      setMustSpin(false);
+    }
+  }, [wheel?.status]);
 
   return (
     <>
       <div className={"mainwheel mywhell"}>
-        {wheel?.status && (
-          <>
-            <CountWheel {...prop} />
-            <div className="countover">
-              <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
-            </div>
-            <Wheel
-              prizeNumber={wheel?.number}
-              mustStartSpinning={wheel?.status == "Spin" ? true : false}
-              outerBorderWidth={0}
-              outerBorderColor={"#eeeeee"}
-              innerRadius={10}
-              innerBorderColor={"#000000"}
-              innerBorderWidth={0}
-              radiusLineColor={"#000000"}
-              radiusLineWidth={0}
-              textDistance={80}
-              fontSize={20}
-              spinDuration={2.1}
-              data={_l}
-            />
-          </>
-        )}
+        <>
+          <CountWheel {...prop} />
+          <div className="countover">
+            <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
+          </div>
+          <Wheel
+            mustStartSpinning={mustspin}
+            data={_l}
+            prizeNumber={wheel?.number}
+            outerBorderWidth={0}
+            outerBorderColor={"#eeeeee"}
+            innerRadius={10}
+            innerBorderColor={"#000000"}
+            innerBorderWidth={0}
+            radiusLineColor={"#000000"}
+            radiusLineWidth={0}
+            textDistance={80}
+            fontSize={20}
+            spinDuration={2.1}
+          />
+        </>
 
         <>
           <Modalwin />

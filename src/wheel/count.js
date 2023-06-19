@@ -9,7 +9,7 @@ function getRandomArbitrary(min, max) {
 }
 var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
 
-var rndd2 = parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2);
+//var rndd2 = parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2);
 function checkbox() {
   var c2 = $("#cadr").attr("src2");
   $("#cadr").attr("src2", $("#cadr").attr("src"));
@@ -93,7 +93,7 @@ const updateWheelborder = (wheel) => {
 };
 function CountWheel(prop) {
   const [time, setTime] = useState(0);
-  const [rndd, setRndd] = useState(rndd2);
+  const [rndd, setRndd] = useState(0);
 
   const [openads, setOpenads] = useState(false);
   const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
@@ -125,7 +125,7 @@ function CountWheel(prop) {
         checkbox();
       }, 2500);
 
-      setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
+      //setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
       $(".mainwheel").removeClass("mytrue");
     } else {
       $(".mainwheel").removeClass("mytrue");

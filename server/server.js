@@ -256,6 +256,7 @@ wheelNamespace.on("connection", (socket) => {
         data.win = -1;
         data.username = socket.userdata.username;
         data.image = socket.userdata.image;
+        data.id = socket.userdata._id;
         wheel.total = wheel.total + data.bet;
 
         let fu = wheelusers.filter(
@@ -274,15 +275,16 @@ wheelNamespace.on("connection", (socket) => {
           wheelusers.push(data);
         }
         await User.findOneAndUpdate(
-          { username: data.username },
+          { _id: socket.userdata._id, balance2: { $gt: data.bet - 1 } },
           { $inc: { balance2: data.bet * -1 } }
         ).then((res) => {
           if (res?.username) {
             var _d = res;
             _d.balance2 = _d.balance2 - data.bet;
+            socket.broadcast.emit("msg", { command: "bets", data: data });
           }
         });
-        socket.broadcast.emit("msg", { command: "bets", data: data });
+
         // wheelNamespace.emit("msg", { command: "bets", data: data });
       }
     }
