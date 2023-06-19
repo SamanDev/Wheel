@@ -20,13 +20,16 @@ const BoardUser = () => {
     }
 
     return () => {
-      setUserDC(true);
+      //setUserDC(true);
       socket.disconnect();
     };
   }, []);
   useEffect(() => {
     EventBus.on("disconnect", (data) => {
       setUserDC(true);
+    });
+    EventBus.on("connect", (data) => {
+      setUserDC(false);
     });
     return () => {
       EventBus.remove("disconnect");

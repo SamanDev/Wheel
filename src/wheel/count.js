@@ -118,8 +118,8 @@ function CountWheel(prop) {
       if (wheel?.startNum == 0) {
         setOpenads(true);
       }
-      $(".mainwheel .bhdLno").removeClass("rotaslw");
-      $(".ws").html("");
+      //$(".mainwheel .bhdLno").removeClass("rotaslw");
+      //$(".ws").html("");
       clearInterval(lighter);
       lighter = setInterval(() => {
         checkbox();
@@ -131,13 +131,13 @@ function CountWheel(prop) {
       $(".mainwheel").removeClass("mytrue");
     }
     if (wheel?.status == "Done") {
-      $(".mainwheel .bhdLno").removeClass("rotaslw");
-      $(".ws").html("");
+      // $(".mainwheel .bhdLno").removeClass("rotaslw");
+      // $(".ws").html("");
     }
 
     if (wheel?.status) {
       mytime();
-      updateWheel(wheel, parseFloat(rndd), time);
+      //updateWheel(wheel, parseFloat(rndd), time);
     }
   }, [wheel]);
   useEffect(() => {
