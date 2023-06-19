@@ -51,7 +51,9 @@ function MNyWheel(prop) {
       }
       setMustSpin(true);
     } else {
-      setMustSpin(false);
+      if (wheel?.status != "Spining") {
+        setMustSpin(false);
+      }
     }
   }, [wheel?.status]);
 
