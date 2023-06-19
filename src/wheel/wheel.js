@@ -18,7 +18,7 @@ segments.map((item, i) => {
     option: "x" + item,
   });
 });
-
+var Seconds_Between_Dates;
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState();
   const [mustspin, setMustSpin] = useState(false);
@@ -37,6 +37,18 @@ function MNyWheel(prop) {
   }, []);
   useEffect(() => {
     if (wheel?.status == "Spin") {
+      var t1 = new Date(wheel?.date);
+      var t2 = new Date();
+      var dif = t2.getTime() - t1.getTime();
+
+      var Seconds_from_T1_to_T2 = dif / 1000;
+      Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+
+      Seconds_Between_Dates = 38 - Seconds_Between_Dates;
+      Seconds_Between_Dates = Seconds_Between_Dates / 10;
+      if (Seconds_Between_Dates < 0.01) {
+        Seconds_Between_Dates = 0.01;
+      }
       setMustSpin(true);
     } else {
       setMustSpin(false);
@@ -64,7 +76,7 @@ function MNyWheel(prop) {
             radiusLineWidth={0}
             textDistance={80}
             fontSize={20}
-            spinDuration={2.1}
+            spinDuration={Seconds_Between_Dates}
           />
         </>
 
