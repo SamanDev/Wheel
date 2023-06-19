@@ -6,17 +6,22 @@ import ModalAds from "../modalvideofast";
 var timer;
 
 function checkbox() {
-  var c2 = $("#cadr").attr("src2");
-  $("#cadr").attr("src2", $("#cadr").attr("src"));
-  $("#cadr").attr("src", c2);
+  if ($("#cadr2:visible").length) {
+    $("#cadr").removeAttr("style");
+    $("#cadr2").hide();
+  } else {
+    $("#cadr2").removeAttr("style");
+    $("#cadr").hide();
+  }
 }
 var lighter;
 
 const updateWheelborder = (wheel) => {
-  //if (!wheel?.status) return false;
+  if (!wheel?.status) return false;
   var colornum = getcolor(segments[wheel?.number]);
   if (wheel?.status == "Spin") {
     colornum = "#000000";
+  } else {
   }
   if (wheel?.status == "Pending") {
     colornum = getcolor(segments[wheel?.startNum]);
@@ -62,14 +67,15 @@ function CountWheel(prop) {
       lighter = setInterval(() => {
         checkbox();
       }, 2500);
-    } else {
       $(".mainwheel").removeClass("mytrue");
       $(".ws").html("");
+      mytime();
+      updateWheelborder(wheel);
+    } else {
+      mytime();
+      updateWheelborder(wheel);
     }
-
-    mytime();
-    updateWheelborder(wheel);
-  }, [wheel]);
+  }, [wheel?.status]);
   useEffect(() => {
     clearTimeout(timer);
     if (time > 15) {
@@ -119,9 +125,10 @@ function CountWheel(prop) {
   }
   return (
     <>
-      <ModalAds open={openads} setOpen={setOpenads} />
       {15 - time >= 0 && time < 15 && (
         <>
+          {" "}
+          <ModalAds open={openads} setOpen={setOpenads} />
           <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
             <h2 className="text-shadows">{15 - time}</h2>
           </div>

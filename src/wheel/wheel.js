@@ -43,18 +43,24 @@ function MNyWheel(prop) {
       var dif = t2.getTime() - t1.getTime();
 
       var Seconds_from_T1_to_T2 = dif / 1000;
-      Seconds_Between_Dates = parseInt(Math.abs(Seconds_from_T1_to_T2));
+      if (!mustspin) {
+        Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-      Seconds_Between_Dates = 35 - Seconds_Between_Dates;
-      Seconds_Between_Dates = Seconds_Between_Dates / 10;
-      if (Seconds_Between_Dates < 0.01) {
-        Seconds_Between_Dates = 0.01;
-      } else {
+        Seconds_Between_Dates = parseFloat(37 - Seconds_Between_Dates).toFixed(
+          2
+        );
+
+        Seconds_Between_Dates = Seconds_Between_Dates / 10;
+        if (Seconds_Between_Dates < 0.01) {
+          Seconds_Between_Dates = 0.01;
+        } else {
+        }
+        setPrizeNumber(wheel.number);
+        setMustSpin(true);
+        $(".bhdLno").removeClass(
+          "animate__flash animate__animated animate__faster"
+        );
       }
-      setPrizeNumber(wheel.number);
-      setMustSpin(true);
-    } else {
-      setMustSpin(false);
     }
   }, [wheel?.status]);
   if (!wheel?.status) {
@@ -70,10 +76,12 @@ function MNyWheel(prop) {
         <>
           <CountWheel wheel={wheel} {...prop} />
           <div className="countover">
-            <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
+            <img src="/assets/cadr3.png" id="cadr" />
+            <img src="/assets/cadr4.png" id="cadr2" />
           </div>
           <Wheel
-            mustStartSpinning={mustspin}
+            startingOptionIndex={prizeNumber}
+            mustStartSpinning={wheel.status == "Spin" ? mustspin : false}
             data={_l}
             prizeNumber={prizeNumber}
             outerBorderWidth={0}
@@ -84,8 +92,11 @@ function MNyWheel(prop) {
             radiusLineColor={"#000000"}
             radiusLineWidth={0}
             textDistance={80}
-            fontSize={20}
-            spinDuration={Seconds_Between_Dates}
+            fontSize={[20]}
+            spinDuration={[Seconds_Between_Dates]}
+            onStopSpinning={() => {
+              setMustSpin(false);
+            }}
           />
         </>
 
