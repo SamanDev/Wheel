@@ -368,7 +368,7 @@ tr .ui,
   margin: auto;
 }
 
-.bhdLno:not(.rotaslw) > div:after {
+.bhdLno:not(.rotaslw) > div:not(.started-spinning)::after {
   opacity: 1;
   content: "";
   top: 0;

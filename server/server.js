@@ -59,8 +59,11 @@ app.get("/lastlist", async (req, res) => {
     res.json(wheelusers);
   } else if (req.query.l == "leaders") {
     if (userswinLisr == "") {
-      const userswin = await User.find()
-        .projection({ username: 1, image: 1, balance2: 1 })
+      const userswin = await User.find(
+        {},
+        { username: 1, image: 1, balance2: 1 }
+      )
+
         .limit(10)
         .sort({ balance2: -1 });
       userswinLisr = userswin;
@@ -90,9 +93,7 @@ app.get("/lastlist", async (req, res) => {
         udata.push({ _id: key });
       });
 
-      var users2 = await Wheel.find({ $or: udata })
-        .sort({ net: -1 })
-        .populate("wheelusers");
+      var users2 = await Wheel.find({ $or: udata }).sort({ net: -1 });
     }
     res.json(users2);
   }
@@ -236,10 +237,8 @@ wheelNamespace.use(async (socket, next) => {
   } else {
     await User.findById(user.id).then((res) => {
       if (res?.username) {
-        socket.userdata = res;
-
         wheelNamespace.in(user.username).disconnectSockets(true);
-
+        socket.userdata = res;
         socket.join(user.username);
 
         next();
@@ -375,7 +374,7 @@ const createWheelData = async () => {
 
   setTimeout(() => {
     spin();
-  }, 30000);
+  }, 15000);
 };
 const spin = async () => {
   const d = new Date();
@@ -390,18 +389,15 @@ const spin = async () => {
     command: "update",
     data: wheel,
   });
-
-  setTimeout(() => {
-    spinstop();
-  }, 10000);
   var dd = await Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spin",
     serverSec: seconds,
     number: newPrizeNumbern,
   });
-  if (wheelusers.length > 0) {
-    //dec();
-  }
+
+  setTimeout(() => {
+    spinstop();
+  }, 25000);
 };
 const spinstop = async () => {
   var _time = 5000;

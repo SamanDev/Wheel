@@ -18,7 +18,7 @@ function checkbox() {
 var lighter;
 const updateWheel = (wheel, rndd, time) => {
   if (wheel?.status) {
-    if (wheel?.status == "Spin") {
+    /*   if (wheel?.status == "Spin") {
     } else {
       if (wheel.status == "Pending") {
         if ($(".mainwheel .bhdLno canvas").attr("style")) {
@@ -68,7 +68,7 @@ const updateWheel = (wheel, rndd, time) => {
           });
         }
       }
-    }
+    } */
     updateWheelborder(wheel);
   }
 };
@@ -165,7 +165,7 @@ function CountWheel(prop) {
 
         $(".chipps").addClass("animate__backOutRight");
         $(".mainwheel").addClass("mytrue");
-        $(".mainwheel .bhdLno").addClass("rotaslw");
+        /* $(".mainwheel .bhdLno").addClass("rotaslw");
         $(".mainwheel .bhdLno canvas").removeAttr("style");
         $(".mainwheel .bhdLno canvas").css({
           transform:
@@ -186,7 +186,7 @@ function CountWheel(prop) {
             "deg);  }  100% {  transform: rotate(-" +
             parseFloat((40 - time) * 360).toFixed(2) +
             "deg);     }</style>"
-        );
+        ); */
       }
     }
 
