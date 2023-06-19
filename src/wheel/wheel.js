@@ -6,6 +6,7 @@ import CountWheel from "./count";
 import Modalwin from "./modal";
 import EventBus from "../common/EventBus";
 import { segments, getcolor, getcolortext } from "../utils/include";
+import $ from "jquery";
 var _l = [];
 
 segments.map((item, i) => {
@@ -22,10 +23,10 @@ var Seconds_Between_Dates;
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState({});
   const [mustspin, setMustSpin] = useState(false);
-
+  const [prizeNumber, setPrizeNumber] = useState(0);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
-      if (data?.status) {
+      if (data?.status && data?.status != "Spining") {
         setWheel(data);
       }
     });
@@ -48,12 +49,10 @@ function MNyWheel(prop) {
       Seconds_Between_Dates = Seconds_Between_Dates / 10;
       if (Seconds_Between_Dates < 0.01) {
         Seconds_Between_Dates = 0.01;
+      } else {
       }
+      setPrizeNumber(wheel.number);
       setMustSpin(true);
-    } else {
-      if (wheel?.status == "Done") {
-        setMustSpin(false);
-      }
     }
   }, [wheel?.status]);
   if (!wheel?.status) {
@@ -72,10 +71,10 @@ function MNyWheel(prop) {
             <img src="/assets/cadr3.png" src2="/assets/cadr4.png" id="cadr" />
           </div>
           <Wheel
-            startingOptionIndex={wheel?.startNum}
+            startingOptionIndex={prizeNumber}
             mustStartSpinning={mustspin}
             data={_l}
-            prizeNumber={wheel?.number}
+            prizeNumber={prizeNumber}
             outerBorderWidth={0}
             outerBorderColor={"#eeeeee"}
             innerRadius={10}
@@ -85,6 +84,10 @@ function MNyWheel(prop) {
             radiusLineWidth={0}
             textDistance={80}
             fontSize={20}
+            onStopSpinning={() => {
+              setMustSpin(false);
+              // $(".started-spinning").removeClass("started-spinning");
+            }}
             spinDuration={Seconds_Between_Dates}
           />
         </>
