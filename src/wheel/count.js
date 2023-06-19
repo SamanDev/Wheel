@@ -4,76 +4,16 @@ import { segments, getcolor } from "../utils/include";
 import EventBus from "../common/EventBus";
 import ModalAds from "../modalvideofast";
 var timer;
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
-var degg = parseFloat(360 / segments.length / 2 - 1.21).toFixed(2);
 
-//var rndd2 = parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2);
 function checkbox() {
   var c2 = $("#cadr").attr("src2");
   $("#cadr").attr("src2", $("#cadr").attr("src"));
   $("#cadr").attr("src", c2);
 }
 var lighter;
-const updateWheel = (wheel, rndd, time) => {
-  if (wheel?.status) {
-    /*   if (wheel?.status == "Spin") {
-    } else {
-      if (wheel.status == "Pending") {
-        if ($(".mainwheel .bhdLno canvas").attr("style")) {
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(
-                parseInt(wheel.startNum) * (360 / segments.length) + rndd
-              ).toFixed(2) +
-              "deg)",
-            transitionDuration: "1s",
-          });
-        } else {
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(
-                parseInt(wheel.startNum) * (360 / segments.length) + rndd
-              ).toFixed(2) +
-              "deg)",
-            transitionDuration: "1s",
-          });
-        }
-      }
-      if (wheel.status == "Done" || wheel.status == "Spining") {
-        $(".mainwheel .bhdLno").removeClass("rotaslw");
-        $(".ws").html("");
-        if ($(".mainwheel .bhdLno canvas").attr("style")) {
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(
-                parseInt(wheel.number) * (360 / segments.length) + rndd
-              ).toFixed(2) +
-              "deg)",
-            transitionDuration: "1s",
-          });
-        } else {
-          $(".mainwheel .bhdLno canvas").css({
-            transform:
-              "rotate(-" +
-              parseFloat(
-                parseInt(wheel.number) * (360 / segments.length) + rndd
-              ).toFixed(2) +
-              "deg)",
-            transitionDuration: "1s",
-          });
-        }
-      }
-    } */
-    updateWheelborder(wheel);
-  }
-};
+
 const updateWheelborder = (wheel) => {
-  if (!wheel?.status) return false;
+  //if (!wheel?.status) return false;
   var colornum = getcolor(segments[wheel?.number]);
   if (wheel?.status == "Spin") {
     colornum = "#000000";
@@ -83,7 +23,7 @@ const updateWheelborder = (wheel) => {
   }
   if ($(".mainwheel .bhdLno >div").length) {
     $(".mainwheel .bhdLno >div").css({
-      border: "  10px solid " + colornum + "",
+      border: "12px solid " + colornum + "",
     });
   } else {
     setTimeout(() => {
@@ -93,7 +33,6 @@ const updateWheelborder = (wheel) => {
 };
 function CountWheel(prop) {
   const [time, setTime] = useState(0);
-  const [rndd, setRndd] = useState(0);
 
   const [openads, setOpenads] = useState(false);
   const [wheel, setWheel] = useState(prop.wheel);
@@ -118,22 +57,18 @@ function CountWheel(prop) {
       if (wheel?.startNum == 0) {
         setOpenads(true);
       }
-      //$(".mainwheel .bhdLno").removeClass("rotaslw");
-      //$(".ws").html("");
+
       clearInterval(lighter);
       lighter = setInterval(() => {
         checkbox();
       }, 2500);
-
-      //setRndd(parseFloat(getRandomArbitrary(degg * -1, degg)).toFixed(2));
-      // $(".mainwheel").removeClass("mytrue");
     } else {
-      //$(".mainwheel").removeClass("mytrue");
+      $(".mainwheel").removeClass("mytrue");
+      $(".ws").html("");
     }
 
     mytime();
-    //updateWheelborder(wheel);
-    //updateWheel(wheel, parseFloat(rndd), time);
+    updateWheelborder(wheel);
   }, [wheel]);
   useEffect(() => {
     clearTimeout(timer);
@@ -148,6 +83,7 @@ function CountWheel(prop) {
 
         $(".chipps").addClass("animate__backOutRight");
         $(".mainwheel").addClass("mytrue");
+        $(".ws").html("hi");
       }
     }
 
