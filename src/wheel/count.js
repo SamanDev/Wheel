@@ -78,7 +78,7 @@ function CountWheel(prop) {
   }, [wheel?.status]);
   useEffect(() => {
     clearTimeout(timer);
-    if (time > 15) {
+    if (time >= 15) {
       if ($(".ws").html() == "") {
         if (wheel?.status != "Done") {
           clearInterval(lighter);
@@ -125,9 +125,8 @@ function CountWheel(prop) {
   }
   return (
     <>
-      {15 - time >= 0 && time < 15 && (
+      {15 - time > 0 && time < 15 && (
         <>
-          {" "}
           <ModalAds open={openads} setOpen={setOpenads} />
           <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
             <h2 className="text-shadows">{15 - time}</h2>
