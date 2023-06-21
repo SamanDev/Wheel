@@ -538,9 +538,12 @@ tr .ui,
   text-align: center;
 
   transform: scale(0.8) translateX(35px);
-  transition: all 0.3s ease;
+  transition: all 1s ease;
   cursor: pointer;
   z-index: 1;
+}
+.chipps {
+  transition: all 1s ease;
 }
 
 .betarea .chips {

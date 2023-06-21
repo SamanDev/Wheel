@@ -51,13 +51,14 @@ function MNyWheel(prop) {
 
           Seconds_Between_Dates = Seconds_Between_Dates / 10;
           if (Seconds_Between_Dates < 0.01) {
-            Seconds_Between_Dates = 0.5;
+            Seconds_Between_Dates = 0.2;
           } else {
           }
           setPrizeNumber(wheel?.number);
           setMustSpin(true);
         }
       } else {
+        setMustSpin(false);
         //setPrizeNumber(wheel?.startNum);
       }
     }
@@ -71,17 +72,17 @@ function MNyWheel(prop) {
   }
   return (
     <>
-      <div className="mainwheel mywhell">
+      <div className="mainwheel mywhell animate__rotateInDownRight animate__animated">
         <CountWheel wheel={wheel} {...prop} />
         <div className="countover">
           <img src="/assets/cadr3.png" id="cadr" />
           <img src="/assets/cadr4.png" id="cadr2" />
         </div>
         <Wheel
-          mustStartSpinning={wheel.status == "Spin" ? mustspin : false}
           data={_l}
-          prizeNumber={prizeNumber}
+          mustStartSpinning={wheel.status == "Spin" ? mustspin : false}
           outerBorderWidth={0}
+          prizeNumber={prizeNumber}
           outerBorderColor={"#eeeeee"}
           innerRadius={10}
           innerBorderColor={"#000000"}
@@ -92,7 +93,7 @@ function MNyWheel(prop) {
           fontSize={[20]}
           spinDuration={[Seconds_Between_Dates]}
           onStopSpinning={() => {
-            setMustSpin(false);
+            //ssetMustSpin(false);
           }}
         />
 

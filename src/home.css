@@ -43,7 +43,7 @@ p {
   z-index: 1;
   margin: 30px auto;
   display: block;
-  animation: loading 8s linear infinite;
+  animation: loading 20s linear infinite;
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 06));
 }
 .rota {

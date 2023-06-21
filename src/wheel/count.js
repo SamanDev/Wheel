@@ -87,7 +87,6 @@ function CountWheel(prop) {
           }, 500);
         }
 
-        $(".chipps").addClass("animate__backOutRight");
         $(".mainwheel").addClass("mytrue");
         $(".ws").html("hi");
       }

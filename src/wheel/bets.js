@@ -224,6 +224,8 @@ function BetsWheel(prop) {
       } else {
         $("#showadsmod").trigger("click");
       }
+    } else {
+      alert("Wait for next round.");
     }
   };
 

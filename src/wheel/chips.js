@@ -55,13 +55,9 @@ function BetsWheel(prop) {
   }, [balance]);
   return (
     <div
-      className={
-        wheel?.status != "Pending"
-          ? "chipps animate__animated animate__backOutRight"
-          : "chipps animate__animated animate__backInRight"
-      }
+      style={wheel?.status != "Pending" ? { opacity: 0.5 } : { opacity: 1 }}
+      className="chipps"
     >
-      {" "}
       <div className="chiparea">
         <div style={user?.balance2 >= 50 ? {} : { opacity: 0.5 }}>
           <GetChip chip={50} {...prop} />
