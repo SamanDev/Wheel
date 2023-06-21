@@ -10,17 +10,16 @@ var _l = [];
 
 segments.map((item, i) => {
   _l.push({
+    option: "x" + item,
     style: {
       backgroundColor: getcolor(item),
       textColor: getcolortext(item),
     },
-
-    option: "x" + item,
   });
 });
-var Seconds_Between_Dates;
+var Seconds_Between_Dates = 0.1;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState({});
+  const [wheel, setWheel] = useState();
   const [mustspin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   useEffect(() => {
@@ -42,34 +41,37 @@ function MNyWheel(prop) {
         var dif = t2.getTime() - t1.getTime();
 
         var Seconds_from_T1_to_T2 = dif / 1000;
-        if (!mustspin) {
-          Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
+        Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-          Seconds_Between_Dates = parseFloat(
-            37 - Seconds_Between_Dates
-          ).toFixed(2);
+        Seconds_Between_Dates = parseFloat(37 - Seconds_Between_Dates).toFixed(
+          2
+        );
 
-          Seconds_Between_Dates = Seconds_Between_Dates / 10;
-          if (Seconds_Between_Dates < 0.01) {
-            Seconds_Between_Dates = 0.2;
-          } else {
-          }
+        Seconds_Between_Dates = Seconds_Between_Dates / 10;
+        Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(2);
+        if (Seconds_Between_Dates < 0.01) {
+          Seconds_Between_Dates = 0.2;
+        } else {
           setPrizeNumber(wheel?.number);
           setMustSpin(true);
         }
       } else {
-        setMustSpin(false);
-        //setPrizeNumber(wheel?.startNum);
+        if (wheel?.status == "Pending") {
+          setPrizeNumber(wheel?.startNum);
+        } else {
+          setPrizeNumber(wheel?.number);
+        }
       }
     }
-  }, [wheel]);
+  }, [wheel?.status]);
   if (!wheel?.status) {
     return (
-      <div className={"mainwheel mywhell"}>
+      <div className="mainwheel mywhell animate__bounceIn animate__animated">
         <CountWheel wheel={wheel} {...prop} />
       </div>
     );
   }
+
   return (
     <>
       <div className="mainwheel mywhell animate__rotateInDownRight animate__animated">
@@ -80,9 +82,10 @@ function MNyWheel(prop) {
         </div>
         <Wheel
           data={_l}
-          mustStartSpinning={wheel.status == "Spin" ? mustspin : false}
+          mustStartSpinning={mustspin}
           outerBorderWidth={0}
           prizeNumber={prizeNumber}
+          startingOptionIndex={wheel.startNum}
           outerBorderColor={"#eeeeee"}
           innerRadius={10}
           innerBorderColor={"#000000"}
@@ -91,9 +94,9 @@ function MNyWheel(prop) {
           radiusLineWidth={0}
           textDistance={80}
           fontSize={[20]}
-          spinDuration={[Seconds_Between_Dates]}
+          spinDuration={[parseFloat(Seconds_Between_Dates)]}
           onStopSpinning={() => {
-            //ssetMustSpin(false);
+            setMustSpin(false);
           }}
         />
 
