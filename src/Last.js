@@ -86,19 +86,6 @@ const TableExampleSingleLine = (prop) => {
                   size="small"
                   className="ltr"
                 >
-                  {printnum(userBets[1] - userBets[0])}
-                </Label>
-                <Label
-                  style={
-                    userBets[1] - userBets[0] >= 0
-                      ? {
-                          color: "green",
-                        }
-                      : { color: "red" }
-                  }
-                  size="small"
-                  className="ltr"
-                >
                   {printnum(item.net)}
                 </Label>
               </div>

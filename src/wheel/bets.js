@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
-import { Label } from "semantic-ui-react";
+import { Label, Popup } from "semantic-ui-react";
 import socket from "../socket";
 import {
   getcolor,
@@ -226,8 +226,6 @@ function BetsWheel(prop) {
       } else {
         $("#showadsmod").trigger("click");
       }
-    } else {
-      alert("Wait for next round.");
     }
   };
 
@@ -236,44 +234,50 @@ function BetsWheel(prop) {
       {segX.map((seg, i) => {
         var inf = getPosCount(list, seg);
         return (
-          <Label
-            size="huge"
-            key={i}
-            tag
-            onClick={() => {
-              addBet(seg, prop.bet);
-            }}
-            className={
-              wheel?.status == "Spining" && segments[wheel?.number] == seg
-                ? "animate__tada animate__animated animate__repeat-3 pen"
-                : wheel?.status == "Spining"
-                ? "b0 pen"
-                : "pen"
+          <Popup
+            content="Wait for next round."
+            disabled={wheel?.status == "Pending" ? true : false}
+            trigger={
+              <Label
+                size="huge"
+                key={i}
+                tag
+                onClick={() => {
+                  addBet(seg, prop.bet);
+                }}
+                className={
+                  wheel?.status == "Spining" && segments[wheel?.number] == seg
+                    ? "animate__tada animate__animated animate__repeat-3 pen"
+                    : wheel?.status == "Spining"
+                    ? "b0 pen"
+                    : "pen"
+                }
+                style={{
+                  background: getcolor(seg),
+                  color: getcolortext(seg),
+                  float: "left",
+                  width: 100,
+                  marginBottom: 5,
+                  cursor: "pointer",
+                }}
+              >
+                <div className={inf[1] > 0 ? "seg" : "seg none"}>
+                  <div className="segx">x{seg}</div>
+                  <div className="segttotal">
+                    {inf[1]}{" "}
+                    <img
+                      src={"/assets/users.svg"}
+                      style={{ width: 16, height: 16 }}
+                    />{" "}
+                    {inf[0] <= 1000
+                      ? formatDollar(inf[0])
+                      : formatDollar(inf[0] / 1000) + "K"}
+                  </div>
+                </div>
+                <div className="betarea">{haveBet(seg, list, user)}</div>
+              </Label>
             }
-            style={{
-              background: getcolor(seg),
-              color: getcolortext(seg),
-              float: "left",
-              width: 100,
-              marginBottom: 5,
-              cursor: "pointer",
-            }}
-          >
-            <div className={inf[1] > 0 ? "seg" : "seg none"}>
-              <div className="segx">x{seg}</div>
-              <div className="segttotal">
-                {inf[1]}{" "}
-                <img
-                  src={"/assets/users.svg"}
-                  style={{ width: 16, height: 16 }}
-                />{" "}
-                {inf[0] <= 1000
-                  ? formatDollar(inf[0])
-                  : formatDollar(inf[0] / 1000) + "K"}
-              </div>
-            </div>
-            <div className="betarea">{haveBet(seg, list, user)}</div>
-          </Label>
+          />
         );
       })}
     </>
