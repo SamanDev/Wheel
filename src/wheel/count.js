@@ -50,6 +50,7 @@ function CountWheel(prop) {
     });
 
     return () => {
+      setWheel();
       clearInterval(lighter);
       clearTimeout(timer);
 

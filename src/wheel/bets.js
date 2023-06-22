@@ -167,8 +167,10 @@ function BetsWheel(prop) {
       setuserbets([]);
     });
     return () => {
+      setWheel();
       setuserbets([]);
       setCon(false);
+      localStorage.removeItem("wheel");
       EventBus.remove("wheel");
       EventBus.remove("user");
       EventBus.remove("users");

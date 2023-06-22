@@ -25,6 +25,7 @@ function BetsWheel(prop) {
       setUser(newuser);
     });
     return () => {
+      setWheel();
       EventBus.remove("user");
       EventBus.remove("balance");
       EventBus.remove("wheel");

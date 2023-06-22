@@ -25,15 +25,18 @@ function MNyWheel(prop) {
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
+        setMustSpin(false);
         $(".mainwheel .bhdLno").removeClass(
           "animate__flash animate__animated animate__faster"
         );
-        setMustSpin(false);
+
         setWheel(data);
       }
     });
 
     return () => {
+      setMustSpin(false);
+      setWheel();
       EventBus.remove("wheel");
     };
   }, []);
@@ -47,7 +50,7 @@ function MNyWheel(prop) {
         var Seconds_from_T1_to_T2 = dif / 1000;
         Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-        Seconds_Between_Dates = 38 - Seconds_Between_Dates;
+        Seconds_Between_Dates = 37 - Seconds_Between_Dates;
 
         Seconds_Between_Dates = Seconds_Between_Dates / 10;
         Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(2);
@@ -61,10 +64,8 @@ function MNyWheel(prop) {
         if (wheel?.status == "Pending") {
           setPrizeNumber(wheel?.startNum);
         } else {
-          $(".mainwheel .bhdLno").addClass(
-            "animate__flash animate__animated animate__faster"
-          );
           setMustSpin(false);
+          setPrizeNumber(wheel?.number);
         }
       }
     }

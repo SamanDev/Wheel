@@ -41,7 +41,7 @@ function MNyWheel(prop) {
         style={{ height: 300 }}
       >
         <div className="countover">
-          <img src="/assets/cadr.png" src2="/assets/cadr2.png" />
+          <img src="/assets/cadr3.png" src2="/assets/cadr2.png" />
         </div>
         <Wheel
           startingOptionIndex={wheel.number}
