@@ -7,10 +7,10 @@ var timer;
 
 function checkbox() {
   if ($("#cadr2:visible").length) {
-    $("#cadr").removeAttr("style");
+    $("#cadr").show();
     $("#cadr2").hide();
   } else {
-    $("#cadr2").removeAttr("style");
+    $("#cadr2").show();
     $("#cadr").hide();
   }
 }
@@ -37,7 +37,7 @@ const updateWheelborder = (wheel) => {
   }
 };
 function CountWheel(prop) {
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(1);
 
   const [openads, setOpenads] = useState(false);
   const [wheel, setWheel] = useState(prop.wheel);

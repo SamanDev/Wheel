@@ -30,7 +30,7 @@ segments.map((item, i) => {
 });
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState(prop.wheel);
-
+  console.log("show");
   useEffect(() => {
     updateWheel(wheel);
   }, []);

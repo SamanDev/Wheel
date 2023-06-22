@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
-
+import $ from "jquery";
 import CountWheel from "./count";
 
 import Modalwin from "./modal";
@@ -25,6 +25,10 @@ function MNyWheel(prop) {
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
+        $(".mainwheel .bhdLno").removeClass(
+          "animate__flash animate__animated animate__faster"
+        );
+        setMustSpin(false);
         setWheel(data);
       }
     });
@@ -43,23 +47,24 @@ function MNyWheel(prop) {
         var Seconds_from_T1_to_T2 = dif / 1000;
         Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-        Seconds_Between_Dates = parseFloat(37 - Seconds_Between_Dates).toFixed(
-          2
-        );
+        Seconds_Between_Dates = 38 - Seconds_Between_Dates;
 
         Seconds_Between_Dates = Seconds_Between_Dates / 10;
         Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(2);
         if (Seconds_Between_Dates < 0.01) {
-          Seconds_Between_Dates = 0.2;
+          Seconds_Between_Dates = 0.02;
         } else {
-          setPrizeNumber(wheel?.number);
-          setMustSpin(true);
         }
+        setPrizeNumber(wheel?.number);
+        setMustSpin(true);
       } else {
         if (wheel?.status == "Pending") {
           setPrizeNumber(wheel?.startNum);
         } else {
-          setPrizeNumber(wheel?.number);
+          $(".mainwheel .bhdLno").addClass(
+            "animate__flash animate__animated animate__faster"
+          );
+          setMustSpin(false);
         }
       }
     }
@@ -96,6 +101,9 @@ function MNyWheel(prop) {
           fontSize={[20]}
           spinDuration={[parseFloat(Seconds_Between_Dates)]}
           onStopSpinning={() => {
+            $(".mainwheel .bhdLno").addClass(
+              "animate__flash animate__animated animate__faster"
+            );
             setMustSpin(false);
           }}
         />
