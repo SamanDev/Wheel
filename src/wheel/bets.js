@@ -135,7 +135,7 @@ function BetsWheel(prop) {
   const [user, setUser] = useState(oldduser);
   const [userbets, setuserbets] = useState([]);
   const [balance, setBalance] = useState(user?.balance2);
-
+  const contextRef = React.useRef();
   const [list, setList] = useState([]);
   const [con, setCon] = useState(false);
 
@@ -231,6 +231,31 @@ function BetsWheel(prop) {
 
   return (
     <>
+      <div ref={contextRef}></div>
+      <Popup
+        context={contextRef}
+        open={true}
+        position="top left"
+        className={
+          wheel?.status != "Pending"
+            ? "animate__fadeInDown animate__animated"
+            : "animate__animated animate__fadeOutUp"
+        }
+      >
+        ⛔ Wait for next round.
+      </Popup>
+      <Popup
+        context={contextRef}
+        open={true}
+        position="top left"
+        className={
+          wheel?.status == "Pending"
+            ? "animate__fadeInDown animate__animated"
+            : "animate__animated animate__fadeOutUp"
+        }
+      >
+        Time to bet 👇
+      </Popup>
       {segX.map((seg, i) => {
         var inf = getPosCount(list, seg);
         return (
