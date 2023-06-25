@@ -32,10 +32,7 @@ const Home = () => {
           </p>
 
           <Google />
-          <div>
-            <AdsComponent dataAdSlot="6044212052" />
-          </div>
-          <List />
+
           <div>
             <AdsComponent dataAdSlot="6044212052" />
           </div>
