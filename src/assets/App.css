@@ -666,8 +666,10 @@ canvas {
   width: 101% !important;
   height: 101% !important;
 }
+.ui.page.dimmer {
+  z-index: 10000;
+}
 
-/* Colors */
 .pokerchip.gold {
   transform-origin: top;
   transform: scale(0.22);
