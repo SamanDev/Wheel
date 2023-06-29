@@ -87,7 +87,7 @@ function ModalExampleModal(prop) {
       }
     >
       <Segment inverted size="mini" style={{ textAlign: "center" }}>
-        <h3 className="text-center">Free chips</h3>
+        <h3 className="text-center">Free Coin</h3>
         <Divider />
         You can watch ads and get 1,000{" "}
         <span style={{ position: "relative", top: -1 }}>

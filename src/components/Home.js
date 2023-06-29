@@ -23,7 +23,7 @@ const Home = () => {
             Hey there, welcome to <b>"Wheel of Persia"!</b> It's a cool game
             where you choose numbers on a wheel and if you hit the right one,
             you win more than what you bid. But wait, there's more! You can
-            trade in your chips for actual prizes and open up new wheels to play
+            trade in your coins for actual prizes and open up new wheels to play
             on.
           </p>
           <p>

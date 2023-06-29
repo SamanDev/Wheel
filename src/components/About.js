@@ -16,7 +16,7 @@ const Home = () => {
             side and their chosen number emerges, they'll be rewarded with
             impressive multiples of their initial bid. What makes "Wheel of
             Persia" even more enticing is that it is entirely free to play!
-            Contestants can accumulate chips and strategically cash them out to
+            Contestants can accumulate coins and strategically cash them out to
             unlock new wheels, each presenting unique challenges and prizes that
             transcend the virtual realm and become real-life rewards. Prepare to
             embark on an exhilarating journey where luck meets strategy, and

@@ -254,7 +254,7 @@ function BetsWheel(prop) {
             : "animate__animated animate__fadeOutUp"
         }
       >
-        Time to bet 👇
+        Time to choose 👇
       </Popup>
       {segX.map((seg, i) => {
         var inf = getPosCount(list, seg);
