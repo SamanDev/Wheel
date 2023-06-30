@@ -40,14 +40,17 @@ function ModalExampleModal(prop) {
         >
           <img src="/assets/sepi.png" style={{ margin: "auto" }} />
         </div>
-        <amp-ad
-          layout="fixed"
-          width="360"
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-5068963892927255"
+          data-ad-slot="3043056885"
+          data-ad-format="auto"
           height="800"
+          width="360"
           type="adsense"
-          data-ad-client="ca-pub-3130483322710260"
-          data-ad-slot="5227020060"
-        ></amp-ad>
+          data-full-width-responsive="true"
+        ></ins>
       </Segment>
     </Modal>
   );
