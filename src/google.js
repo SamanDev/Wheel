@@ -159,7 +159,7 @@ function App() {
           });
       } else {
         setLoading(false);
-        $("#playnow").trigger("click");
+        $("#lggle").trigger("click");
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
