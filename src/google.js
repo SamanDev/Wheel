@@ -98,7 +98,7 @@ function App() {
       .then(() => {
         setLoading(false);
         //handleManifest(username, password, doClk);
-        //window.location.href = "/play";
+        window.location.href = "/play";
       })
       .catch((err) => logOut());
   };
@@ -147,7 +147,7 @@ function App() {
             setLoading(false);
             handleManifest(profile.name, profile.id, doClk);
 
-            //window.location.href = "/play";
+            window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(
@@ -159,9 +159,12 @@ function App() {
           });
       } else {
         setLoading(false);
+        $("#playnow").trigger("click");
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
+      logOut();
+      $("#lggle").trigger("click");
       setLoading(false);
     }
   }, [profile]);
@@ -238,6 +241,7 @@ function App() {
               fluid
               as={"a"}
               href={"/play"}
+              id="playnow"
               className="animate__flash  animate__animated  animate__infinite"
             >
               <Icon name="heart" />
@@ -260,6 +264,7 @@ function App() {
           labelPosition="right"
           style={{ margin: "10px auto" }}
           onClick={() => loginOk()}
+          id="lggle"
           fluid
           size="huge"
           className="animate__pulse ltr animate__animated  animate__infinite"
