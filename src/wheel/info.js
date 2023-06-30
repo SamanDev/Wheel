@@ -37,14 +37,17 @@ function BetsWheel(prop) {
   return (
     <>
       <div className="infobtn">
-        <Link to={"/"} style={{ textDecoration: "none" }}>
+        <a
+          href={"https://landing.wheelofpersia.com"}
+          style={{ textDecoration: "none" }}
+        >
           <Icon
             name="arrow alternate circle left outline"
             color="grey"
             circular
             inverted
           />
-        </Link>
+        </a>
         <br />
         <Mod />
         <br />

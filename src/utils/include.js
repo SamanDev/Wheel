@@ -162,7 +162,12 @@ export const GetToken = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 export function formatDollar(num) {
-  var p = num.toFixed(2).split(".");
+  try {
+    var p = num.toFixed(2).split(".");
+  } catch (error) {
+    var p = "0.00".split(".");
+  }
+
   if (p[1] == "00") {
     return (
       "" +

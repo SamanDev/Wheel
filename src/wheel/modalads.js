@@ -36,7 +36,7 @@ function ModalExampleModal(prop) {
   useEffect(() => {
     var _link = window.location.href
       .toString()
-      .replace("/play", "/invite/" + user.id);
+      .replace("/play", "/invite/" + user?.id);
     setLink(_link);
   }, [user]);
   useEffect(() => {
@@ -117,7 +117,7 @@ function ModalExampleModal(prop) {
       <ModalAds
         open={openads}
         getchips={getchips}
-        id={user.id}
+        id={user?.id}
         setOpenads={setOpenads}
         setOpen={setOpen}
       />

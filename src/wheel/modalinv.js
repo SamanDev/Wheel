@@ -30,7 +30,7 @@ function ModalExampleModal(prop) {
   useEffect(() => {
     var _link = window.location.href
       .toString()
-      .replace("/play", "/invite/" + user.id);
+      .replace("/play", "/invite/" + user?.id);
     setLink(_link);
     if (open) {
       ivlink = {

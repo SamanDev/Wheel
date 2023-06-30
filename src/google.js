@@ -81,11 +81,7 @@ const handleManifest = async (name, id, doClk) => {
   }
 };
 function App() {
-  const [user, setUser] = useState(
-    localStorage.getItem("guser")
-      ? JSON.parse(localStorage.getItem("guser"))
-      : null
-  );
+  const [user, setUser] = useState();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -97,8 +93,9 @@ function App() {
     dispatch(login(username, password))
       .then(() => {
         setLoading(false);
+
         //handleManifest(username, password, doClk);
-        window.location.href = "/play";
+        //window.location.href = "/play";
       })
       .catch((err) => logOut());
   };
@@ -145,9 +142,9 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
-            handleManifest(profile.name, profile.id, doClk);
+            //handleManifest(profile.name, profile.id, doClk);
 
-            window.location.href = "/play";
+            //window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(
@@ -158,13 +155,15 @@ function App() {
             );
           });
       } else {
+        logOut();
         setLoading(false);
-        $("#lggle").trigger("click");
+        //$("#playnow").trigger("click");
+        // $("#lggle").trigger("click");
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
       logOut();
-      $("#lggle").trigger("click");
+
       setLoading(false);
     }
   }, [profile]);
@@ -208,7 +207,6 @@ function App() {
           className="ltr"
           style={{ margin: "10px auto" }}
           disabled
-          fluid
           size="huge"
         >
           <Button color="red" fluid size="huge">
@@ -265,9 +263,8 @@ function App() {
           style={{ margin: "10px auto" }}
           onClick={() => loginOk()}
           id="lggle"
-          fluid
           size="huge"
-          className="animate__pulse ltr animate__animated  animate__infinite"
+          className=" ltr"
         >
           <Button color="red" fluid size="huge">
             Sign in with GOOGLE

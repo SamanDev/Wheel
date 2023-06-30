@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Mywhell from "../MyWheel";
-
+import Google from "../google";
 import { Segment, Dimmer, Icon, Header, Button } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import socket from "../socket";
@@ -11,19 +11,15 @@ const BoardUser = () => {
     : null;
 
   const [userDC, setUserDC] = useState(false);
+
   useEffect(() => {
-    if (!user?.accessToken) {
-      window.location.href = "/";
-    } else {
+    if (user?.accessToken) {
       socket.auth = user;
       socket.connect();
-    }
-
-    return () => {
-      //setUserDC(true);
+    } else {
       socket.disconnect();
-    };
-  }, []);
+    }
+  }, [user?.accessToken]);
   useEffect(() => {
     EventBus.on("disconnect", (data) => {
       setUserDC(true);
@@ -35,7 +31,7 @@ const BoardUser = () => {
       EventBus.remove("disconnect");
     };
   }, []);
-  if (userDC || !user?.accessToken) {
+  if (userDC) {
     return (
       <Dimmer active className="loadarea" style={{ paddingTop: "10%" }}>
         <Header as="h2" icon inverted>
@@ -51,6 +47,18 @@ const BoardUser = () => {
         >
           Reconnect
         </Button>
+      </Dimmer>
+    );
+  }
+  if (!user?.accessToken) {
+    return (
+      <Dimmer active className="loadarea" style={{ paddingTop: "10%" }}>
+        <Header as="h2" icon inverted>
+          <Icon name="user" color="grey" />
+          Login with your Google account.
+        </Header>
+        <br />
+        <Google />
       </Dimmer>
     );
   }
