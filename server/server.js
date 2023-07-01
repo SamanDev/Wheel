@@ -237,9 +237,9 @@ wheelNamespace.use(async (socket, next) => {
   } else {
     await User.findById(user.id).then((res) => {
       if (res?.username) {
-        wheelNamespace.in(user.username).disconnectSockets(true);
+        wheelNamespace.in(user.id).disconnectSockets(true);
         socket.userdata = res;
-        socket.join(user.username);
+        socket.join(user.id);
 
         next();
       }
@@ -256,7 +256,7 @@ wheelNamespace.on("connection", (socket) => {
         data.win = -1;
         data.username = socket.userdata.username;
         data.image = socket.userdata.image;
-        data.id = socket.userdata._id;
+        data.id = socket.userdata.id;
         wheel.total = wheel.total + data.bet;
 
         let fu = wheelusers.filter(
@@ -516,15 +516,16 @@ const inc = () => {
 
   for (const property in newDatainc) {
     if (sumOfWin(newDatainc[property]) > 0) {
+      var _id = newDatainc[property][0].id;
       var newuserinc = User.findOneAndUpdate(
-        { username: property },
+        { _id: _id, username: property },
         { $inc: { balance2: sumOfWin(newDatainc[property]) } }
       ).then((res) => {
         if (res?.username) {
           var _d = res;
           _d.balance2 = _d.balance2 + sumOfWin(newDatainc[property]);
-
-          wheelNamespace.in(res.username).emit("msg", {
+          console.log(_id);
+          wheelNamespace.in(_id).emit("msg", {
             command: "setuser",
             data: _d,
           });

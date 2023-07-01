@@ -3,6 +3,9 @@ import React from "react";
 import Menu from "./menu";
 
 const Home = () => {
+  window.location.href =
+    "https://landing.wheelofpersia.com/blog/privacy-policy";
+  return null;
   return (
     <div className="home">
       <div className="cadr">

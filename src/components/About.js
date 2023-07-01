@@ -1,8 +1,10 @@
 import React from "react";
 
 import Menu from "./menu";
-
+import { Navigate } from "react-router-dom";
 const Home = () => {
+  window.location.href = "https://landing.wheelofpersia.com/blog/about-us";
+  return null;
   return (
     <div className="home">
       <div className="cadr">

@@ -32,11 +32,6 @@ const Home = () => {
           </p>
 
           <Google />
-
-          <div>
-            <AdsComponent dataAdSlot="6044212052" />
-          </div>
-          <Menu />
         </div>
       </div>
     </div>

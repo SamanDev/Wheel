@@ -3,16 +3,14 @@ import React from "react";
 import Menu from "./menu";
 
 const Home = () => {
+  window.location.href =
+    "https://landing.wheelofpersia.com/blog/terms-and-conditions";
+  return null;
   return (
     <div className="home">
       <div className="cadr">
         <img src="/assets/logo.png" className="logo" />
         <div className="container">
-          <p>
-            Certainly! If you need a sample of Terms and Conditions text, here's
-            a basic template that you can customize and adapt to your specific
-            needs:
-          </p>
           <br />
           <p>
             <strong>Terms and Conditions</strong>
@@ -117,14 +115,6 @@ const Home = () => {
             </li>
           </ol>
           <br />
-          <p>
-            Please note that this is a generic template and may not cover all
-            the specific requirements or legal aspects applicable to your
-            website. It is always recommended to consult with a legal
-            professional to ensure that your Terms and Conditions adequately
-            address your specific circumstances and comply with relevant laws
-            and regulations.
-          </p>
 
           <Menu />
         </div>
