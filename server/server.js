@@ -423,7 +423,7 @@ const spinstop = async () => {
   wheelNamespace.emit("msg", { command: "users", data: wheelusers });
   if (wheelusers.length > 0) {
     // _time = 3000;
-    inc();
+    inc(wheelusers);
   }
   var dd = await Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spining",
@@ -432,10 +432,10 @@ const spinstop = async () => {
   });
 
   setTimeout(() => {
-    doneWheel();
+    doneWheel(wheelusers);
   }, _time);
 };
-const doneWheel = async () => {
+const doneWheel = async (wheelusers) => {
   userswinLisr = "";
   var _time = 3000;
   wheel.status = "Done";
@@ -511,20 +511,23 @@ const dec = async () => {
   }
   // if (blnupdate) wheelNamespace.emit("msg", { command: "update", data: wheel });
 };
-const inc = () => {
+const inc = async (wheelusers) => {
   var newDatainc = groupBySingleField(wheelusers, "username");
 
   for (const property in newDatainc) {
-    if (sumOfWin(newDatainc[property]) > 0) {
+    var _ic = sumOfWin(newDatainc[property]);
+    if (_ic > 0) {
       var _id = newDatainc[property][0].id;
-      var newuserinc = User.findOneAndUpdate(
+      var newuserinc = await User.findOneAndUpdate(
         { _id: _id, username: property },
-        { $inc: { balance2: sumOfWin(newDatainc[property]) } }
+        { $inc: { balance2: _ic } }
       ).then((res) => {
         if (res?.username) {
           var _d = res;
-          _d.balance2 = _d.balance2 + sumOfWin(newDatainc[property]);
+          _d.balance2 = _d.balance2 + _ic;
+          console.log(_d);
           console.log(_id);
+          console.log(_ic);
           wheelNamespace.in(_id).emit("msg", {
             command: "setuser",
             data: _d,
