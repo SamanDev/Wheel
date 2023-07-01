@@ -133,11 +133,11 @@ function App() {
             );
           });
       } else {
-        //logOut();
+        logOut();
         setLoading(false);
         //$("#playnow").trigger("click");
         // $("#lggle").trigger("click");
-        handleManifest(profile.name, profile.id, doClk);
+        //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
       logOut();
