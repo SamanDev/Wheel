@@ -22,9 +22,16 @@ const BoardUser = () => {
   }, [user?.accessToken]);
   useEffect(() => {
     EventBus.on("disconnect", (data) => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("users");
+      localStorage.removeItem("guser");
+      localStorage.removeItem("wheel");
       setUserDC(true);
     });
     EventBus.on("connect", (data) => {
+      if (userDC) {
+        window.location.href = "/play";
+      }
       setUserDC(false);
     });
     return () => {
