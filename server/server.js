@@ -242,6 +242,7 @@ wheelNamespace.use(async (socket, next) => {
         socket.join(user.id);
 
         next();
+      } else {
       }
     });
   }
@@ -275,7 +276,7 @@ wheelNamespace.on("connection", (socket) => {
           wheelusers.push(data);
         }
         await User.findOneAndUpdate(
-          { _id: socket.userdata._id, balance2: { $gt: data.bet - 1 } },
+          { _id: socket.userdata.id, balance2: { $gt: data.bet - 1 } },
           { $inc: { balance2: data.bet * -1 } }
         ).then((res) => {
           if (res?.username) {

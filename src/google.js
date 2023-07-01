@@ -107,7 +107,7 @@ function App() {
           if (!localStorage.getItem("user")) {
             logOut();
           }
-          //logOut();
+          logOut();
         });
     } else {
       logOut();
@@ -140,7 +140,7 @@ function App() {
         handleManifest(profile.name, profile.id, doClk);
       }
     } else {
-      //logOut();
+      logOut();
 
       setLoading(false);
     }
@@ -195,7 +195,7 @@ function App() {
       // prompt() can only be called once.
       // window.deferredPrompt = null;
     });
-  }, [refresh]);
+  }, []);
   // log out function to log the user out of google and set the profile array to null
 
   const logOut = () => {
