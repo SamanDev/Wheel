@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Mod from "./modalinv";
 import Modads from "./modalads";
 import ModLeader from "./modalleader";
+import ModMarket from "./modalmarket";
 function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
@@ -36,7 +37,10 @@ function BetsWheel(prop) {
 
   return (
     <>
-      <div className="infobtn">
+      <div
+        className="infobtn"
+        style={{ backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 50 }}
+      >
         <a
           href={"https://landing.wheelofpersia.com"}
           style={{ textDecoration: "none" }}
@@ -54,6 +58,8 @@ function BetsWheel(prop) {
         <Modads />
         <br />
         <ModLeader />
+        <br />
+        <ModMarket />
       </div>
       <div className="info" style={{ marginLeft: 40 }}>
         <b>{user?.username}</b>
