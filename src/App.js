@@ -67,45 +67,13 @@ const App = () => {
       EventBus.remove("setuser");
     };
   }, []);
-  useEffect(() => {
-    const addBtn = document.querySelector(".add-button");
 
-    window.addEventListener("beforeinstallprompt", (e) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      window.deferredPrompt = e;
-      // Update UI to notify the user they can add to home screen
-      setRefresh(1);
-    });
-    addBtn.addEventListener("click", async () => {
-      console.log("👍", "butInstall-clicked");
-      const promptEvent = window.deferredPrompt;
-      if (!promptEvent) {
-        // The deferred prompt isn't available.
-        return;
-      }
-      console.log(promptEvent);
-      // Show the install prompt.
-      promptEvent.prompt();
-      // Log the result
-      const result = await promptEvent.userChoice;
-      console.log("👍", "userChoice", result);
-      // Reset the deferred prompt variable, since
-      // prompt() can only be called once.
-      window.deferredPrompt = null;
-    });
-    window.addEventListener("appinstalled", (event) => {
-      setRefresh(0);
-      window.deferredPrompt = null;
-    });
-  }, []);
   return (
     <Routes>
       <Route path="/play" element={<BoardUser />} />
       <Route path="/" element={<Home />} />
       <Route path="/invite/*" element={<Invite />} />
-      <Route path="/login/:u/:p" element={<Home />} />
+      <Route path="/login/:u/:p" element={<BoardUser />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />

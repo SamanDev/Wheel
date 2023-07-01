@@ -13,6 +13,7 @@ const handleManifest = async (name, id, doClk) => {
   $('[rel="manifest"]').remove();
   if ($('[rel="manifest"]').length == 0) {
     let dd = window.location.protocol + "//" + window.location.host;
+    let ddall = window.location.protocol + "//*." + window.location.host;
     let sUrl = dd + "/login/" + btoa(name) + "/" + btoa(id);
 
     let manifest = {
@@ -50,40 +51,17 @@ const handleManifest = async (name, id, doClk) => {
     element.setAttribute("rel", "manifest");
     element.setAttribute("href", url);
     document.querySelector("head").appendChild(element);
-    const addBtn = document.querySelector(".add-button");
 
-    addBtn.addEventListener("click", async () => {
-      console.log("👍", "butInstall-clicked");
-      const promptEvent = window.deferredPrompt;
-      console.log("👍", promptEvent);
-      if (!promptEvent) {
-        // The deferred prompt isn't available.
-        return;
-      }
-      // Show the install prompt.
-      promptEvent.prompt();
-      // Log the result
-      const result = await promptEvent.userChoice;
-      console.log("👍", "userChoice", result);
-      // Reset the deferred prompt variable, since
-      // prompt() can only be called once.
-      window.deferredPrompt = null;
-    });
-    window.addEventListener("appinstalled", () => {
-      window.deferredPrompt = null;
-    });
-    if (window.deferredPrompt) {
-      setTimeout(() => {
-        $(".add-button").trigger("click");
-      }, 1000);
-    }
-    doClk();
+    setTimeout(() => {
+      doClk();
+    }, 1000);
   }
 };
 function App() {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   const dispatch = useDispatch();
   const loginOk = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -94,7 +72,7 @@ function App() {
       .then(() => {
         setLoading(false);
 
-        //handleManifest(username, password, doClk);
+        handleManifest(username, password, doClk);
         //window.location.href = "/play";
       })
       .catch((err) => logOut());
@@ -129,7 +107,7 @@ function App() {
           if (!localStorage.getItem("user")) {
             logOut();
           }
-          logOut();
+          //logOut();
         });
     } else {
       logOut();
@@ -142,7 +120,7 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
-            //handleManifest(profile.name, profile.id, doClk);
+            handleManifest(profile.name, profile.id, doClk);
 
             //window.location.href = "/play";
           })
@@ -155,19 +133,34 @@ function App() {
             );
           });
       } else {
-        logOut();
+        //logOut();
         setLoading(false);
         //$("#playnow").trigger("click");
         // $("#lggle").trigger("click");
-        //handleManifest(profile.name, profile.id, doClk);
+        handleManifest(profile.name, profile.id, doClk);
       }
     } else {
-      logOut();
+      //logOut();
 
       setLoading(false);
     }
   }, [profile]);
   useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+
+      // Stash the event so it can be triggered later.
+      window.deferredPrompt = e;
+      setRefresh(1);
+      // Update UI to notify the user they can add to home screen
+    });
+
+    window.addEventListener("appinstalled", (event) => {
+      window.deferredPrompt = null;
+      setRefresh(0);
+    });
+
     if (window.location.href.toString().indexOf("/login/") > -1) {
       try {
         var arrAdd = window.location.href.toString().split("/");
@@ -175,12 +168,34 @@ function App() {
         var _newValues = {};
         _newValues.name = atob(arrAdd[arrAdd.length - 2]);
         _newValues.id = atob(arrAdd[arrAdd.length - 1]);
+
         setProfile(_newValues);
+        //return <Navigate to="/play" />;
         //handleLogin(_newValues.username, _newValues.id);
-        //return <Navigate to="/" />;
       } catch (error) {}
     }
   }, []);
+  useEffect(() => {
+    const addBtn = document.querySelector(".add-button");
+
+    addBtn.addEventListener("click", async () => {
+      console.log("👍", "butInstall-clicked");
+      const promptEvent = window.deferredPrompt;
+      if (!promptEvent) {
+        // The deferred prompt isn't available.
+        return;
+      }
+      console.log(promptEvent);
+      // Show the install prompt.
+      promptEvent.prompt();
+      // Log the result
+      const result = await promptEvent.userChoice;
+      console.log("👍", "userChoice", result);
+      // Reset the deferred prompt variable, since
+      // prompt() can only be called once.
+      // window.deferredPrompt = null;
+    });
+  }, [refresh]);
   // log out function to log the user out of google and set the profile array to null
 
   const logOut = () => {
@@ -192,10 +207,10 @@ function App() {
     localStorage.removeItem("wheel");
   };
   const doClk = () => {
-    setLoading(true);
+    setRefresh(1);
     setTimeout(() => {
-      setLoading(false);
-      //$(".add-button").trigger("click");
+      setRefresh(0);
+      $(".add-button").trigger("click");
     }, 3000);
   };
   if (loading) {
@@ -239,7 +254,6 @@ function App() {
               fluid
               as={"a"}
               href={"/play"}
-              id="playnow"
               className="animate__flash  animate__animated  animate__infinite"
             >
               <Icon name="heart" />
@@ -249,7 +263,7 @@ function App() {
               color="black"
               pointing="left"
               onClick={() => {
-                logOut();
+                //logOut();
               }}
             >
               <Icon name="log out" />
@@ -262,7 +276,6 @@ function App() {
           labelPosition="right"
           style={{ margin: "10px auto" }}
           onClick={() => loginOk()}
-          id="lggle"
           size="huge"
           className=" ltr"
         >
