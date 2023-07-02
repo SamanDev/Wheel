@@ -1,74 +1,35 @@
 import React, { useState, useEffect } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
 import Mywhell from "../MyWheel";
 import Google from "../google";
 import { Segment, Dimmer, Icon, Header, Button } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import socket from "../socket";
+import socketpub from "../socketpub";
 const BoardUser = () => {
-  const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
-
   const [userDC, setUserDC] = useState(false);
-
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(currentUser);
   useEffect(() => {
-    if (user?.accessToken) {
-      socket.auth = user;
+    if (currentUser?.accessToken) {
+      socket.auth = currentUser;
       socket.connect();
     } else {
       socket.disconnect();
     }
-  }, [user?.accessToken]);
+  }, [currentUser?.accessToken]);
   useEffect(() => {
+    socketpub.connect();
+
     EventBus.on("disconnect", (data) => {
-      localStorage.removeItem("user");
-      localStorage.removeItem("users");
-      localStorage.removeItem("guser");
-      localStorage.removeItem("wheel");
-      setUserDC(true);
+      socket.disconnect();
     });
-    EventBus.on("connect", (data) => {
-      if (userDC) {
-        window.location.href = "/play";
-      }
-      setUserDC(false);
-    });
+
     return () => {
       EventBus.remove("disconnect");
     };
   }, []);
-  if (userDC) {
-    return (
-      <Dimmer active className="loadarea" style={{ paddingTop: "10%" }}>
-        <Header as="h2" icon inverted>
-          <Icon name="ban" color="red" />
-          Connection lost!
-        </Header>
-        <br />
-        <Button
-          onClick={() => {
-            window.location.reload();
-          }}
-          color="orange"
-        >
-          Reconnect
-        </Button>
-      </Dimmer>
-    );
-  }
-  if (!user?.accessToken) {
-    return (
-      <Dimmer active className="loadarea" style={{ paddingTop: "10%" }}>
-        <Header as="h2" icon inverted>
-          <Icon name="user" color="grey" />
-          Login with your Google account.
-        </Header>
-        <br />
-        <Google />
-      </Dimmer>
-    );
-  }
+
   return (
     <div className="home wheel">
       <div className="cadr">

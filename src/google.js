@@ -72,7 +72,7 @@ function App() {
       .then(() => {
         setLoading(false);
 
-        handleManifest(username, password, doClk);
+        // handleManifest(username, password, doClk);
         //window.location.href = "/play";
       })
       .catch((err) => logOut());
@@ -120,9 +120,9 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
-            handleManifest(profile.name, profile.id, doClk);
+            // handleManifest(profile.name, profile.id, doClk);
 
-            //window.location.href = "/play";
+            window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(
@@ -152,13 +152,12 @@ function App() {
 
       // Stash the event so it can be triggered later.
       window.deferredPrompt = e;
-      setRefresh(1);
+
       // Update UI to notify the user they can add to home screen
     });
 
     window.addEventListener("appinstalled", (event) => {
       window.deferredPrompt = null;
-      setRefresh(0);
     });
 
     if (window.location.href.toString().indexOf("/login/") > -1) {
@@ -174,8 +173,7 @@ function App() {
         //handleLogin(_newValues.username, _newValues.id);
       } catch (error) {}
     }
-  }, []);
-  useEffect(() => {
+
     const addBtn = document.querySelector(".add-button");
 
     addBtn.addEventListener("click", async () => {
@@ -185,12 +183,15 @@ function App() {
         // The deferred prompt isn't available.
         return;
       }
-      console.log(promptEvent);
-      // Show the install prompt.
-      promptEvent.prompt();
-      // Log the result
-      const result = await promptEvent.userChoice;
-      console.log("👍", "userChoice", result);
+      try {
+        console.log(promptEvent);
+        // Show the install prompt.
+        promptEvent.prompt();
+        // Log the result
+        const result = await promptEvent.userChoice;
+        console.log("👍", "userChoice", result);
+      } catch (error) {}
+
       // Reset the deferred prompt variable, since
       // prompt() can only be called once.
       // window.deferredPrompt = null;
@@ -202,16 +203,14 @@ function App() {
     googleLogout();
     setProfile(null);
     localStorage.removeItem("user");
-    localStorage.removeItem("users");
+
     localStorage.removeItem("guser");
-    localStorage.removeItem("wheel");
+    // window.location.href = "/play";
   };
   const doClk = () => {
-    setRefresh(1);
     setTimeout(() => {
-      setRefresh(0);
-      $(".add-button").trigger("click");
-    }, 3000);
+      //$(".add-button").trigger("click");
+    }, 1000);
   };
   if (loading) {
     return (
@@ -238,48 +237,16 @@ function App() {
   return (
     <div className="navbar-nav ml-auto">
       {profile ? (
-        <>
-          <Button
-            as="div"
-            to={"/play"}
-            labelPosition="right"
-            style={{ margin: "10px auto" }}
-            fluid
-            size="huge"
-            className=" ltr "
-          >
-            <Button
-              color="green"
-              size="huge"
-              fluid
-              as={"a"}
-              href={"/play"}
-              className="animate__flash  animate__animated  animate__infinite"
-            >
-              <Icon name="heart" />
-              Wheel NOW!
-            </Button>
-            <Label
-              color="black"
-              pointing="left"
-              onClick={() => {
-                //logOut();
-              }}
-            >
-              <Icon name="log out" />
-            </Label>
-          </Button>
-        </>
+        <></>
       ) : (
         <Button
           as="div"
           labelPosition="right"
           style={{ margin: "10px auto" }}
           onClick={() => loginOk()}
-          size="huge"
           className=" ltr"
         >
-          <Button color="red" fluid size="huge">
+          <Button color="red" fluid>
             Sign in with GOOGLE
           </Button>
           <Label basic color="red" pointing="left">

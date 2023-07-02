@@ -4,7 +4,7 @@ import EventBus from "./common/EventBus";
 const URL =
   process.env.NODE_ENV === "production"
     ? "https://sock.wheelofpersia.com/wheel"
-    : "http://sock.wheelofpersia.com/wheel";
+    : "http://localhost:8484/wheel";
 
 const socket = io(URL, {
   autoConnect: false,
@@ -12,19 +12,6 @@ const socket = io(URL, {
 function onConnect() {
   EventBus.dispatch("connect", true);
   socket.on("msg", ({ command, data }) => {
-    if (command == "update") {
-      localStorage.setItem("wheel", JSON.stringify(data));
-      EventBus.dispatch("wheel", data);
-    }
-    if (command == "users") {
-      EventBus.dispatch("users", data);
-    }
-    if (command == "bets") {
-      EventBus.dispatch("bets", data);
-    }
-    if (command == "resetusers") {
-      EventBus.dispatch("resetusers");
-    }
     if (command == "user") {
       EventBus.dispatch("user", data);
     }
@@ -32,15 +19,14 @@ function onConnect() {
       EventBus.dispatch("setuser", data);
     }
 
-    if (command == "online") {
-      EventBus.dispatch("online", data);
-    }
     if (command == "chat") {
       EventBus.dispatch("chat", data);
     }
-
+    if (command == "bets") {
+      EventBus.dispatch("bets", data);
+    }
     if (command == "disconnect") {
-      socket.disconnect();
+      //socket.disconnect();
     }
   });
 }

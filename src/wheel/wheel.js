@@ -19,7 +19,7 @@ segments.map((item, i) => {
 });
 var Seconds_Between_Dates = 0.1;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState();
+  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
   const [mustspin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   useEffect(() => {
@@ -33,12 +33,6 @@ function MNyWheel(prop) {
         setWheel(data);
       }
     });
-
-    return () => {
-      setMustSpin(false);
-      setWheel();
-      EventBus.remove("wheel");
-    };
   }, []);
   useEffect(() => {
     if (wheel?.status) {
@@ -69,7 +63,7 @@ function MNyWheel(prop) {
         }
       }
     }
-  }, [wheel?.status]);
+  }, [wheel]);
   if (!wheel?.status) {
     return (
       <div className="mainwheel mywhell animate__bounceIn animate__animated">

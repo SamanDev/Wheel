@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/"
-    : "http://api.wheelofpersia.com/";
+    : "http://localhost:8085/";
 const getPublicContent = () => {
   return axios.get(API_URL + "api/all");
 };
@@ -13,7 +13,7 @@ const getUserBoard = () => {
   return axios.get(API_URL + "api/user", { headers: authHeader() });
 };
 const getchips = (id) => {
-  return axios.get(API_URL + "getchip?id=" + id, {
+  return axios.get(API_URL + "getchip", {
     headers: authHeader(),
   });
 };

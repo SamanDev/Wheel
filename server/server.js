@@ -12,7 +12,7 @@ var corsOptions = {
 const serverPort = process.env.NODE_ENV === "production" ? 2083 : 8085;
 const soocketPort = process.env.NODE_ENV === "production" ? 2087 : 8484;
 app.use(cors(corsOptions));
-
+const { authJwt } = require("./app/middlewares");
 // parse requests of content-type - application/json
 app.use(express.json());
 
@@ -38,12 +38,16 @@ function groupBySingleField(data, field) {
   }, {});
 }
 db.mongoose
-  .connect(`mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelof`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("Successfully connect to MongoDB.");
+    initial();
   })
   .catch((err) => {
     console.error("Connection error", err);
@@ -159,9 +163,10 @@ app.get("/gettokens", (req, res) => {
     }
   });
 });
-app.get("/getchip", (req, res) => {
+
+app.get("/getchip", [authJwt.verifyToken], (req, res) => {
   var newuserinc = User.findOneAndUpdate(
-    { _id: req.query.id, balance2: { $lt: 1000 } },
+    { _id: req.userId, balance2: { $lt: 1000 } },
     {
       $inc: { balance2: 1000 },
     }
@@ -176,7 +181,6 @@ app.get("/getchip", (req, res) => {
     }
   });
 });
-
 const segments = [
   0, 2, 4, 2, 10, 2, 4, 2, 8, 2, 4, 2, 25, 2, 4, 2, 8, 2, 4, 2, 10, 2, 4, 2, 8,
   2, 4, 2, 20,
@@ -222,6 +226,7 @@ const io = new Server(soocketPort, {
   cors: { corsOptions },
 });
 const wheelNamespace = io.of("/wheel");
+const wheelNamespacePub = io.of("/wheelpub");
 
 wheelNamespace.on("disconnect", (reason) => {
   if (reason === "io server disconnect") {
@@ -232,6 +237,7 @@ wheelNamespace.on("disconnect", (reason) => {
 });
 wheelNamespace.use(async (socket, next) => {
   const user = socket.handshake.auth;
+
   if (socket.userdata) {
     next();
   } else {
@@ -243,6 +249,7 @@ wheelNamespace.use(async (socket, next) => {
 
         next();
       } else {
+        socket.disconnect();
       }
     });
   }
@@ -290,19 +297,22 @@ wheelNamespace.on("connection", (socket) => {
       }
     }
   });
-  socket.emit("msg", { command: "users", data: wheelusers });
-  wheelNamespace.emit("msg", {
-    command: "online",
-    data: wheelNamespace.sockets.size,
-  });
+
   socket.emit("msg", { command: "setuser", data: socket.userdata });
+
+  // getLast(socket);
+});
+wheelNamespacePub.on("connection", (socket) => {
+  socket.emit("msg", { command: "users", data: wheelusers });
+  wheelNamespacePub.emit("msg", {
+    command: "online",
+    data: wheelNamespacePub.sockets.size,
+  });
 
   socket.emit("msg", {
     command: "update",
     data: wheel,
   });
-
-  // getLast(socket);
 });
 const initial = async () => {
   console.log("initial");
@@ -321,13 +331,13 @@ const initial = async () => {
 
     spin();
   } else if (defwheel?.status == "Spin") {
+    wheel = defwheel;
     setTimeout(() => {
       spinstop();
-    }, 3000);
+    }, 1000);
   } else if (defwheel?.status == "Spining") {
-    setTimeout(() => {
-      doneWheel();
-    }, 3000);
+    wheel = defwheel;
+    doneWheel();
   }
 
   Role.estimatedDocumentCount((err, count) => {
@@ -365,15 +375,16 @@ const initial = async () => {
   });
 };
 const createWheelData = async () => {
+  console.log("createWheelData");
   var wheeldb = await createWheel(wheel?.number);
 
   wheel = wheeldb;
-  wheelNamespace.emit("msg", {
+  wheelNamespacePub.emit("msg", {
     command: "update",
     data: wheel,
   });
   wheelusers = [];
-  wheelNamespace.emit("msg", { command: "resetusers" });
+  wheelNamespacePub.emit("msg", { command: "resetusers" });
 
   setTimeout(() => {
     spin();
@@ -388,7 +399,7 @@ const spin = async () => {
   wheel.number = newPrizeNumbern;
 
   wheel.status = "Spin";
-  wheelNamespace.emit("msg", {
+  wheelNamespacePub.emit("msg", {
     command: "update",
     data: wheel,
   });
@@ -417,11 +428,11 @@ const spinstop = async () => {
 
   wheel.total = _tot;
   wheel.net = _net;
-  wheelNamespace.emit("msg", {
+  wheelNamespacePub.emit("msg", {
     command: "update",
     data: wheel,
   });
-  wheelNamespace.emit("msg", { command: "users", data: wheelusers });
+  wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
   if (wheelusers.length > 0) {
     // _time = 3000;
     inc(wheelusers);
@@ -440,12 +451,12 @@ const doneWheel = async (wheelusers) => {
   userswinLisr = "";
   var _time = 3000;
   wheel.status = "Done";
-  wheelNamespace.emit("msg", {
+  wheelNamespacePub.emit("msg", {
     command: "update",
     data: wheel,
   });
   var dd = await Wheel.findByIdAndUpdate(wheel._id, { status: "Done" });
-  if (wheelusers.length > 0) {
+  if (wheelusers?.length > 0) {
     // _time = 3000;
 
     wheelusers.forEach(async (item) => {
@@ -526,9 +537,7 @@ const inc = async (wheelusers) => {
         if (res?.username) {
           var _d = res;
           _d.balance2 = _d.balance2 + _ic;
-          console.log(_d);
-          console.log(_id);
-          console.log(_ic);
+
           wheelNamespace.in(_id).emit("msg", {
             command: "setuser",
             data: _d,
@@ -553,5 +562,4 @@ require("./app/routes/user.routes")(app, wheel);
 
 app.listen(serverPort, () => {
   console.log(`Server is running on port ${serverPort}.`);
-  initial();
 });

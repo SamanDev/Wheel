@@ -21,7 +21,9 @@ const CardGift = (prop) => {
             size="mini"
             floated="left"
             disabled={
-              parseInt(user.balance2) < parseInt(prop.fee) ? true : false
+              parseInt(user?.balance2) < parseInt(prop.fee) || !user?.balance2
+                ? true
+                : false
             }
           >
             Order Now
@@ -35,7 +37,7 @@ const CardGift = (prop) => {
 const TableExampleSingleLine = (prop) => {
   return (
     <>
-      <Item.Group divided inverted>
+      <Item.Group divided>
         <CardGift header="Digikala Gift Cart 500,000T" fee={"180000"} />
         <CardGift header="Digikala Gift Cart 2,500,000T" fee={"890000"} />
         <CardGift header="Apple Store Gift Cart 10$" fee={"180000"} />

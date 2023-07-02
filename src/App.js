@@ -36,6 +36,9 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    EventBus.dispatch("setuser", currentUser);
+  }, [currentUser]);
+  useEffect(() => {
     EventBus.on("logout", () => {
       logOut();
     });
@@ -43,24 +46,33 @@ const App = () => {
     return () => {
       EventBus.remove("logout");
     };
-  }, [currentUser, logOut]);
+  }, [logOut]);
   useEffect(() => {
     startServiceWorker();
     EventBus.on("setuser", (data) => {
-      if (data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(data));
-        EventBus.dispatch("user", data);
-      } else {
-        const userOld = JSON.parse(localStorage.getItem("user"));
-        if (userOld) {
+      try {
+        if (data.accessToken) {
           var _user = data;
-          _user.accessToken = userOld.accessToken;
-          _user.id = userOld.id;
-          _user._id = userOld.id;
-          localStorage.setItem("user", JSON.stringify(_user));
 
+          _user._id = data.id;
+
+          localStorage.setItem("user", JSON.stringify(_user));
           EventBus.dispatch("user", _user);
+        } else {
+          const userOld = JSON.parse(localStorage.getItem("user"));
+          if (userOld) {
+            var _user = data;
+            _user.accessToken = userOld.accessToken;
+            _user.id = userOld.id;
+            _user._id = userOld.id;
+            localStorage.setItem("user", JSON.stringify(_user));
+            EventBus.dispatch("user", _user);
+          }
         }
+      } catch (error) {
+        localStorage.removeItem("user");
+
+        localStorage.removeItem("guser");
       }
     });
     return () => {

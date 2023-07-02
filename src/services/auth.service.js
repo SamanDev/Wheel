@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/api/auth/"
-    : "http://api.wheelofpersia.com/api/auth/";
+    : "http://localhost:8085/api/auth/";
 
 const register = (username, email, password, image, refer) => {
   return axios.post(API_URL + "signup", {
@@ -22,10 +22,6 @@ const login = (username, password) => {
       password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-
       return response.data;
     });
 };

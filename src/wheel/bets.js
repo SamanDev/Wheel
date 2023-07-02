@@ -33,7 +33,7 @@ const haveBet = (pos, list, user) => {
   return list
     .filter(
       (u) =>
-        u.username == user.username && parseInt(u.position) == parseInt(pos)
+        u.username == user?.username && parseInt(u.position) == parseInt(pos)
       //s(u) => parseInt(u.position) == parseInt(pos)
     )
     .sort((a, b) => (a.date > b.date ? 1 : -1))
@@ -105,7 +105,7 @@ const PrintBet = (prop) => {
   var i = prop.i;
   var user = prop.user;
   var _s =
-    item.username == user.username
+    item.username == user?.username
       ? { marginTop: i * -5, marginLeft: i * -3 }
       : {
           marginTop: i * -3,
@@ -131,7 +131,15 @@ const PrintBet = (prop) => {
 
 function BetsWheel(prop) {
   const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
-  const oldduser = JSON.parse(localStorage.getItem("user"));
+  var oldduser;
+  try {
+    oldduser = JSON.parse(localStorage.getItem("user"));
+  } catch (error) {
+    localStorage.removeItem("user");
+
+    localStorage.removeItem("guser");
+  }
+
   const [user, setUser] = useState(oldduser);
   const [userbets, setuserbets] = useState([]);
   const [balance, setBalance] = useState(user?.balance2);
@@ -147,10 +155,13 @@ function BetsWheel(prop) {
     });
     EventBus.on("user", (data) => {
       setUser(data);
-      setBalance(data.balance2);
+      setBalance(data?.balance2);
     });
     EventBus.on("connect", (data) => {
       setCon(data);
+    });
+    EventBus.on("logout", (data) => {
+      setCon(false);
     });
     EventBus.on("users", (data) => {
       if (list.length == 0) {
@@ -166,17 +177,6 @@ function BetsWheel(prop) {
     EventBus.on("resetusers", (data) => {
       setuserbets([]);
     });
-    return () => {
-      setWheel();
-      setuserbets([]);
-      setCon(false);
-      localStorage.removeItem("wheel");
-      EventBus.remove("wheel");
-      EventBus.remove("user");
-      EventBus.remove("users");
-      EventBus.remove("bets");
-      EventBus.remove("resetusers");
-    };
   }, []);
   useEffect(() => {
     var stat = [];

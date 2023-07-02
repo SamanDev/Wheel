@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/lastlist"
-    : "http://api.wheelofpersia.com/lastlist";
+    : "http://localhost:8085/lastlist";
 
 const getPublicContent = (data) => {
   return axios.get(API_URL + "?l=" + data.command);

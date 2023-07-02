@@ -78,9 +78,13 @@ function ModalExampleModal(prop) {
       const wheelb = JSON.parse(localStorage.getItem("wheel"));
 
       if (wheelb?.status != "Pending") {
-        var newuser = olduser2;
-        newuser.balance2 = data;
-        setUser(newuser);
+        try {
+          var newuser = JSON.parse(localStorage.getItem("user"));
+          newuser.balance2 = data;
+          setUser(newuser);
+        } catch (error) {
+          setUser(null);
+        }
       }
     });
     EventBus.on("wheel", (data) => {
