@@ -25,7 +25,7 @@ const GridExampleDividedPhrase = (prop) => {
               <BetsWheel bet={bet} setBet={setBet} />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
-              <Header as="h5" icon inverted>
+              <Header as="h5" icon inverted style={{ marginTop: 70 }}>
                 <Icon name="user" color="grey" />
                 Login with your Google account.
               </Header>
@@ -37,6 +37,7 @@ const GridExampleDividedPhrase = (prop) => {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <SendChatWheel disabled={true} />
       </>
     );
   }

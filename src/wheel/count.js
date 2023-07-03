@@ -76,6 +76,9 @@ function CountWheel(prop) {
       mytime();
       updateWheelborder(wheel);
     }
+    if (wheel?.status == "Spin") {
+      $(".mainwheel").addClass("mytrue");
+    }
   }, [wheel?.status]);
   useEffect(() => {
     clearTimeout(timer);
@@ -88,8 +91,7 @@ function CountWheel(prop) {
           }, 500);
         }
 
-        $(".mainwheel").addClass("mytrue");
-        $(".ws").html("hi");
+        $(".ws").html("-");
       }
     }
 

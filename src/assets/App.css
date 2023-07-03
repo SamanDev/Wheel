@@ -301,6 +301,7 @@ tr .ui,
   position: relative;
   height: 80vw;
   max-height: 445px;
+  transition: transform 10s ease;
 }
 
 .count {
@@ -427,7 +428,7 @@ tr .ui,
   }
 }
 
-.mywhell {
+.mywhell.mytrue {
   transform: scale(1);
 }
 .bhdLno img {

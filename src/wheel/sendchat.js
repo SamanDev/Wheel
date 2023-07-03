@@ -21,7 +21,7 @@ const addChat = (txt) => {
   }
 };
 
-const SendChatWheel = () => (
+const SendChatWheel = (prop) => (
   <Comment.Group size="mini">
     <Comment>
       <Form
@@ -39,10 +39,16 @@ const SendChatWheel = () => (
             border: "none",
             background: "transparent",
           }}
+          disabled={prop.disabled}
         >
           <Icon name="send" color="black" />
         </Button>
-        <Form.Input id="send" placeholder="write here..." fluid />
+        <Form.Input
+          id="send"
+          placeholder="write here..."
+          disabled={prop.disabled}
+          fluid
+        />
       </Form>
     </Comment>
   </Comment.Group>
