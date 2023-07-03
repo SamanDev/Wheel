@@ -1,14 +1,14 @@
 import { io } from "socket.io-client";
 import EventBus from "./common/EventBus";
 // "undefined" means the URL will be computed from the `window.location` object
-/* const URL =
-  process.env.NODE_ENV === "production"
-    ? "https://sock.wheelofpersia.com/wheelpub"
-    : "http://localhost:8484/wheelpub"; */
 const URL =
   process.env.NODE_ENV === "production"
     ? "https://sock.wheelofpersia.com/wheelpub"
-    : "https://sock.wheelofpersia.com/wheelpub";
+    : "http://localhost:8484/wheelpub";
+/* const URL =
+  process.env.NODE_ENV === "production"
+    ? "https://sock.wheelofpersia.com/wheelpub"
+    : "https://sock.wheelofpersia.com/wheelpub"; */
 
 const socketpub = io(URL, {
   autoConnect: false,
@@ -34,7 +34,9 @@ function onConnect() {
     if (command == "resetusers") {
       EventBus.dispatch("resetusers");
     }
-
+    if (command == "chat") {
+      EventBus.dispatch("chat", data);
+    }
     if (command == "online") {
       EventBus.dispatch("online", data);
     }

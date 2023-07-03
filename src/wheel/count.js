@@ -40,7 +40,7 @@ function CountWheel(prop) {
   const [time, setTime] = useState(1);
 
   const [openads, setOpenads] = useState(false);
-  const [wheel, setWheel] = useState(prop.wheel);
+  const [wheel, setWheel] = useState();
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -73,11 +73,11 @@ function CountWheel(prop) {
       mytime();
       updateWheelborder(wheel);
     } else {
+      if (wheel?.status == "Spin") {
+        $(".mainwheel").addClass("mytrue");
+      }
       mytime();
       updateWheelborder(wheel);
-    }
-    if (wheel?.status == "Spin") {
-      $(".mainwheel").addClass("mytrue");
     }
   }, [wheel?.status]);
   useEffect(() => {
@@ -91,15 +91,13 @@ function CountWheel(prop) {
           }, 500);
         }
 
-        $(".ws").html("-");
+        $(".ws").html("hi");
       }
     }
 
-    if (time <= 59) {
-      timer = setTimeout(() => {
-        mytime();
-      }, 1000);
-    }
+    timer = setTimeout(() => {
+      mytime();
+    }, 1000);
   }, [time]);
 
   const mytime = () => {

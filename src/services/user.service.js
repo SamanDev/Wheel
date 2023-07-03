@@ -1,14 +1,14 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-/* const API_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://api.wheelofpersia.com/"
-    : "http://localhost:8085/"; */
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/"
-    : "https://api.wheelofpersia.com/";
+    : "http://localhost:8085/";
+/* const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.wheelofpersia.com/"
+    : "https://api.wheelofpersia.com/"; */
 const getPublicContent = () => {
   return axios.get(API_URL + "api/all");
 };
@@ -18,6 +18,16 @@ const getUserBoard = () => {
 };
 const getchips = (id) => {
   return axios.get(API_URL + "getchip", {
+    headers: authHeader(),
+  });
+};
+const addChat = (data) => {
+  return axios.post(API_URL + "addchat", data, {
+    headers: authHeader(),
+  });
+};
+const addBet = (data) => {
+  return axios.post(API_URL + "addbet", data, {
     headers: authHeader(),
   });
 };
@@ -42,4 +52,6 @@ export default {
   getAdminBoard,
   getchips,
   gettokens,
+  addChat,
+  addBet,
 };

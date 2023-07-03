@@ -9,6 +9,11 @@ var corsOptions = {
     "http://localhost:3000",
   ],
 };
+//const serverDB = process.env.NODE_ENV === "production" ? "mongodb://localhost:27017" : "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew";
+const serverDB =
+  process.env.NODE_ENV === "production"
+    ? "mongodb://localhost:27017"
+    : "mongodb://localhost:27017";
 const serverPort = process.env.NODE_ENV === "production" ? 2083 : 8085;
 const soocketPort = process.env.NODE_ENV === "production" ? 2087 : 8484;
 app.use(cors(corsOptions));
@@ -38,13 +43,10 @@ function groupBySingleField(data, field) {
   }, {});
 }
 db.mongoose
-  .connect(
-    `mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(serverDB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Successfully connect to MongoDB.");
     initial();
@@ -57,6 +59,7 @@ db.mongoose
 // simple route
 
 // routes
+
 var userswinLisr = "";
 app.get("/lastlist", async (req, res) => {
   if (req.query.l == "users") {
@@ -163,7 +166,13 @@ app.get("/gettokens", (req, res) => {
     }
   });
 });
-
+const decuser = async (req, res, data) => {
+  await User.findByIdAndUpdate(req.userId, {
+    $inc: { balance2: data.bet * -1 },
+  });
+  wheelNamespacePub.emit("msg", { command: "bets", data: data });
+  res.json("done");
+};
 app.get("/getchip", [authJwt.verifyToken], (req, res) => {
   var newuserinc = User.findOneAndUpdate(
     { _id: req.userId, balance2: { $lt: 1000 } },
@@ -181,10 +190,55 @@ app.get("/getchip", [authJwt.verifyToken], (req, res) => {
     }
   });
 });
+app.post("/addbet", [authJwt.verifyToken], (req, res) => {
+  if (wheel.status != "Pending") {
+    res.status(500).json("no access");
+    return;
+  }
+  User.findById(req.userId).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    var data = req.body;
+    if (user.balance2 < data.bet) {
+      res.status(500).json("no access");
+      return;
+    }
+
+    data.win = -1;
+    data.username = user.username;
+    data.image = user.image;
+    data.id = req.userId;
+    wheel.total = wheel.total + data.bet;
+
+    let fu = wheelusers.filter(
+      (user) => user.username == data.username && user.position == data.position
+    );
+    if (fu.length > 0) {
+      const newProjects = wheelusers.map((user) =>
+        user.username == data.username && user.position == data.position
+          ? { ...user, bet: user.bet + data.bet }
+          : user
+      );
+
+      wheelusers = newProjects;
+    } else {
+      wheelusers.push(data);
+    }
+    decuser(req, res, data);
+  });
+});
+app.post("/addchat", [authJwt.verifyToken], (req, res) => {
+  wheelNamespacePub.emit("msg", { command: "chat", data: req.body });
+  res.json("done");
+});
 const segments = [
   0, 2, 4, 2, 10, 2, 4, 2, 8, 2, 4, 2, 25, 2, 4, 2, 8, 2, 4, 2, 10, 2, 4, 2, 8,
   2, 4, 2, 20,
 ];
+
 const d = new Date();
 var wheel = {
   status: "Done",
@@ -201,10 +255,10 @@ var wheel = {
 };
 var wheelusers = [];
 
-const createWheel = function (startNum) {
+const createWheel = async (startNum) => {
   const d = new Date();
   let seconds = d.getSeconds();
-  return Wheel.create({
+  return await Wheel.create({
     status: "Pending",
     number: 0,
     total: 0,
@@ -255,63 +309,19 @@ wheelNamespace.use(async (socket, next) => {
   }
 });
 wheelNamespace.on("connection", (socket) => {
-  socket.on("addchat", (data) => {
-    socket.broadcast.emit("msg", { command: "chat", data: data });
-  });
-  socket.on("addBet", async (data) => {
-    if (socket.userdata.username) {
-      if (wheel.status == "Pending") {
-        data.win = -1;
-        data.username = socket.userdata.username;
-        data.image = socket.userdata.image;
-        data.id = socket.userdata.id;
-        wheel.total = wheel.total + data.bet;
-
-        let fu = wheelusers.filter(
-          (user) =>
-            user.username == data.username && user.position == data.position
-        );
-        if (fu.length > 0) {
-          const newProjects = wheelusers.map((user) =>
-            user.username == data.username && user.position == data.position
-              ? { ...user, bet: user.bet + data.bet }
-              : user
-          );
-
-          wheelusers = newProjects;
-        } else {
-          wheelusers.push(data);
-        }
-        await User.findOneAndUpdate(
-          { _id: socket.userdata.id, balance2: { $gt: data.bet - 1 } },
-          { $inc: { balance2: data.bet * -1 } }
-        ).then((res) => {
-          if (res?.username) {
-            var _d = res;
-            _d.balance2 = _d.balance2 - data.bet;
-            socket.broadcast.emit("msg", { command: "bets", data: data });
-          }
-        });
-
-        // wheelNamespace.emit("msg", { command: "bets", data: data });
-      }
-    }
-  });
-
   socket.emit("msg", { command: "setuser", data: socket.userdata });
 
   // getLast(socket);
 });
 wheelNamespacePub.on("connection", (socket) => {
+  socket.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
   socket.emit("msg", { command: "users", data: wheelusers });
   wheelNamespacePub.emit("msg", {
     command: "online",
     data: wheelNamespacePub.sockets.size,
-  });
-
-  socket.emit("msg", {
-    command: "update",
-    data: wheel,
   });
 });
 const initial = async () => {
@@ -375,10 +385,10 @@ const initial = async () => {
   });
 };
 const createWheelData = async () => {
-  console.log("createWheelData");
   var wheeldb = await createWheel(wheel?.number);
 
   wheel = wheeldb;
+  console.log("createWheelData:" + wheel?.startNum + " id:" + wheel?._id);
   wheelNamespacePub.emit("msg", {
     command: "update",
     data: wheel,

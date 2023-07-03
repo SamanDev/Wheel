@@ -19,18 +19,35 @@ const GridExampleDividedPhrase = (prop) => {
   if (!user?.accessToken) {
     return (
       <>
-        <Grid columns="three">
+        <Grid columns="three" style={{ position: "relative" }}>
+          <div
+            className="infobtn"
+            style={{
+              zIndex: 100,
+              right: 10,
+              left: 10,
+              top: 0,
+              bottom: 0,
+              textAlign: "center",
+              padding: 30,
+              background: "rgb(131,58,180)",
+              background:
+                "linear-gradient(90deg, rgba(131,58,180,.1) 0%, rgba(253,29,29,.5) 50%, rgba(252,176,69,.1) 100%)",
+            }}
+          >
+            <Header as="h5" icon inverted style={{ marginTop: 70 }}>
+              <Icon name="user" color="grey" />
+              Login with your Google account.
+            </Header>
+            <br />
+            <Google />
+          </div>
           <Grid.Row style={{ margin: 0 }}>
             <Grid.Column style={{ padding: 0 }}>
               <BetsWheel bet={bet} setBet={setBet} />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
-              <Header as="h5" icon inverted style={{ marginTop: 70 }}>
-                <Icon name="user" color="grey" />
-                Login with your Google account.
-              </Header>
-              <br />
-              <Google />
+              <ChatWheel />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
               <ChipsWheel bet={bet} setBet={setBet} />

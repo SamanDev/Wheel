@@ -3,20 +3,18 @@ import { Button, Comment, Form, Icon } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import $ from "jquery";
 import socket from "../socket";
+import UserService from "../services/user.service";
 const addChat = (txt) => {
   if ($("#send").val() != "") {
     const user = JSON.parse(localStorage.getItem("user"));
+    var _d = {
+      txt: txt,
+      username: user.username,
+      image: user.image,
+    };
 
-    EventBus.dispatch("chat", {
-      txt: txt,
-      username: user.username,
-      image: user.image,
-    });
-    socket.emit("addchat", {
-      txt: txt,
-      username: user.username,
-      image: user.image,
-    });
+    UserService.addChat(_d).then((response) => {});
+
     $("#send").val("");
   }
 };

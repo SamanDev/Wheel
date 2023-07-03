@@ -12,6 +12,7 @@ import {
   formatDollar,
   segments,
 } from "../utils/include";
+import UserService from "../services/user.service";
 import $ from "jquery";
 
 const getPosCount = (list, pos) => {
@@ -210,18 +211,12 @@ function BetsWheel(prop) {
 
       if (balance >= _b) {
         if (parseInt(Seconds_Between_Dates) < 15) {
-          socket.emit("addBet", {
+          UserService.addBet({
             bet: parseInt(_b),
             position: parseInt(pos),
-          });
+          }).then((response) => {});
           setBalance((prev) => prev - _b);
           EventBus.dispatch("balance", balance - _b);
-          EventBus.dispatch("bets", {
-            bet: parseInt(_b),
-            position: parseInt(pos),
-            username: user.username,
-            image: user.image,
-          });
         }
       } else {
         $("#showadsmod").trigger("click");

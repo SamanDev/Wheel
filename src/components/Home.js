@@ -32,6 +32,7 @@ const Home = () => {
           </p>
 
           <Google />
+          <List />
         </div>
       </div>
     </div>

@@ -19,13 +19,13 @@ segments.map((item, i) => {
 });
 var Seconds_Between_Dates = 0.1;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState();
   const [mustspin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
-        setMustSpin(false);
+        //setMustSpin(false);
         $(".mainwheel .bhdLno").removeClass(
           "animate__flash animate__animated animate__faster"
         );
@@ -58,12 +58,12 @@ function MNyWheel(prop) {
         if (wheel?.status == "Pending") {
           setPrizeNumber(wheel?.startNum);
         } else {
-          setMustSpin(false);
+          //setMustSpin(false);
           setPrizeNumber(wheel?.number);
         }
       }
     }
-  }, [wheel]);
+  }, [wheel?.status]);
   if (!wheel?.status) {
     return (
       <div className="mainwheel mywhell animate__bounceIn animate__animated">

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-/* const API_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://api.wheelofpersia.com/api/auth/"
-    : "http://localhost:8085/api/auth/"; */
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/api/auth/"
-    : "https://api.wheelofpersia.com/api/auth/";
+    : "http://localhost:8085/api/auth/";
+/* const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.wheelofpersia.com/api/auth/"
+    : "https://api.wheelofpersia.com/api/auth/"; */
 
 const register = (username, email, password, image, refer) => {
   return axios.post(API_URL + "signup", {
