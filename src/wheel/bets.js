@@ -164,7 +164,11 @@ function BetsWheel(prop) {
     EventBus.on("logout", (data) => {
       setCon(false);
     });
-
+    EventBus.on("users", (data) => {
+      if (list.length == 0) {
+        setuserbets(data);
+      }
+    });
     EventBus.on("bets", (data) => {
       if (data != []) {
         setuserbets((current) => [...current, data]);
