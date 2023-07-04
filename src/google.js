@@ -58,7 +58,11 @@ const handleManifest = async (name, id, doClk) => {
   }
 };
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(
+    localStorage.getItem("guser")
+      ? JSON.parse(localStorage.getItem("guser"))
+      : null
+  );
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
@@ -71,7 +75,7 @@ function App() {
     dispatch(login(username, password))
       .then(() => {
         setLoading(false);
-
+        window.location.href = "/play";
         // handleManifest(username, password, doClk);
         //window.location.href = "/play";
       })
@@ -133,14 +137,14 @@ function App() {
             );
           });
       } else {
-        logOut();
+        //logOut();
         setLoading(false);
         //$("#playnow").trigger("click");
         // $("#lggle").trigger("click");
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
-      logOut();
+      //logOut();
 
       setLoading(false);
     }

@@ -170,7 +170,7 @@ function ModalExampleModal(prop) {
       setuserclass("animate__bounceIn animate__animated");
     }
     if (wheel?.status == "Done" || wheel?.status == "Spin") {
-      setuserclass("animate__bounceOut animate__animated");
+      setuserclass("animate__bounceOut animate__animated animate__delay-1s");
     }
   }, [wheel?.status]);
 

@@ -26,16 +26,9 @@ function BetsWheel(prop) {
     return () => {
       EventBus.remove("balance");
       EventBus.remove("online");
+      EventBus.remove("user");
     };
   }, []);
-  useEffect(() => {
-    try {
-      var oldduser = JSON.parse(localStorage.getItem("user"));
-      var newuser = oldduser;
-      newuser.balance2 = balance;
-      localStorage.setItem("user", JSON.stringify(newuser));
-    } catch (error) {}
-  }, [balance]);
 
   if (!user?.accessToken) {
     return (

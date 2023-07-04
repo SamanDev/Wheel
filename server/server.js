@@ -12,8 +12,8 @@ var corsOptions = {
 //const serverDB = process.env.NODE_ENV === "production" ? "mongodb://localhost:27017" : "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew";
 const serverDB =
   process.env.NODE_ENV === "production"
-    ? "mongodb://localhost:27017"
-    : "mongodb://localhost:27017";
+    ? "mongodb://localhost:27017/Wheelofnew"
+    : "mongodb://localhost:27017/Wheelofnew";
 const serverPort = process.env.NODE_ENV === "production" ? 2083 : 8085;
 const soocketPort = process.env.NODE_ENV === "production" ? 2087 : 8484;
 app.use(cors(corsOptions));
@@ -169,44 +169,7 @@ app.get("/gettokens", (req, res) => {
 const decuser = async (req, res, data) => {
   await User.findByIdAndUpdate(req.userId, {
     $inc: { balance2: data.bet * -1 },
-  });
-  wheelNamespacePub.emit("msg", { command: "bets", data: data });
-  res.json("done");
-};
-app.get("/getchip", [authJwt.verifyToken], (req, res) => {
-  var newuserinc = User.findOneAndUpdate(
-    { _id: req.userId, balance2: { $lt: 1000 } },
-    {
-      $inc: { balance2: 1000 },
-    }
-  ).then((resp) => {
-    if (resp?.username) {
-      var _d = resp;
-      _d.balance2 = _d.balance2 + 1000;
-
-      res.json(_d);
-    } else {
-      res.json("no access");
-    }
-  });
-});
-app.post("/addbet", [authJwt.verifyToken], (req, res) => {
-  if (wheel.status != "Pending") {
-    res.status(500).json("no access");
-    return;
-  }
-  User.findById(req.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-
-    var data = req.body;
-    if (user.balance2 < data.bet) {
-      res.status(500).json("no access");
-      return;
-    }
-
+  }).then((user) => {
     data.win = -1;
     data.username = user.username;
     data.image = user.image;
@@ -227,6 +190,41 @@ app.post("/addbet", [authJwt.verifyToken], (req, res) => {
     } else {
       wheelusers.push(data);
     }
+    wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
+  });
+
+  res.json("done");
+};
+app.get("/getchip", [authJwt.verifyToken], (req, res) => {
+  var newuserinc = User.findOneAndUpdate(
+    { _id: req.userId, balance2: { $lt: 1000 } },
+    {
+      $inc: { balance2: 1000 },
+    }
+  ).then((resp) => {
+    if (resp?.username) {
+      var _d = resp;
+      _d.balance2 = _d.balance2 + 1000;
+
+      res.json(_d);
+    } else {
+      res.json("no access");
+    }
+  });
+});
+app.post("/addbet", [authJwt.verifyToken], (req, res) => {
+  User.findById(req.userId).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    var data = req.body;
+    if (user.balance2 < data.bet) {
+      res.json("no access");
+      return;
+    }
+
     decuser(req, res, data);
   });
 });
@@ -255,10 +253,10 @@ var wheel = {
 };
 var wheelusers = [];
 
-const createWheel = async (startNum) => {
+const createWheel = (startNum) => {
   const d = new Date();
   let seconds = d.getSeconds();
-  return await Wheel.create({
+  return Wheel.create({
     status: "Pending",
     number: 0,
     total: 0,
@@ -334,7 +332,10 @@ const initial = async () => {
     //createWheelData();
   }
 
-  if (defwheel == null || defwheel?.status == "Done") {
+  if (defwheel == null) {
+    createWheelData();
+  } else if (defwheel?.status == "Done") {
+    wheel = defwheel;
     createWheelData();
   } else if (defwheel?.status == "Pending") {
     wheel = defwheel;
@@ -385,46 +386,43 @@ const initial = async () => {
   });
 };
 const createWheelData = async () => {
-  var wheeldb = await createWheel(wheel?.number);
-
-  wheel = wheeldb;
+  var wheelnew = await createWheel(wheel?.number);
+  wheel = wheelnew;
   console.log("createWheelData:" + wheel?.startNum + " id:" + wheel?._id);
+  if (wheelusers.length > 0) {
+    wheelusers = [];
+    wheelNamespacePub.emit("msg", { command: "resetusers" });
+  }
   wheelNamespacePub.emit("msg", {
     command: "update",
     data: wheel,
   });
-  wheelusers = [];
-  wheelNamespacePub.emit("msg", { command: "resetusers" });
 
   setTimeout(() => {
     spin();
   }, 15000);
 };
 const spin = async () => {
-  const d = new Date();
-  let seconds = (wheel?.serverSec + 30) % 60;
-
-  wheel.serverSec = seconds;
   let newPrizeNumbern = getPrizePos(wheel);
-  wheel.number = newPrizeNumbern;
-
-  wheel.status = "Spin";
-  wheelNamespacePub.emit("msg", {
-    command: "update",
-    data: wheel,
-  });
-  var dd = await Wheel.findByIdAndUpdate(wheel._id, {
+  await Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spin",
-    serverSec: seconds,
-    number: newPrizeNumbern,
-  });
 
-  setTimeout(() => {
-    spinstop();
-  }, 25000);
+    number: newPrizeNumbern,
+  }).then(() => {
+    wheel.number = newPrizeNumbern;
+
+    wheel.status = "Spin";
+    wheelNamespacePub.emit("msg", {
+      command: "update",
+      data: wheel,
+    });
+    setTimeout(() => {
+      spinstop();
+    }, 27000);
+  });
 };
 const spinstop = async () => {
-  var _time = 5000;
+  var _time = 2000;
   wheel.status = "Spining";
   var _tot = 0;
   var _net = 0;
@@ -433,54 +431,44 @@ const spinstop = async () => {
       item.win = item.bet * getPrize(segments[wheel.number], item.position);
       _tot = _tot + item.bet;
       _net = _net + item.win;
+      item.pid = wheel._id;
+      createUser(wheel._id, item);
     });
   }
-
-  wheel.total = _tot;
-  wheel.net = _net;
-  wheelNamespacePub.emit("msg", {
-    command: "update",
-    data: wheel,
-  });
-  wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
-  if (wheelusers.length > 0) {
-    // _time = 3000;
-    inc(wheelusers);
-  }
-  var dd = await Wheel.findByIdAndUpdate(wheel._id, {
+  await Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spining",
     total: _tot,
     net: _net,
+  }).then(() => {
+    wheel.total = _tot;
+    wheel.net = _net;
+    wheelNamespacePub.emit("msg", {
+      command: "update",
+      data: wheel,
+    });
+    if (wheelusers.length > 0) {
+      wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
+      _time = 4000;
+      inc(wheelusers);
+    }
+    setTimeout(() => {
+      doneWheel();
+    }, _time);
   });
-
-  setTimeout(() => {
-    doneWheel(wheelusers);
-  }, _time);
 };
-const doneWheel = async (wheelusers) => {
-  userswinLisr = "";
-  var _time = 3000;
-  wheel.status = "Done";
-  wheelNamespacePub.emit("msg", {
-    command: "update",
-    data: wheel,
-  });
-  var dd = await Wheel.findByIdAndUpdate(wheel._id, { status: "Done" });
-  if (wheelusers?.length > 0) {
-    // _time = 3000;
+const doneWheel = async () => {
+  await Wheel.findByIdAndUpdate(wheel._id, { status: "Done" }).then((resp) => {
+    userswinLisr = "";
 
-    wheelusers.forEach(async (item) => {
-      item.pid = wheel._id;
-      var user = await createUser(wheel._id, item);
+    wheel.status = "Done";
+    wheelNamespacePub.emit("msg", {
+      command: "update",
+      data: wheel,
     });
     setTimeout(() => {
       createWheelData();
-    }, _time);
-  } else {
-    setTimeout(() => {
-      createWheelData();
-    }, _time);
-  }
+    }, 2500);
+  });
 };
 const getPrize = (newPrizeNumber, pos) => {
   var num = 0;
@@ -568,7 +556,7 @@ const createUser = function (wheelId, comment) {
   });
 };
 require("./app/routes/auth.routes")(app);
-require("./app/routes/user.routes")(app, wheel);
+require("./app/routes/user.routes")(app);
 
 app.listen(serverPort, () => {
   console.log(`Server is running on port ${serverPort}.`);

@@ -25,7 +25,7 @@ function ModalExampleModal(prop) {
   const [openads, setOpenads] = useState(false);
   const [user, setUser] = useState(olduser2);
   const [link, setLink] = useState("");
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState();
   useEffect(() => {
     if (copied) {
       setTimeout(() => {

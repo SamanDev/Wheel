@@ -164,11 +164,7 @@ function BetsWheel(prop) {
     EventBus.on("logout", (data) => {
       setCon(false);
     });
-    EventBus.on("users", (data) => {
-      if (list.length == 0) {
-        setuserbets(data);
-      }
-    });
+
     EventBus.on("bets", (data) => {
       if (data != []) {
         setuserbets((current) => [...current, data]);
@@ -201,7 +197,7 @@ function BetsWheel(prop) {
 
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
-    if (wheel?.status == "Pending" && con) {
+    if (con) {
       var t1 = new Date(wheel?.date);
       var t2 = new Date();
       var dif = t2.getTime() - t1.getTime();
@@ -217,6 +213,12 @@ function BetsWheel(prop) {
           }).then((response) => {});
           setBalance((prev) => prev - _b);
           EventBus.dispatch("balance", balance - _b);
+          EventBus.dispatch("bets", {
+            bet: parseInt(_b),
+            position: parseInt(pos),
+            username: user.username,
+            image: user.image,
+          });
         }
       } else {
         $("#showadsmod").trigger("click");

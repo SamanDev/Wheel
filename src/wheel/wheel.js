@@ -25,14 +25,12 @@ function MNyWheel(prop) {
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
-        //setMustSpin(false);
-        $(".mainwheel .bhdLno").removeClass(
-          "animate__flash animate__animated animate__faster"
-        );
-
         setWheel(data);
       }
     });
+    return () => {
+      EventBus.remove("wheel");
+    };
   }, []);
   useEffect(() => {
     if (wheel?.status) {
@@ -58,7 +56,7 @@ function MNyWheel(prop) {
         if (wheel?.status == "Pending") {
           setPrizeNumber(wheel?.startNum);
         } else {
-          //setMustSpin(false);
+          setMustSpin(false);
           setPrizeNumber(wheel?.number);
         }
       }
@@ -94,7 +92,7 @@ function MNyWheel(prop) {
           radiusLineWidth={0}
           textDistance={80}
           fontSize={[20]}
-          spinDuration={[parseFloat(Seconds_Between_Dates)]}
+          spinDuration={parseFloat(Seconds_Between_Dates)}
           onStopSpinning={() => {
             $(".mainwheel .bhdLno").addClass(
               "animate__flash animate__animated animate__faster"
