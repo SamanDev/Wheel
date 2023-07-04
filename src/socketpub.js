@@ -16,7 +16,6 @@ const socketpub = io(URL, {
 });
 function onConnect() {
   socketpub.on("msg", ({ command, data }) => {
-    console.log(command, data);
     if (command == "update") {
       localStorage.setItem("wheel", JSON.stringify(data));
       EventBus.dispatch("wheel", data);

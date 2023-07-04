@@ -17,7 +17,6 @@ function onConnect() {
   EventBus.dispatch("connect", true);
 
   socket.on("msg", ({ command, data }) => {
-    console.log(command, data);
     if (command == "user") {
       EventBus.dispatch("user", data);
     }
