@@ -124,7 +124,7 @@ function App() {
         dispatch(login(profile.name, profile.id))
           .then(() => {
             setLoading(false);
-            // handleManifest(profile.name, profile.id, doClk);
+            //handleManifest(profile.name, profile.id, doClk);
 
             window.location.href = "/play";
           })
