@@ -9,7 +9,7 @@ var corsOptions = {
     "http://localhost:3000",
   ],
 };
-const serverDB3 =
+const serverDB2 =
   process.env.NODE_ENV === "production"
     ? "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew"
     : "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew";
@@ -405,9 +405,9 @@ const createWheelData = async () => {
     spin();
   }, 15000);
 };
-const spin = async () => {
+const spin = () => {
   let newPrizeNumbern = getPrizePos(wheel);
-  await Wheel.findByIdAndUpdate(wheel._id, {
+  Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spin",
 
     number: newPrizeNumbern,
@@ -424,7 +424,7 @@ const spin = async () => {
     }, 27000);
   });
 };
-const spinstop = async () => {
+const spinstop = () => {
   var _time = 2000;
   wheel.status = "Spining";
   var _tot = 0;
@@ -438,7 +438,7 @@ const spinstop = async () => {
       createUser(wheel._id, item);
     });
   }
-  await Wheel.findByIdAndUpdate(wheel._id, {
+  Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spining",
     total: _tot,
     net: _net,
@@ -459,8 +459,8 @@ const spinstop = async () => {
     }, _time);
   });
 };
-const doneWheel = async () => {
-  await Wheel.findByIdAndUpdate(wheel._id, { status: "Done" }).then((resp) => {
+const doneWheel = () => {
+  Wheel.findByIdAndUpdate(wheel._id, { status: "Done" }).then((resp) => {
     userswinLisr = "";
 
     wheel.status = "Done";
