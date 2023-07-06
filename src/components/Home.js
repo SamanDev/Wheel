@@ -7,6 +7,8 @@ import List from "./List";
 import Menu from "./menu";
 
 const Home = () => {
+  window.location.href = "https://landing.wheelofpersia.com/";
+  return null;
   return (
     <div className="home">
       <div className="slider-thumb"></div>
