@@ -9,11 +9,11 @@ var corsOptions = {
     "http://localhost:3000",
   ],
 };
-const serverDB =
+const serverDB3 =
   process.env.NODE_ENV === "production"
     ? "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew"
     : "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew";
-const serverDB3 =
+const serverDB =
   process.env.NODE_ENV === "production"
     ? "mongodb://localhost:27017/Wheelofnew"
     : "mongodb://localhost:27017/Wheelofnew";
