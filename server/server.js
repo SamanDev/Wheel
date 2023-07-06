@@ -9,8 +9,11 @@ var corsOptions = {
     "http://localhost:3000",
   ],
 };
-//const serverDB = process.env.NODE_ENV === "production" ? "mongodb://localhost:27017" : "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew";
 const serverDB =
+  process.env.NODE_ENV === "production"
+    ? "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew"
+    : "mongodb+srv://salar:42101365@wheel.1pavbxp.mongodb.net/Wheelofnew";
+const serverDB3 =
   process.env.NODE_ENV === "production"
     ? "mongodb://localhost:27017/Wheelofnew"
     : "mongodb://localhost:27017/Wheelofnew";
@@ -166,8 +169,8 @@ app.get("/gettokens", (req, res) => {
     }
   });
 });
-const decuser = async (req, res, data) => {
-  await User.findByIdAndUpdate(req.userId, {
+const decuser = (req, res, data) => {
+  User.findByIdAndUpdate(req.userId, {
     $inc: { balance2: data.bet * -1 },
   }).then((user) => {
     data.win = -1;
@@ -191,9 +194,8 @@ const decuser = async (req, res, data) => {
       wheelusers.push(data);
     }
     wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
+    res.json(user.balance2);
   });
-
-  res.json("done");
 };
 app.get("/getchip", [authJwt.verifyToken], (req, res) => {
   var newuserinc = User.findOneAndUpdate(
@@ -295,6 +297,7 @@ wheelNamespace.use(async (socket, next) => {
   } else {
     await User.findById(user.id).then((res) => {
       if (res?.username) {
+        console.log(user.id);
         wheelNamespace.in(user.id).disconnectSockets(true);
         socket.userdata = res;
         socket.join(user.id);

@@ -21,11 +21,11 @@ class Game {
 
     this.rewardMsg = document.getElementById("rewardMsg");
     this.muted = false;
-    this.shouldShowAdOnPlay = false;
+    this.shouldShowAdOnPlay = true;
     this.isRewarded = true;
     this.shouldRestart = false;
 
-    adConfig({ sound: "on", preloadAdBreaks: "on" });
+    adConfig({ sound: "on", preloadAdBreaks: "auto" });
 
     // On click listeners for the game's buttons
     this.playButton.addEventListener("click", () => {
@@ -52,28 +52,26 @@ class Game {
 
     this.erase();
 
-    this.canvas.fillText("Loading. . .", 66, 150);
+    //this.canvas.fillText("Loading. . .", 66, 150);
     adBreak({
       type: "preroll",
       name: "coin_flip_preroll",
+
       adBreakDone: (info) => {
         // Log the preroll result to better understand the break status even when an ad is not shown.
         console.log(`Preroll result: ${info.breakStatus}`);
-        this.erase();
+        this.restartGame();
         this.playButton.style.display = "inline-block";
       },
     });
   }
-
-  // Start the game
   play() {
-    if (this.isEligibleForRewarded() && this.shouldShowAdOnPlay) {
+    console.log("Play " + this.shouldShowAdOnPlay + " . " + this.shouldRestart);
+    if (this.shouldShowAdOnPlay) {
       adBreak({
         type: "reward",
         name: "one_more_chance",
-        beforeAd: () => {
-          this.disableButtons();
-        },
+
         afterAd: () => {
           this.enableButtons();
           if (this.shouldRestart) {
@@ -82,37 +80,22 @@ class Game {
           this.shouldRestart = false;
         },
         beforeReward: (showAdFn) => {
-          const r = confirm("Watch this video to get one more chance?");
-          if (r) {
-            showAdFn();
-          } else {
-            alert("You need to restart the game");
-            this.shouldRestart = true;
-          }
+          showAdFn();
         },
         adDismissed: () => {
-          this.shouldRestart = true;
+          this.restartGame();
+          this.enableButtons();
+          try {
+            document.getElementById("showadsmodclose").click();
+          } catch (error) {}
         },
         adViewed: () => {
-          /*
-           * This is normally the place where a reward is given, but
-           * in this specific instance, action is done in "adDismissed".
-           */
+          this.restartGame();
+          try {
+            document.getElementById("showadsmodget").click();
+          } catch (error) {}
         },
       });
-    } else {
-      if (this.shouldShowAdOnPlay) {
-        adBreak({
-          type: "next",
-          name: "continue_game",
-          beforeAd: () => {
-            this.disableButtons();
-          },
-          afterAd: () => {
-            this.enableButtons();
-          },
-        });
-      }
     }
 
     if (this.shouldRestart) {
@@ -120,24 +103,19 @@ class Game {
     } else {
       this.canvas.fillText("Score: " + this.score, 8, 26);
       this.canvas.fillText("Heads or Tails?", 66, 150);
-      this.playButton.style.display = "none";
+
       this.headsButton.style.display = "inline-block";
       this.tailsButton.style.display = "inline-block";
     }
 
     this.shouldRestart = false;
   }
-
   flipCoin() {
     this.headsButton.disabled = true;
     this.tailsButton.disabled = true;
     this.erase();
     this.canvas.fillText("Score: " + this.score, 8, 26);
     this.canvas.fillText("Flipping coin . . .", 60, 150);
-
-    setTimeout(() => {
-      this.coinLanded();
-    }, 2000);
   }
 
   // Logic for when the coin lands
@@ -162,8 +140,9 @@ class Game {
     this.erase();
     this.shouldShowAdOnPlay = false;
     this.playButton.style.display = "inline-block";
-    this.headsButton.style.display = "none";
-    this.tailsButton.style.display = "none";
+    setTimeout(() => {
+      this.lose();
+    }, 500);
   }
 
   // Guess the flip correctly
@@ -177,26 +156,17 @@ class Game {
 
   // Guess the flip incorrectly
   lose(sideUp) {
-    this.erase();
-    if (this.score >= 1) {
-      this.score -= 1;
-    }
-    this.canvas.fillText("Sorry, it was " + sideUp, 50, 100);
-    this.canvas.fillText("Your score was " + this.score, 50, 150);
-    this.canvas.fillText("Want to play again?", 45, 200);
-
     this.playButton.style.display = "inline-block";
     this.headsButton.style.display = "none";
     this.tailsButton.style.display = "none";
     this.shouldShowAdOnPlay = true;
+    setTimeout(() => {
+      this.play();
+    }, 500);
   }
 
   // Erase the canvas
-  erase() {
-    this.canvas.fillStyle = "#ADD8E6";
-    this.canvas.fillRect(0, 0, 300, 300);
-    this.canvas.fillStyle = "#000000";
-  }
+  erase() {}
 
   enableButtons() {
     this.playButton.disabled = false;
@@ -215,5 +185,5 @@ try {
 } catch (error) {
   setTimeout(() => {
     const game = new Game();
-  }, 3000);
+  }, 4000);
 }

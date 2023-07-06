@@ -40,7 +40,7 @@ function CountWheel(prop) {
   const [time, setTime] = useState(1);
 
   const [openads, setOpenads] = useState(false);
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState({});
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
@@ -65,9 +65,6 @@ function CountWheel(prop) {
   useEffect(() => {
     clearInterval(lighter);
     if (wheel?.status == "Pending") {
-      if (wheel?.startNum == 0) {
-        setOpenads(true);
-      }
       setTime(0);
       clearTimeout(timer);
       mytime();
@@ -80,9 +77,19 @@ function CountWheel(prop) {
       clearTimeout(timer);
       updateWheelborder(wheel);
 
-      lighter = setInterval(() => {
-        checkbox();
-      }, 800);
+      if (wheel?.status == "Done") {
+        if (
+          segments[wheel?.number] == 0 ||
+          segments[wheel?.number] == 20 ||
+          segments[wheel?.number] == 25 ||
+          segments[wheel?.number] == 8 ||
+          segments[wheel?.number] == 10
+        ) {
+          //setOpenads(true);
+
+          $("#playButton").trigger("click");
+        }
+      }
     }
   }, [wheel?.status]);
   useEffect(() => {
@@ -93,7 +100,7 @@ function CountWheel(prop) {
           clearInterval(lighter);
           lighter = setInterval(() => {
             checkbox();
-          }, 500);
+          }, 800);
         }
 
         $(".mainwheel").addClass("mytrue");

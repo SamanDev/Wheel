@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL2 =
+const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/api/auth/"
     : "http://localhost:8085/api/auth/";
-const API_URL =
+const API_URL2 =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/api/auth/"
     : "https://api.wheelofpersia.com/api/auth/";
@@ -32,7 +32,6 @@ const login = (username, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
-  localStorage.removeItem("guser");
 };
 
 export default {

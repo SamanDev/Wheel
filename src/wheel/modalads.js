@@ -11,11 +11,19 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import ModalAds from "../modalvideo";
 import { Jetton, formatDollar } from "../utils/include";
+import $ from "jquery";
+const getchips = (user, setOpen) => {
+  if (user?.balance2 < 1000) {
+    UserService.getchips().then((response) => {
+      try {
+        if (user?.username == response.data.username) {
+          EventBus.dispatch("setuser", response.data);
+        }
+      } catch (error) {}
+    });
+  }
 
-const getchips = (id) => {
-  UserService.getchips(id).then((response) => {
-    EventBus.dispatch("setuser", response.data);
-  });
+  setOpen(false);
 };
 const olduser2 = JSON.parse(localStorage.getItem("user"));
 function ModalExampleModal(prop) {
@@ -112,11 +120,29 @@ function ModalExampleModal(prop) {
           color="facebook"
           disabled={user?.balance2 >= 1000}
           onClick={() => {
-            setOpenads(true);
+            $("#playButton").trigger("click");
           }}
         >
           <Icon name="video" /> Watch Ads
         </Button>
+        <Icon
+          circular
+          inverted
+          name="gift"
+          color="red"
+          id="showadsmodget"
+          style={{ position: "absolute", zIndex: -1 }}
+          onClick={() => getchips(user, setOpen)}
+        />
+        <Icon
+          circular
+          inverted
+          name="gift"
+          color="red"
+          id="showadsmodclose"
+          style={{ position: "absolute", zIndex: -1 }}
+          onClick={() => setOpen(false)}
+        />
       </Segment>
       <ModalAds
         open={openads}

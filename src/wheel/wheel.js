@@ -19,7 +19,7 @@ segments.map((item, i) => {
 });
 var Seconds_Between_Dates = 0.1;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState();
+  const [wheel, setWheel] = useState({});
   const [mustspin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   useEffect(() => {
@@ -42,7 +42,7 @@ function MNyWheel(prop) {
         var Seconds_from_T1_to_T2 = dif / 1000;
         Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-        Seconds_Between_Dates = 37 - Seconds_Between_Dates;
+        Seconds_Between_Dates = 38 - Seconds_Between_Dates;
 
         Seconds_Between_Dates = Seconds_Between_Dates / 10;
         Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(2);
@@ -56,6 +56,9 @@ function MNyWheel(prop) {
         if (wheel?.status == "Pending") {
           setPrizeNumber(wheel?.startNum);
         } else {
+          $(".mainwheel .bhdLno").removeClass(
+            "animate__flash animate__animated animate__faster"
+          );
           setMustSpin(false);
           setPrizeNumber(wheel?.number);
         }
@@ -64,7 +67,7 @@ function MNyWheel(prop) {
   }, [wheel?.status]);
   if (!wheel?.status) {
     return (
-      <div className="mainwheel mywhell animate__bounceIn animate__animated">
+      <div className="mainwheel mywhell">
         <CountWheel wheel={wheel} {...prop} />
       </div>
     );

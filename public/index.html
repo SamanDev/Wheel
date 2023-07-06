@@ -27,7 +27,13 @@
     <button class="add-button" style="position:absolute;top: -200px;">Add to
       home screen</button>
     <div id="root"></div>
-
+    <div style="display:none">
+      <canvas id="gameContainer" height="300px" width="300px"></canvas>
+      <button id="playButton">Play</button>
+      <button id="headsButton">Heads</button>
+      <button id="tailsButton">Tails</button>
+      <button id="muteButton">Mute sound</button>
+      <span id="rewardMsg"></span></div>
     <script>
       
 window.dataLayer = window.dataLayer || [];
@@ -37,6 +43,7 @@ gtag('js', new Date());
 gtag('config', 'G-FS0JW052KG');
 </script>
     <script async
+      data-adbreak-test="on"
       data-ad-client="ca-pub-5068963892927255"
       data-admob-interstitial-slot="ca-app-pub-3940256099942544/1033173712"
       data-admob-rewarded-slot="ca-app-pub-3940256099942544/5224354917"

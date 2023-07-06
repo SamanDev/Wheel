@@ -144,7 +144,7 @@ function App() {
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
-      //logOut();
+      logOut();
 
       setLoading(false);
     }
@@ -225,9 +225,8 @@ function App() {
           className="ltr"
           style={{ margin: "10px auto" }}
           disabled
-          size="huge"
         >
-          <Button color="red" fluid size="huge">
+          <Button color="red" fluid>
             <Icon name="spinner" loading />
             Please wait...
           </Button>

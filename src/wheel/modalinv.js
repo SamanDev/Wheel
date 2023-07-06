@@ -5,9 +5,13 @@ import EventBus from "../common/EventBus";
 
 import { Jetton, formatDollar } from "../utils/include";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-const gettokens = (id) => {
-  UserService.gettokens(id).then((response) => {
-    EventBus.dispatch("setuser", response.data);
+const gettokens = (user) => {
+  UserService.gettokens(user.tokens[0]).then((response) => {
+    try {
+      if (user?.username == response.data.username) {
+        EventBus.dispatch("setuser", response.data);
+      }
+    } catch (error) {}
   });
 };
 const olduser2 = JSON.parse(localStorage.getItem("user"));
@@ -138,7 +142,7 @@ function ModalExampleModal(prop) {
             <Button
               color="teal"
               onClick={() => {
-                gettokens(user.tokens[0]);
+                gettokens(user);
                 setLoading(true);
               }}
               loading={loading}

@@ -131,14 +131,12 @@ const PrintBet = (prop) => {
 };
 
 function BetsWheel(prop) {
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel, setWheel] = useState({});
   var oldduser;
   try {
     oldduser = JSON.parse(localStorage.getItem("user"));
   } catch (error) {
     localStorage.removeItem("user");
-
-    localStorage.removeItem("guser");
   }
 
   const [user, setUser] = useState(oldduser);
@@ -211,10 +209,6 @@ function BetsWheel(prop) {
 
       if (balance >= _b) {
         if (parseInt(Seconds_Between_Dates) < 15) {
-          UserService.addBet({
-            bet: parseInt(_b),
-            position: parseInt(pos),
-          }).then((response) => {});
           setBalance((prev) => prev - _b);
           EventBus.dispatch("balance", balance - _b);
           EventBus.dispatch("bets", {
@@ -223,6 +217,10 @@ function BetsWheel(prop) {
             username: user.username,
             image: user.image,
           });
+          UserService.addBet({
+            bet: parseInt(_b),
+            position: parseInt(pos),
+          }).then((response) => {});
         }
       } else {
         $("#showadsmod").trigger("click");
@@ -238,7 +236,7 @@ function BetsWheel(prop) {
         open={true}
         position="top left"
         className={
-          wheel?.status != "Pending"
+          wheel?.status != "Pending" || !wheel?.status
             ? "animate__fadeInDown animate__animated"
             : "animate__animated animate__fadeOutUp"
         }

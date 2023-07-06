@@ -79,12 +79,6 @@ const GridExampleDividedPhrase = (prop) => {
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>
             <ChatWheel />
-            <canvas id="gameContainer" height="300px" width="300px"></canvas>
-            <button id="playButton">Play</button>
-            <button id="headsButton">Heads</button>
-            <button id="tailsButton">Tails</button>
-            <button id="muteButton">Mute sound</button>
-            <span id="rewardMsg"></span>
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>
             <ChipsWheel bet={bet} setBet={setBet} />
