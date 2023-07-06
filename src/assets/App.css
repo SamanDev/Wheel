@@ -663,7 +663,7 @@ tr .ui,
     1px 1px 0px rgba(255, 255, 255, 0.2);
   font-size: 42px;
 }
-canvas {
+.mywhell canvas {
   width: 101% !important;
   height: 101% !important;
 }
