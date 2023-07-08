@@ -1,11 +1,11 @@
 import { io } from "socket.io-client";
 import EventBus from "./common/EventBus";
 // "undefined" means the URL will be computed from the `window.location` object
-const URL2 =
+const URL =
   process.env.NODE_ENV === "production"
     ? "https://sock.wheelofpersia.com/wheel"
     : "http://localhost:8484/wheel";
-const URL =
+const URL2 =
   process.env.NODE_ENV === "production"
     ? "https://sock.wheelofpersia.com/wheel"
     : "https://sock.wheelofpersia.com/wheel";

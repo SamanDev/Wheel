@@ -144,7 +144,7 @@ function App() {
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
-      logOut();
+      //logOut();
 
       setLoading(false);
     }

@@ -12,12 +12,13 @@ import About from "./components/About";
 import Invite from "./components/Invite";
 import Term from "./components/Term";
 import Privacy from "./components/Privacy";
-import Leaders from "./Leadersframe";
 import BoardUser from "./components/BoardUser";
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 import { startServiceWorker } from "./utils/include";
+import Leaders from "./Leadersframe";
+import LastList from "./LastListfram";
 
 import EventBus from "./common/EventBus";
 const App = () => {
@@ -88,6 +89,7 @@ const App = () => {
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/login/:u/:p" element={<BoardUser />} />
       <Route path="/leaders" element={<Leaders command="leaders" />} />
+      <Route path="/best" element={<LastList command="winList&u=" />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />
