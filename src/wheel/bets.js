@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
 import { Label, Popup } from "semantic-ui-react";
-import socket from "../socket";
+
 import {
   getcolor,
   getcolortext,
@@ -287,6 +287,7 @@ function BetsWheel(prop) {
                 {inf[1]}{" "}
                 <img
                   src={"/assets/users.svg"}
+                  alt="usersicon"
                   style={{ width: 16, height: 16 }}
                 />{" "}
                 {inf[0] <= 1000

@@ -78,8 +78,8 @@ function MNyWheel(prop) {
       <div className="mainwheel mywhell">
         <CountWheel wheel={wheel} {...prop} />
         <div className="countover">
-          <img src="/assets/cadr3.png" id="cadr" />
-          <img src="/assets/cadr4.png" id="cadr2" />
+          <img src="/assets/cadr3.png" alt="card1" id="cadr" />
+          <img src="/assets/cadr4.png" alt="card2" id="cadr2" />
         </div>
         <Wheel
           data={_l}

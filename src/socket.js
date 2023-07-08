@@ -14,8 +14,6 @@ const socket = io(URL, {
   autoConnect: false,
 });
 function onConnect() {
-  EventBus.dispatch("connect", true);
-
   socket.on("msg", ({ command, data }) => {
     if (command == "user") {
       EventBus.dispatch("user", data);
@@ -24,6 +22,7 @@ function onConnect() {
       EventBus.dispatch("bets", data);
     }
     if (command == "setuser") {
+      EventBus.dispatch("connect", true);
       EventBus.dispatch("setuser", data);
     }
 

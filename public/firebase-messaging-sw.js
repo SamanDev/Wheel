@@ -31,7 +31,7 @@ self.addEventListener("activate", (event) => {
 });
 const CACHE_NAME = "offline";
 const OFFLINE_URL = "offline.html";
-const host = "http://localhost:3000";
+const host = "/";
 self.addEventListener("install", function (event) {
   console.log("[ServiceWorker] Install");
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Comment, Form, Icon } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import $ from "jquery";
-import socket from "../socket";
+
 import UserService from "../services/user.service";
 const addChat = (txt) => {
   if ($("#send").val() != "") {
@@ -46,6 +46,7 @@ const SendChatWheel = (prop) => (
           placeholder="write here..."
           disabled={prop.disabled}
           fluid
+          name="sendinp"
         />
       </Form>
     </Comment>

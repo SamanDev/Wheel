@@ -64,6 +64,77 @@ db.mongoose
 // routes
 
 var userswinLisr = "";
+const segments = [
+  0, 2, 4, 2, 10, 2, 4, 2, 8, 2, 4, 2, 25, 2, 4, 2, 8, 2, 4, 2, 10, 2, 4, 2, 8,
+  2, 4, 2, 20,
+];
+
+const d = new Date();
+var wheel = {
+  status: "Done",
+  startNum: 0,
+  wheelusers: [],
+  number: 0,
+  total: 0,
+  net: 0,
+  avex: 0,
+  aveBetx: 0,
+  serverCode: Math.floor(Math.random() * 9999),
+  serverSec: 0,
+  date: d,
+};
+var wheelusers = [];
+const { Server } = require("socket.io");
+const io = new Server(soocketPort, {
+  cors: { corsOptions },
+});
+
+const wheelNamespacePub = io.of("/wheelpub");
+wheelNamespacePub.on("connection", (socket) => {
+  socket.emit("msg", {
+    command: "update",
+    data: wheel,
+  });
+  socket.emit("msg", { command: "users", data: wheelusers });
+  wheelNamespacePub.emit("msg", {
+    command: "online",
+    data: wheelNamespacePub.sockets.size,
+  });
+});
+const wheelNamespace = io.of("/wheel");
+wheelNamespace.use(async (socket, next) => {
+  const user = socket.handshake.auth;
+
+  if (socket.userdata) {
+    next();
+  } else {
+    await User.findById(user.id).then((res) => {
+      if (res?.username) {
+        console.log(user.id);
+        wheelNamespace.in(user.id).disconnectSockets(true);
+        socket.userdata = res;
+        socket.join(user.id);
+
+        next();
+      } else {
+        socket.disconnect();
+      }
+    });
+  }
+});
+wheelNamespace.on("disconnect", (reason) => {
+  if (reason === "io server disconnect") {
+    // the disconnection was initiated by the server, you need to reconnect manually
+    //wheelNamespace.connect();
+  }
+  console.log(reason); // else the socket will automatically try to reconnect
+});
+
+wheelNamespace.on("connection", (socket) => {
+  socket.emit("msg", { command: "setuser", data: socket.userdata });
+
+  // getLast(socket);
+});
 app.get("/lastlist", async (req, res) => {
   if (req.query.l == "users") {
     res.json(wheelusers);
@@ -234,26 +305,6 @@ app.post("/addchat", [authJwt.verifyToken], (req, res) => {
   wheelNamespacePub.emit("msg", { command: "chat", data: req.body });
   res.json("done");
 });
-const segments = [
-  0, 2, 4, 2, 10, 2, 4, 2, 8, 2, 4, 2, 25, 2, 4, 2, 8, 2, 4, 2, 10, 2, 4, 2, 8,
-  2, 4, 2, 20,
-];
-
-const d = new Date();
-var wheel = {
-  status: "Done",
-  startNum: 0,
-  wheelusers: [],
-  number: 0,
-  total: 0,
-  net: 0,
-  avex: 0,
-  aveBetx: 0,
-  serverCode: Math.floor(Math.random() * 9999),
-  serverSec: 0,
-  date: d,
-};
-var wheelusers = [];
 
 const createWheel = (startNum) => {
   const d = new Date();
@@ -275,56 +326,6 @@ const createWheel = (startNum) => {
   });
 };
 
-const { Server } = require("socket.io");
-const io = new Server(soocketPort, {
-  cors: { corsOptions },
-});
-const wheelNamespace = io.of("/wheel");
-const wheelNamespacePub = io.of("/wheelpub");
-
-wheelNamespace.on("disconnect", (reason) => {
-  if (reason === "io server disconnect") {
-    // the disconnection was initiated by the server, you need to reconnect manually
-    //wheelNamespace.connect();
-  }
-  console.log(reason); // else the socket will automatically try to reconnect
-});
-wheelNamespace.use(async (socket, next) => {
-  const user = socket.handshake.auth;
-
-  if (socket.userdata) {
-    next();
-  } else {
-    await User.findById(user.id).then((res) => {
-      if (res?.username) {
-        console.log(user.id);
-        wheelNamespace.in(user.id).disconnectSockets(true);
-        socket.userdata = res;
-        socket.join(user.id);
-
-        next();
-      } else {
-        socket.disconnect();
-      }
-    });
-  }
-});
-wheelNamespace.on("connection", (socket) => {
-  socket.emit("msg", { command: "setuser", data: socket.userdata });
-
-  // getLast(socket);
-});
-wheelNamespacePub.on("connection", (socket) => {
-  socket.emit("msg", {
-    command: "update",
-    data: wheel,
-  });
-  socket.emit("msg", { command: "users", data: wheelusers });
-  wheelNamespacePub.emit("msg", {
-    command: "online",
-    data: wheelNamespacePub.sockets.size,
-  });
-});
 const initial = async () => {
   console.log("initial");
 

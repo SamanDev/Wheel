@@ -10,13 +10,13 @@
   "background_color": "#eeeeee",
   "icons": [
     {
-      "src": "https://wheelofpersia.com/assets/logo192.png",
+      "src": "/assets/logo192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "https://wheelofpersia.com/assets/logo.png",
+      "src": "/assets/logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
