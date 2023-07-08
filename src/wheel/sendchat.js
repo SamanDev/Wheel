@@ -37,6 +37,8 @@ const SendChatWheel = (prop) => (
             border: "none",
             background: "transparent",
           }}
+          name="sendbtn"
+          ariaLabelledby="send"
           disabled={prop.disabled}
         >
           <Icon name="send" color="black" />
