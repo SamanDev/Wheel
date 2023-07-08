@@ -74,6 +74,16 @@ function ModalExampleModal(prop) {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
         setWheel(data);
+
+        if (data?.status != "Pending") {
+          try {
+            var newuser = JSON.parse(localStorage.getItem("user"));
+
+            setUser(newuser);
+          } catch (error) {
+            setUser(null);
+          }
+        }
       }
     });
     return () => {

@@ -1,11 +1,11 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL =
+const API_URL2 =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/lastlist"
     : "http://localhost:8085/lastlist";
-const API_URL2s =
+const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.wheelofpersia.com/lastlist"
     : "https://api.wheelofpersia.com/lastlist";

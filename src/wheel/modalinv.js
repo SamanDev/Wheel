@@ -68,7 +68,7 @@ function ModalExampleModal(prop) {
     setOpen(false);
   }, [user?.tokens.length]);
   useEffect(() => {
-    if (wheel?.status == "Done") {
+    if (wheel?.status != "Pending") {
       const olduser = JSON.parse(localStorage.getItem("user"));
 
       setUser(olduser);
