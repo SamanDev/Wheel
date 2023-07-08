@@ -89,7 +89,7 @@ const App = () => {
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/login/:u/:p" element={<BoardUser />} />
       <Route path="/leaders" element={<Leaders command="leaders" />} />
-      <Route path="/best" element={<LastList command="winList&u=" />} />
+      <Route path="/best" element={<LastList command="lastList" />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />

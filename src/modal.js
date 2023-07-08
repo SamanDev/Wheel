@@ -45,7 +45,7 @@ function ModalExampleModal(prop) {
           maxWidth: "90vw",
         }}
         trigger={
-          <Button size="mini" color="black" className="show">
+          <Button size="mini" color="black">
             Show
           </Button>
         }
@@ -119,7 +119,7 @@ function ModalExampleModal(prop) {
             </Statistic>
           </Segment>
 
-          <Mywhell {...prop} last={true} />
+          <Mywhell {...prop} wheel={wheel} last={true} />
 
           <Segment color="black" inverted size="mini" className="res">
             <div className="table rsec">
