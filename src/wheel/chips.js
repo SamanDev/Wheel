@@ -40,19 +40,19 @@ function BetsWheel(prop) {
     var bet = prop.bet;
     var nextbet = bet;
 
-    if (nextbet > balance) {
+    if (nextbet >= balance) {
       nextbet = 5000;
     }
-    if (nextbet > balance) {
+    if (nextbet >= balance) {
       nextbet = 1000;
     }
-    if (nextbet > balance) {
+    if (nextbet >= balance) {
       nextbet = 500;
     }
-    if (nextbet > balance) {
+    if (nextbet >= balance) {
       nextbet = 250;
     }
-    if (nextbet > balance) {
+    if (nextbet >= balance) {
       nextbet = 50;
     }
     if (nextbet != bet) {
