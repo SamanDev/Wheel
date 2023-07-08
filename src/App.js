@@ -12,6 +12,7 @@ import About from "./components/About";
 import Invite from "./components/Invite";
 import Term from "./components/Term";
 import Privacy from "./components/Privacy";
+import Leaders from "./Leadersframe";
 import BoardUser from "./components/BoardUser";
 
 import { logout } from "./actions/auth";
@@ -86,6 +87,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/login/:u/:p" element={<BoardUser />} />
+      <Route path="/leaders" element={<Leaders command="leaders" />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />
