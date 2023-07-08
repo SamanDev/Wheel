@@ -33,9 +33,10 @@ const SendChatWheel = (prop) => (
           style={{
             position: "absolute",
             right: "10px",
-            zIndex: 100,
+            zIndex: 1000,
             border: "none",
             background: "transparent",
+            color: "gray",
           }}
           name="sendbtn"
           ariaLabelledby="send"
