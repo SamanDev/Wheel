@@ -39,10 +39,10 @@ const SendChatWheel = (prop) => (
             color: "gray",
           }}
           name="sendbtn"
-          ariaLabelledby="send"
           disabled={prop.disabled}
         >
           <Icon name="send" color="black" />
+          send
         </Button>
         <Form.Input
           id="send"

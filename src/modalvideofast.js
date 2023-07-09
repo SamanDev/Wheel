@@ -29,29 +29,7 @@ function ModalExampleModal(prop) {
       }}
     >
       <Progress percent={per} active color="green" attached="top" />
-      <Segment inverted size="small" style={{ margin: 0 }}>
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-          }}
-        >
-          <img src="/assets/sepi.png" style={{ margin: "auto" }} />
-        </div>
-        <ins
-          className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client="ca-pub-5068963892927255"
-          data-ad-slot="3043056885"
-          data-ad-format="auto"
-          height="800"
-          width="360"
-          type="adsense"
-          data-full-width-responsive="true"
-        ></ins>
-      </Segment>
+      <Segment inverted size="small" style={{ margin: 0 }}></Segment>
     </Modal>
   );
 }

@@ -19,15 +19,20 @@
 
     <script async crossorigin="anonymous"
       src="https://www.googletagmanager.com/gtag/js?id=G-FS0JW052KG"></script>
-    <link rel="manifest" href="/manifest.json">
+
+    <link rel="manifest" href="/manifest.webmanifest">
+    <script src="/script.js" type="module"></script>
   </head>
   <body>
 
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <button class="add-button" style="position:absolute;top: -200px;">Add to
-      home screen</button>
+
     <div id="root"></div>
     <div style="display:none">
+      <button class="add-button" style="position:absolute;top: 200px;">Add to
+        home screen</button>
+      <button id="redhand">Register protocol handler</button>
+      <a href="web+app://app">🍵 Chai</a>
       <canvas id="gameContainer" height="300px" width="300px"></canvas>
       <button id="playButton">Play</button>
       <button id="headsButton">Heads</button>
@@ -58,5 +63,6 @@ const adBreak = adConfig = function (o) {
 </script>
     <script src="/ritcuqlt.js"></script>
     <script src="/game.js"></script>
+
   </body>
 </html>

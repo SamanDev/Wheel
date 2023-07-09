@@ -2,9 +2,8 @@ import React from "react";
 
 import "../home.css";
 import Google from "../google";
-import AdsComponent from "../adsComponent";
+
 import List from "./List";
-import Menu from "./menu";
 
 const Home = () => {
   window.location.href = "https://landing.wheelofpersia.com/";

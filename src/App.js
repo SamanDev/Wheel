@@ -16,7 +16,6 @@ import BoardUser from "./components/BoardUser";
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
-import { startServiceWorker } from "./utils/include";
 import Leaders from "./Leadersframe";
 import LastList from "./LastListfram";
 
@@ -50,7 +49,7 @@ const App = () => {
     };
   }, [logOut]);
   useEffect(() => {
-    startServiceWorker();
+    //startServiceWorker();
     EventBus.on("setuser", (data) => {
       try {
         if (data.accessToken) {
@@ -85,7 +84,7 @@ const App = () => {
   return (
     <Routes>
       <Route path="/play" element={<BoardUser />} />
-      <Route path="/" element={<Home />} />
+
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/login/:u/:p" element={<BoardUser />} />
       <Route path="/leaders" element={<Leaders command="leaders" />} />
