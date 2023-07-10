@@ -47,7 +47,12 @@ const GridExampleDividedPhrase = (prop) => {
                 "linear-gradient(90deg, rgba(131,58,180,.1) 0%, rgba(253,29,29,.2) 50%, rgba(252,176,69,.1) 100%)",
             }}
           >
-            <Header as="h5" icon inverted style={{ marginTop: 70 }}>
+            <Header
+              as="p"
+              icon
+              inverted
+              style={{ marginTop: 70, fontSize: 14 }}
+            >
               <Icon name="user" color="grey" />
               Login with your Google account.
             </Header>

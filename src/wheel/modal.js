@@ -51,6 +51,7 @@ const getDelts = (item, betx, tit, num) => {
         circular
         src={item?.image}
         centered
+        alt={item?.username}
         style={{
           width: "15vw",
           height: "15vw",
