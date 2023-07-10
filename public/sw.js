@@ -1,12 +1,9 @@
 const CACHE = "v3";
 const ASSETS = [
-  "./index.html",
   "./assets/style.css",
   "./assets/cadr3.png",
   "./assets/cadr4.png",
   "./game.js",
-  "./ritcuqlt.js",
-  "./swvqwdea.json",
 ];
 
 self.addEventListener("install", (e) => {
