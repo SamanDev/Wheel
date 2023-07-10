@@ -19,12 +19,12 @@ const BoardUser = () => {
         socket.auth = data;
         socket.connect();
       } else {
-        socket.disconnect();
+        //socket.disconnect();
       }
     });
     EventBus.on("disconnect", (data) => {
       socket.disconnect();
-      // socketpub.disconnect();
+      socketpub.disconnect();
     });
 
     return () => {

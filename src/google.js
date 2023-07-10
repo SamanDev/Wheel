@@ -108,7 +108,7 @@ function App() {
           setProfile(res.data);
         })
         .catch((err) => {
-          if (localStorage.getItem("user")) {
+          if (!localStorage.getItem("user")) {
             googleLogout();
 
             localStorage.removeItem("guser");
