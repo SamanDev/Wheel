@@ -87,6 +87,9 @@ var wheelusers = [];
 const { Server } = require("socket.io");
 const io = new Server(soocketPort, {
   cors: { corsOptions },
+  pingInterval: 1000,
+  pingTimeout: 1000,
+  maxPayload: 1000000,
 });
 
 const wheelNamespacePub = io.of("/wheelpub");

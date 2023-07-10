@@ -24,7 +24,7 @@ const BoardUser = () => {
     });
     EventBus.on("disconnect", (data) => {
       socket.disconnect();
-      socketpub.disconnect();
+      // socketpub.disconnect();
     });
 
     return () => {

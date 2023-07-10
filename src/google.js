@@ -108,10 +108,12 @@ function App() {
           setProfile(res.data);
         })
         .catch((err) => {
-          if (!localStorage.getItem("user")) {
-            logOut();
+          if (localStorage.getItem("user")) {
+            googleLogout();
+
+            localStorage.removeItem("guser");
           }
-          logOut();
+          //logOut();
         });
     } else {
       logOut();
