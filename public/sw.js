@@ -1,10 +1,9 @@
-const CACHE = "v5";
+const CACHE = "v6";
 const ASSETS = [
   "./assets/style.css",
   "./assets/cadr3.png",
   "./assets/cadr4.png",
   "./game.js",
-  "./index.html",
 ];
 
 self.addEventListener("install", (e) => {
@@ -25,16 +24,10 @@ self.addEventListener("activate", (e) => {
   );
 });
 
-self.addEventListener(
-  "fetch",
-
-  (e) => {
-    e.respondWith(
-      (async () => {
-        return fetch(e.request).catch(
-          async (_) => await caches.match(e.request)
-        );
-      })()
-    );
-  }
-);
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    (async () => {
+      return fetch(e.request).catch(async (_) => await caches.match(e.request));
+    })()
+  );
+});
