@@ -75,7 +75,7 @@ function App() {
     dispatch(login(username, password))
       .then(() => {
         setLoading(false);
-        window.location.href = "/play";
+        //window.location.href = "/play";
         // handleManifest(username, password, doClk);
         //window.location.href = "/play";
       })
@@ -108,7 +108,7 @@ function App() {
           setProfile(res.data);
         })
         .catch((err) => {
-          if (!localStorage.getItem("user")) {
+          if (localStorage.getItem("user")) {
             googleLogout();
 
             localStorage.removeItem("guser");
