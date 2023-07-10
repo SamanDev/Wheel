@@ -1,7 +1,6 @@
-const CACHE = "v2";
+const CACHE = "v3";
 const ASSETS = [
   "./index.html",
-  "./script.js",
   "./assets/style.css",
   "./assets/cadr3.png",
   "./assets/cadr4.png",
