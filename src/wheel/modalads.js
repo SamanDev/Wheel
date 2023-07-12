@@ -132,7 +132,7 @@ function ModalExampleModal(prop) {
           name="gift"
           color="red"
           id="showadsmodget"
-          style={{ position: "absolute", zIndex: 1 }}
+          style={{ position: "absolute", zIndex: -1 }}
           onClick={() => getchips(user, setOpen)}
         />
         <Icon
