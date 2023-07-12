@@ -167,12 +167,12 @@ function BetsWheel(prop) {
         if (parseInt(Seconds_Between_Dates) < 15) {
           setBalance((prev) => prev - _b);
           EventBus.dispatch("balance", balance - _b);
-          EventBus.dispatch("bets", {
+          /*  EventBus.dispatch("bets", {
             bet: parseInt(_b),
             position: parseInt(pos),
             username: user.username,
             image: user.image,
-          });
+          }); */
           UserService.addBet({
             bet: parseInt(_b),
             position: parseInt(pos),
