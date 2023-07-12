@@ -7,24 +7,14 @@ import ChipsWheel from "./chips";
 import ChatWheel from "./chat";
 import SendChatWheel from "./sendchat";
 import EventBus from "../common/EventBus";
+import { useWheel, useUser, useBets } from "../hooks/user.hooks";
 const GridExampleDividedPhrase = (prop) => {
   const [bet, setBet] = useState(
     localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 250
   );
 
-  const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
-  const [balance, setBalance] = useState(user?.balance2);
-  useEffect(() => {
-    EventBus.on("user", (data) => {
-      setBalance(data?.balance2);
-    });
+  const [user] = useUser();
 
-    return () => {
-      EventBus.remove("user");
-    };
-  }, []);
   useEffect(() => {
     localStorage.setItem("setbet", bet);
   }, [bet]);

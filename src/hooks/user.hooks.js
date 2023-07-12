@@ -20,7 +20,7 @@ export const useUser = () => {
             localStorage.setItem("user", JSON.stringify(_user));
             setLoginToken(_user);
           } else {
-            const userOld = JSON.parse(localStorage.getItem("user"));
+            const userOld = loginToken;
             if (userOld) {
               var _user = data;
               _user.accessToken = userOld.accessToken;
@@ -38,6 +38,10 @@ export const useUser = () => {
         }
       }
     });
+    EventBus.on("disconnect", (data) => {
+      setLoginToken({});
+      localStorage.removeItem("guser");
+    });
     return () => {
       EventBus.remove("setuser");
     };
@@ -46,12 +50,17 @@ export const useUser = () => {
   return [loginToken];
 };
 export const useWheel = () => {
-  const [wheel, setWheel] = useState();
+  const [wheel, setWheel] = useState(
+    localStorage.getItem("wheel")
+      ? JSON.parse(localStorage.getItem("wheel"))
+      : {}
+  );
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
         setWheel(data);
+        localStorage.setItem("wheel", JSON.stringify(data));
       }
     });
     return () => {

@@ -7,29 +7,27 @@ import Mod from "./modalinv";
 import Modads from "./modalads";
 import ModLeader from "./modalleader";
 import ModMarket from "./modalmarket";
+import { useUser } from "../hooks/user.hooks";
 function BetsWheel(prop) {
-  const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
+  const [user] = useUser();
   const [online, setOnline] = useState("");
   const [balance, setBalance] = useState(user?.balance2);
   useEffect(() => {
     EventBus.on("balance", (data) => {
       setBalance(data);
     });
-    EventBus.on("user", (data) => {
-      setBalance(data?.balance2);
-    });
+
     EventBus.on("online", (data) => {
       setOnline(data);
     });
     return () => {
       EventBus.remove("balance");
       EventBus.remove("online");
-      EventBus.remove("user");
     };
   }, []);
-
+  useEffect(() => {
+    setBalance(user?.balance2);
+  }, [user]);
   if (!user?.accessToken) {
     return (
       <>
@@ -67,7 +65,7 @@ function BetsWheel(prop) {
           style={{ textDecoration: "none" }}
           onClick={() => {
             EventBus.dispatch("logout");
-            window.location.href = "https://landing.wheelofpersia.com";
+            // window.location.href = "https://landing.wheelofpersia.com";
           }}
         >
           <Icon

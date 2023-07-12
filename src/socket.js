@@ -15,6 +15,7 @@ const socket = io(URL, {
 });
 function onConnect() {
   socket.on("msg", ({ command, data }) => {
+    console.log(command, data);
     if (command == "user") {
       EventBus.dispatch("user", data);
     }
@@ -32,7 +33,7 @@ function onConnect() {
   });
 }
 function onDisConnect() {
-  EventBus.dispatch("logout");
+  EventBus.dispatch("disconnect");
 }
 socket.on("connect", onConnect);
 socket.on("disconnect", onDisConnect);

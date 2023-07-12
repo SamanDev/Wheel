@@ -58,11 +58,7 @@ const handleManifest = async (name, id, doClk) => {
   }
 };
 function App() {
-  const [user, setUser] = useState(
-    localStorage.getItem("guser")
-      ? JSON.parse(localStorage.getItem("guser"))
-      : null
-  );
+  const [user, setUser] = useState();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
@@ -108,11 +104,10 @@ function App() {
           setProfile(res.data);
         })
         .catch((err) => {
-          if (localStorage.getItem("user")) {
-            googleLogout();
+          googleLogout();
 
-            localStorage.removeItem("guser");
-          }
+          localStorage.removeItem("guser");
+
           //logOut();
         });
     } else {
@@ -128,7 +123,7 @@ function App() {
             setLoading(false);
             //handleManifest(profile.name, profile.id, doClk);
 
-            window.location.href = "/play";
+            //window.location.href = "/play";
           })
           .catch(() => {
             handleRegister(
@@ -146,7 +141,7 @@ function App() {
         //handleManifest(profile.name, profile.id, doClk);
       }
     } else {
-      //logOut();
+      logOut();
 
       setLoading(false);
     }

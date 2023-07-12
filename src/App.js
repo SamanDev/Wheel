@@ -21,7 +21,9 @@ import Leaders from "./Leadersframe";
 import LastList from "./LastListfram";
 
 import EventBus from "./common/EventBus";
+import { useWheel, useUser, useBets } from "./hooks/user.hooks";
 const App = () => {
+  //const [user] = useUser();
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 

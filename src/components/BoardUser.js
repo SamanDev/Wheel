@@ -6,10 +6,11 @@ import { Segment, Dimmer, Icon, Header, Button } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import socket from "../socket";
 import socketpub from "../socketpub";
+import { useWheel, useUser, useBets } from "../hooks/user.hooks";
 const BoardUser = () => {
   const [userDC, setUserDC] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [user, setUser] = useState(currentUser);
+  const [user] = useUser();
 
   useEffect(() => {
     socketpub.connect();
@@ -23,8 +24,8 @@ const BoardUser = () => {
       }
     });
     EventBus.on("disconnect", (data) => {
-      socket.disconnect();
-      socketpub.disconnect();
+      //socket.disconnect();
+      //socketpub.disconnect();
     });
 
     return () => {
@@ -33,8 +34,8 @@ const BoardUser = () => {
     };
   }, []);
   useEffect(() => {
-    EventBus.dispatch("connectpub", currentUser);
-  }, [currentUser?.accessToken]);
+    EventBus.dispatch("connectpub", user);
+  }, [user]);
   return (
     <div className="home wheel">
       <div className="cadr">
