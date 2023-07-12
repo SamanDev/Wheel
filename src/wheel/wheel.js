@@ -45,7 +45,7 @@ function MNyWheel(prop) {
         var Seconds_from_T1_to_T2 = dif / 1000;
         Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-        Seconds_Between_Dates = 40 - Seconds_Between_Dates;
+        Seconds_Between_Dates = 37 - Seconds_Between_Dates;
 
         Seconds_Between_Dates = Seconds_Between_Dates / 10;
         Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(2);
@@ -77,7 +77,7 @@ function MNyWheel(prop) {
             var Seconds_from_T1_to_T2 = dif / 1000;
             Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-            Seconds_Between_Dates = 40 - Seconds_Between_Dates;
+            Seconds_Between_Dates = 37 - Seconds_Between_Dates;
 
             Seconds_Between_Dates = Seconds_Between_Dates / 10;
             Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(
@@ -117,7 +117,7 @@ function MNyWheel(prop) {
           <img src="/assets/cadr3.png" alt="card1" id="cadr" />
           <img src="/assets/cadr4.png" alt="card2" id="cadr2" />
         </div>
-        <div className="animate__animated  animate__rollIn">
+        <div className="animate__animated  animate__rotateIn">
           <Wheel
             data={_l}
             mustStartSpinning={mustspin}

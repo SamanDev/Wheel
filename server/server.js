@@ -271,7 +271,7 @@ const decuser = (req, res, data) => {
     } else {
       wheelusers.push(data);
     }
-    wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
+    //wheelNamespacePub.emit("msg", { command: "users", data: wheelusers });
     res.json(user.balance2);
   });
 };
@@ -304,7 +304,7 @@ app.post("/addbet", [authJwt.verifyToken], (req, res) => {
       res.json("no access");
       return;
     }
-
+    wheelNamespacePub.emit("msg", { command: "bets", data: data });
     decuser(req, res, data);
   });
 });
