@@ -39,7 +39,7 @@ const TableExampleSingleLine = (prop) => {
       inverted
       size="small"
       className="lasttable ltr"
-      style={{ marginTop: 0 }}
+      style={{ marginTop: 0, borderRadius: 0 }}
     >
       <Table.Body>
         {lastList.map((item) => {
@@ -47,7 +47,12 @@ const TableExampleSingleLine = (prop) => {
           return (
             <Table.Row key={item._id}>
               <Table.Cell>
-                <Statistic color="violet" inverted size="mini">
+                <Statistic
+                  color="violet"
+                  inverted
+                  size="mini"
+                  style={{ width: 100 }}
+                >
                   <Statistic.Value>{formatDollar(item.total)}</Statistic.Value>
                   <Statistic.Label>Bets</Statistic.Label>
                 </Statistic>
@@ -59,6 +64,7 @@ const TableExampleSingleLine = (prop) => {
                       ? "green"
                       : "red"
                   }
+                  style={{ width: 100 }}
                 >
                   <Statistic.Value>{formatDollar(item.net)}</Statistic.Value>
                   <Statistic.Label>Win</Statistic.Label>
@@ -69,6 +75,7 @@ const TableExampleSingleLine = (prop) => {
                       style={{
                         background: getcolor(segments[item.number]),
                         color: getcolortext(segments[item.number]),
+                        width: 60,
                       }}
                       size="large"
                       className="ltr"

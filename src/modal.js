@@ -45,9 +45,14 @@ function ModalExampleModal(prop) {
           maxWidth: "90vw",
         }}
         trigger={
-          <Button size="mini" color="black">
-            Show
-          </Button>
+          <Statistic color="black" inverted floated="right">
+            <Statistic.Value>
+              <Button size="mini" color="black">
+                Show
+              </Button>
+            </Statistic.Value>
+            <Statistic.Label></Statistic.Label>
+          </Statistic>
         }
       >
         <div
