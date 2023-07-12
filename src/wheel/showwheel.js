@@ -37,13 +37,17 @@ segments.map((item, i) => {
     option: "x" + item,
   });
 });
+var lighter;
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState(prop.wheel);
 
   useEffect(() => {
-    setInterval(() => {
+    clearInterval(lighter);
+
+    lighter = setInterval(() => {
       checkbox();
-    }, 1900);
+    }, 1000);
+
     updateWheel(wheel);
   }, []);
   return (
