@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import GetChip from "../getChips";
 import EventBus from "../common/EventBus";
-
+import { useWheel } from "../hooks/user.hooks";
 function BetsWheel(prop) {
   const oldduser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(oldduser);
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel] = useWheel();
   const [balance, setBalance] = useState(oldduser?.balance2);
+
   useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
     EventBus.on("user", (data) => {
       setUser(data);
     });
@@ -30,7 +26,6 @@ function BetsWheel(prop) {
       }
     });
     return () => {
-      setWheel();
       EventBus.remove("user");
       EventBus.remove("balance");
       EventBus.remove("wheel");

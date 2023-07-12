@@ -14,6 +14,7 @@ import {
 } from "../utils/include";
 import UserService from "../services/user.service";
 import $ from "jquery";
+import { useWheel, useUser, useBets } from "../hooks/user.hooks";
 
 const getPosCount = (list, pos) => {
   var bets = 0;
@@ -131,71 +132,26 @@ const PrintBet = (prop) => {
 };
 
 function BetsWheel(prop) {
-  const [wheel, setWheel] = useState({});
-  var oldduser;
-  try {
-    oldduser = JSON.parse(localStorage.getItem("user"));
-  } catch (error) {
-    localStorage.removeItem("user");
-  }
+  const [user] = useUser();
+  const [wheel] = useWheel();
+  const [bets, list] = useBets();
 
-  const [user, setUser] = useState(oldduser);
-  const [userbets, setuserbets] = useState([]);
   const [balance, setBalance] = useState(user?.balance2);
   const contextRef = React.useRef();
-  const [list, setList] = useState([]);
+
   const [con, setCon] = useState(false);
 
   useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
-    EventBus.on("user", (data) => {
-      setUser(data);
-      setBalance(data?.balance2);
-    });
+    setBalance(user?.balance2);
+  }, [user]);
+  useEffect(() => {
     EventBus.on("connect", (data) => {
       setCon(data);
     });
     EventBus.on("logout", (data) => {
       setCon(false);
     });
-    EventBus.on("users", (data) => {
-      if (list.length == 0) {
-        setuserbets(data);
-      }
-    });
-    EventBus.on("bets", (data) => {
-      if (data != []) {
-        setuserbets((current) => [...current, data]);
-      }
-    });
-
-    EventBus.on("resetusers", (data) => {
-      setuserbets([]);
-    });
   }, []);
-  useEffect(() => {
-    var stat = [];
-    //localStorage.setItem("users", JSON.stringify(userbets));
-    if (userbets?.length > 0) {
-      var _gmode = groupByMultipleFields(userbets, "username", "position");
-      for (const property in _gmode) {
-        for (const pos in _gmode[property]) {
-          stat.push({
-            bet: sumOfBet(_gmode[property][pos]),
-
-            position: parseInt(pos),
-            username: property,
-          });
-        }
-      }
-    }
-
-    setList(stat);
-  }, [userbets]);
 
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;

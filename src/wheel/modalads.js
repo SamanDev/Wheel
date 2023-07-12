@@ -11,6 +11,7 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import ModalAds from "../modalvideo";
 import { Jetton, formatDollar } from "../utils/include";
+import { useWheel } from "../hooks/user.hooks";
 import $ from "jquery";
 const getchips = (user, setOpen) => {
   if (user?.balance2 < 1000) {
@@ -33,7 +34,7 @@ function ModalExampleModal(prop) {
   const [openads, setOpenads] = useState(false);
   const [user, setUser] = useState(olduser2);
   const [link, setLink] = useState("");
-  const [wheel, setWheel] = useState();
+  const [wheel] = useWheel();
   useEffect(() => {
     if (copied) {
       setTimeout(() => {
@@ -48,10 +49,14 @@ function ModalExampleModal(prop) {
     setLink(_link);
   }, [user]);
   useEffect(() => {
-    if (wheel?.status == "Done") {
-      const olduser = JSON.parse(localStorage.getItem("user"));
+    if (wheel?.status != "Pending") {
+      try {
+        var newuser = JSON.parse(localStorage.getItem("user"));
 
-      setUser(olduser);
+        setUser(newuser);
+      } catch (error) {
+        setUser(null);
+      }
     }
   }, [wheel?.status]);
   useEffect(() => {
@@ -71,25 +76,10 @@ function ModalExampleModal(prop) {
         }
       }
     });
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
 
-        if (data?.status != "Pending") {
-          try {
-            var newuser = JSON.parse(localStorage.getItem("user"));
-
-            setUser(newuser);
-          } catch (error) {
-            setUser(null);
-          }
-        }
-      }
-    });
     return () => {
       EventBus.remove("user");
       EventBus.remove("balance");
-      EventBus.remove("wheel");
     };
   }, []);
 

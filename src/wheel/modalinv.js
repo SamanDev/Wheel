@@ -5,6 +5,7 @@ import EventBus from "../common/EventBus";
 
 import { Jetton, formatDollar } from "../utils/include";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { useWheel } from "../hooks/user.hooks";
 const gettokens = (user) => {
   UserService.gettokens(user.tokens[0]).then((response) => {
     try {
@@ -21,7 +22,7 @@ function ModalExampleModal(prop) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(olduser2);
   const [link, setLink] = useState("");
-  const [wheel, setWheel] = useState(JSON.parse(localStorage.getItem("wheel")));
+  const [wheel] = useWheel();
 
   var ivlink = {};
   useEffect(() => {
@@ -91,15 +92,10 @@ function ModalExampleModal(prop) {
         }
       }
     });
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
+
     return () => {
       EventBus.remove("user");
       EventBus.remove("balance");
-      EventBus.remove("wheel");
     };
   }, []);
 

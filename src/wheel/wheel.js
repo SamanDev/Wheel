@@ -6,6 +6,7 @@ import CountWheel from "./count";
 import Modalwin from "./modal";
 import EventBus from "../common/EventBus";
 import { segments, getcolor, getcolortext } from "../utils/include";
+import { useWheel } from "../hooks/user.hooks";
 var _l = [];
 
 segments.map((item, i) => {
@@ -19,19 +20,10 @@ segments.map((item, i) => {
 });
 var Seconds_Between_Dates = 0.1;
 function MNyWheel(prop) {
-  const [wheel, setWheel] = useState({});
+  const [wheel] = useWheel();
   const [mustspin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
-  useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
-    return () => {
-      EventBus.remove("wheel");
-    };
-  }, []);
+
   useEffect(() => {
     if (wheel?.status) {
       if (wheel?.status == "Spin") {
@@ -63,12 +55,17 @@ function MNyWheel(prop) {
           setPrizeNumber(wheel?.number);
         }
       }
+      document.title = wheel.status + "...";
     }
   }, [wheel?.status]);
   if (!wheel?.status) {
     return (
       <div className="mainwheel mywhell">
         <CountWheel wheel={wheel} {...prop} />
+        <div className="countover" style={{ filter: "blur(10px)", zIndex: 1 }}>
+          <img src="/assets/cadr3.png" alt="card1" id="cadr" />
+          <img src="/assets/cadr4.png" alt="card2" id="cadr2" />
+        </div>
       </div>
     );
   }

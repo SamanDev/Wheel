@@ -48,41 +48,6 @@ const App = () => {
       EventBus.remove("logout");
     };
   }, [logOut]);
-  useEffect(() => {
-    //startServiceWorker();
-    EventBus.on("setuser", (data) => {
-      if (data) {
-        try {
-          if (data?.accessToken) {
-            var _user = data;
-
-            _user._id = data.id;
-
-            localStorage.setItem("user", JSON.stringify(_user));
-            EventBus.dispatch("user", _user);
-          } else {
-            const userOld = JSON.parse(localStorage.getItem("user"));
-            if (userOld) {
-              var _user = data;
-              _user.accessToken = userOld.accessToken;
-              _user.id = userOld.id;
-              _user._id = userOld.id;
-              localStorage.setItem("user", JSON.stringify(_user));
-              EventBus.dispatch("user", _user);
-            } else {
-              localStorage.removeItem("user");
-              localStorage.removeItem("guser");
-            }
-          }
-        } catch (error) {
-          localStorage.removeItem("guser");
-        }
-      }
-    });
-    return () => {
-      EventBus.remove("setuser");
-    };
-  }, []);
 
   return (
     <Routes>

@@ -3,6 +3,7 @@ import $ from "jquery";
 import { segments, getcolor } from "../utils/include";
 import EventBus from "../common/EventBus";
 import ModalAds from "../modalvideofast";
+import { useWheel } from "../hooks/user.hooks";
 var timer;
 
 function checkbox() {
@@ -30,6 +31,11 @@ const updateWheelborder = (wheel) => {
     $(".mainwheel .bhdLno >div").css({
       border: "12px solid " + colornum + "",
     });
+    if (wheel?.status == "Spin") {
+      $(".mainwheel .bhdLno >div").css({
+        border: "1px solid " + colornum + "",
+      });
+    }
   } else {
     setTimeout(() => {
       updateWheelborder(wheel);
@@ -40,27 +46,7 @@ function CountWheel(prop) {
   const [time, setTime] = useState(1);
 
   const [openads, setOpenads] = useState(false);
-  const [wheel, setWheel] = useState({});
-
-  useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        clearInterval(lighter);
-
-        setWheel(data);
-
-        updateWheelborder(data);
-      }
-    });
-
-    return () => {
-      //setWheel();
-      clearInterval(lighter);
-      clearTimeout(timer);
-
-      EventBus.remove("wheel");
-    };
-  }, []);
+  const [wheel] = useWheel();
 
   useEffect(() => {
     clearInterval(lighter);
@@ -81,12 +67,8 @@ function CountWheel(prop) {
         if (
           segments[wheel?.number] == 0 ||
           segments[wheel?.number] == 20 ||
-          segments[wheel?.number] == 25 ||
-          segments[wheel?.number] == 8 ||
-          segments[wheel?.number] == 10
+          segments[wheel?.number] == 25
         ) {
-          //setOpenads(true);
-
           $("#playButton").trigger("click");
         }
       }
@@ -139,7 +121,7 @@ function CountWheel(prop) {
   };
   if (!wheel?.status) {
     return (
-      <div className="count">
+      <div className="count" style={{ zIndex: 11, marginTop: -70 }}>
         <h2 className="text-shadows">wait</h2>
       </div>
     );
