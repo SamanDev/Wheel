@@ -19,6 +19,8 @@ segments.map((item, i) => {
   });
 });
 var Seconds_Between_Dates = 0.1;
+var myaudio = document.getElementById("backgroundMusic");
+myaudio.playbackRate = 0.5;
 function MNyWheel(prop) {
   const [wheel] = useWheel();
   const [mustspin, setMustSpin] = useState(false);
@@ -27,6 +29,15 @@ function MNyWheel(prop) {
   useEffect(() => {
     if (wheel?.status) {
       if (wheel?.status == "Spin") {
+        /*    myaudio.play().catch((error) => {
+          document.addEventListener(
+            "click",
+            () => {
+              myaudio.play();
+            },
+            { once: true }
+          );
+        }); */
         var t1 = new Date(wheel?.date);
         var t2 = new Date();
         var dif = t2.getTime() - t1.getTime();

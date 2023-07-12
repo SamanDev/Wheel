@@ -7,7 +7,8 @@ import "./assets/App.css";
 import "animate.css";
 
 import Home from "./components/Home";
-
+import ModMarket from "./market";
+import Gifts from "./Giftsfram";
 import About from "./components/About";
 import Invite from "./components/Invite";
 import Term from "./components/Term";
@@ -56,7 +57,8 @@ const App = () => {
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/login/:u/:p" element={<BoardUser />} />
       <Route path="/leaders" element={<Leaders command="leaders" />} />
-      <Route path="/best" element={<LastList command="lastList" />} />
+      <Route path="/best" element={<LastList command="winList" />} />
+      <Route path="/market" element={<Gifts size="mini" command="leaders" />} />
       <Route path="/about-us" element={<About />} />
       <Route path="/terms-and-conditions" element={<Term />} />
       <Route path="/privacy-policy" element={<Privacy />} />

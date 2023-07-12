@@ -53,7 +53,7 @@ class Game {
     this.erase();
 
     //this.canvas.fillText("Loading. . .", 66, 150);
-    adBreak({
+    /*   adBreak({
       type: "preroll",
       name: "coin_flip_preroll",
 
@@ -63,7 +63,7 @@ class Game {
         this.restartGame();
         this.playButton.style.display = "inline-block";
       },
-    });
+    }); */
   }
   play() {
     console.log("Play " + this.shouldShowAdOnPlay + " . " + this.shouldRestart);
