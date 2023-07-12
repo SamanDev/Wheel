@@ -48,28 +48,27 @@ function MNyWheel(prop) {
   }, []);
   return (
     <>
-      <div
-        className="animate__animated  animate__rollIn showww"
-        style={{ height: 220 }}
-      >
+      <div className=" showww" style={{ height: 220, overflow: "hidden" }}>
         <div className="countover">
           <img src="/assets/cadr3.png" alt="card1" id="cadr" />
           <img src="/assets/cadr4.png" alt="card2" id="cadr2" />
         </div>
-        <Wheel
-          startingOptionIndex={wheel.number}
-          mustStartSpinning={false}
-          outerBorderWidth={0}
-          outerBorderColor={"#eeeeee"}
-          innerRadius={1}
-          innerBorderColor={"#000000"}
-          innerBorderWidth={0}
-          radiusLineColor={"#000000"}
-          radiusLineWidth={0}
-          textDistance={80}
-          fontSize={20}
-          data={_l}
-        />
+        <div className="animate__animated  animate__rotateIn">
+          <Wheel
+            startingOptionIndex={wheel.number}
+            mustStartSpinning={false}
+            outerBorderWidth={0}
+            outerBorderColor={"#eeeeee"}
+            innerRadius={1}
+            innerBorderColor={"#000000"}
+            innerBorderWidth={0}
+            radiusLineColor={"#000000"}
+            radiusLineWidth={0}
+            textDistance={80}
+            fontSize={20}
+            data={_l}
+          />
+        </div>
       </div>
     </>
   );
