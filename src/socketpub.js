@@ -15,8 +15,9 @@ const socketpub = io(URL, {
   autoConnect: false,
 });
 function onConnect() {
+  //console.log(" con");
   socketpub.on("msg", ({ command, data }) => {
-    console.log(command, data);
+    //console.log(command, data);
     if (command == "update") {
       EventBus.dispatch("wheel", data);
     }
@@ -38,12 +39,12 @@ function onConnect() {
     }
 
     if (command == "disconnect") {
-      // socketpub.disconnect();
+      socketpub.disconnect();
     }
   });
 }
 function onDisConnect() {
-  //EventBus.dispatch("logout");
+  EventBus.dispatch("disconnect");
 }
 socketpub.on("connect", onConnect);
 socketpub.on("disconnect", onDisConnect);

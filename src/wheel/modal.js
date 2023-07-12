@@ -21,7 +21,6 @@ import {
   groupByMultipleFields,
   formatDollar,
 } from "../utils/include";
-import { useWheel } from "../hooks/user.hooks";
 const getDelts = (item, betx, tit, num) => {
   var outb = "black";
   if (betx == -1) {
@@ -104,18 +103,14 @@ const bigLose = (list) => {
 var bigwin, biglose, bigbet;
 function ModalExampleModal(prop) {
   const [bigbet, setBigBet] = useState([]);
-  const [wheel, setWheel] = useState(prop.wheel);
-  const [user, setUser] = useState(prop.user);
+  const wheel = prop.wheel;
+  const user = prop.user;
+
   const [bets, setbets] = useState(userBet(wheel, user?.username));
   const [userbets, setuserbets] = useState([]);
   const [userclass, setuserclass] = useState("");
   const [list, setList] = useState(userbets);
   useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
     EventBus.on("users", (data) => {
       setuserbets(data);
     });
@@ -128,9 +123,6 @@ function ModalExampleModal(prop) {
       setuserbets([]);
     });
     return () => {
-      setuserbets([]);
-      EventBus.remove("wheel");
-
       EventBus.remove("users");
       EventBus.remove("bets");
       EventBus.remove("resetusers");

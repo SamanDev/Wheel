@@ -3,14 +3,14 @@ import ShowWheel from "./wheel/wheel";
 import BottomWheel from "./wheel/bottom";
 import InfoWheel from "./wheel/info";
 
-function MNyWheel() {
+function MNyWheel(prop) {
   return (
     <>
-      <InfoWheel />
+      <InfoWheel {...prop} />
 
-      <ShowWheel />
+      <ShowWheel wheel={prop.wheel} />
 
-      <BottomWheel />
+      <BottomWheel {...prop} />
     </>
   );
 }

@@ -6,15 +6,13 @@ import { Segment, Dimmer, Icon, Header, Button } from "semantic-ui-react";
 import ChipsWheel from "./chips";
 import ChatWheel from "./chat";
 import SendChatWheel from "./sendchat";
-import EventBus from "../common/EventBus";
-import { useWheel, useUser, useBets } from "../hooks/user.hooks";
+import { useUser } from "../hooks/user.hooks";
 const GridExampleDividedPhrase = (prop) => {
   const [bet, setBet] = useState(
     localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 250
   );
 
   const [user] = useUser();
-
   useEffect(() => {
     localStorage.setItem("setbet", bet);
   }, [bet]);
@@ -51,13 +49,13 @@ const GridExampleDividedPhrase = (prop) => {
           </div>
           <Grid.Row style={{ margin: 0 }}>
             <Grid.Column style={{ padding: 0 }}>
-              <BetsWheel bet={bet} setBet={setBet} />
+              <BetsWheel bet={bet} setBet={setBet} {...prop} />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
-              <ChatWheel />
+              <ChatWheel {...prop} />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
-              <ChipsWheel bet={bet} setBet={setBet} />
+              <ChipsWheel bet={bet} setBet={setBet} {...prop} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -70,13 +68,13 @@ const GridExampleDividedPhrase = (prop) => {
       <Grid columns="three">
         <Grid.Row style={{ margin: 0 }}>
           <Grid.Column style={{ padding: 0 }}>
-            <BetsWheel bet={bet} setBet={setBet} />
+            <BetsWheel bet={bet} setBet={setBet} {...prop} />
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>
-            <ChatWheel />
+            <ChatWheel {...prop} />
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>
-            <ChipsWheel bet={bet} setBet={setBet} />
+            <ChipsWheel bet={bet} setBet={setBet} user={prop.user} {...prop} />
           </Grid.Column>
         </Grid.Row>
       </Grid>

@@ -20,7 +20,7 @@ export const useUser = () => {
             localStorage.setItem("user", JSON.stringify(_user));
             setLoginToken(_user);
           } else {
-            const userOld = loginToken;
+            const userOld = JSON.parse(localStorage.getItem("user"));
             if (userOld) {
               var _user = data;
               _user.accessToken = userOld.accessToken;
@@ -39,32 +39,41 @@ export const useUser = () => {
       }
     });
     EventBus.on("disconnect", (data) => {
+      //setLoginToken({});
+      localStorage.removeItem("guser");
+    });
+    EventBus.on("logout", (data) => {
       setLoginToken({});
       localStorage.removeItem("guser");
+      localStorage.removeItem("user");
     });
     return () => {
       EventBus.remove("setuser");
+      EventBus.remove("logout");
+      EventBus.remove("disconnect");
     };
   }, []);
 
   return [loginToken];
 };
 export const useWheel = () => {
-  const [wheel, setWheel] = useState(
+  /* const [wheel, setWheel] = useState(
     localStorage.getItem("wheel")
       ? JSON.parse(localStorage.getItem("wheel"))
       : {}
-  );
+  ); */
+  const [wheel, setWheel] = useState({});
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
-        setWheel(data);
         localStorage.setItem("wheel", JSON.stringify(data));
+        setWheel(data);
       }
     });
     return () => {
       EventBus.remove("wheel");
+      //localStorage.removeItem("wheel");
     };
   }, []);
 
@@ -91,6 +100,7 @@ export const useBets = () => {
     return () => {
       EventBus.remove("users");
       EventBus.remove("bets");
+      EventBus.remove("resetusers");
     };
   }, []);
   useEffect(() => {

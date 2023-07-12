@@ -11,7 +11,7 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import ModalAds from "../modalvideo";
 import { Jetton, formatDollar } from "../utils/include";
-import { useWheel } from "../hooks/user.hooks";
+
 import $ from "jquery";
 const getchips = (user, setOpen) => {
   if (user?.balance2 < 1000) {
@@ -34,7 +34,8 @@ function ModalExampleModal(prop) {
   const [openads, setOpenads] = useState(false);
   const [user, setUser] = useState(olduser2);
   const [link, setLink] = useState("");
-  const [wheel] = useWheel();
+  const wheel = prop.wheel;
+
   useEffect(() => {
     if (copied) {
       setTimeout(() => {
@@ -131,7 +132,7 @@ function ModalExampleModal(prop) {
           name="gift"
           color="red"
           id="showadsmodget"
-          style={{ position: "absolute", zIndex: -1 }}
+          style={{ position: "absolute", zIndex: 1 }}
           onClick={() => getchips(user, setOpen)}
         />
         <Icon

@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Mywhell from "../MyWheel";
-import Google from "../google";
-import { Segment, Dimmer, Icon, Header, Button } from "semantic-ui-react";
 import EventBus from "../common/EventBus";
 import socket from "../socket";
 import socketpub from "../socketpub";
-import { useWheel, useUser, useBets } from "../hooks/user.hooks";
-const BoardUser = () => {
+import { useBets, useUser } from "../hooks/user.hooks";
+const BoardUser = (prop) => {
   const [userDC, setUserDC] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [user] = useUser();
 
   useEffect(() => {
     socketpub.connect();
 
     EventBus.on("connectpub", (data) => {
-      if (data?.accessToken && !socket.auth) {
+      if (data?.accessToken && !socket.auth?.accessToken) {
         socket.auth = data;
+
         socket.connect();
       } else {
+        console.log(socket.auth);
         //socket.disconnect();
       }
     });
     EventBus.on("disconnect", (data) => {
-      //socket.disconnect();
+      socket.disconnect();
       //socketpub.disconnect();
     });
 
@@ -34,12 +33,14 @@ const BoardUser = () => {
     };
   }, []);
   useEffect(() => {
-    EventBus.dispatch("connectpub", user);
-  }, [user]);
+    if (currentUser?.accessToken) {
+      EventBus.dispatch("connectpub", currentUser);
+    }
+  }, [currentUser?.accessToken]);
   return (
     <div className="home wheel">
       <div className="cadr">
-        <Mywhell />
+        <Mywhell {...prop} />
       </div>
     </div>
   );

@@ -39,17 +39,7 @@ function MNyWheel() {
       }
     }
   };
-  useEffect(() => {
-    EventBus.on("wheel", (data) => {
-      if (data?.status) {
-        setWheel(data);
-      }
-    });
 
-    return () => {
-      EventBus.remove("wheel");
-    };
-  }, []);
   useEffect(() => {
     if (wheel?.status) {
       console.log(wheel);

@@ -89,7 +89,7 @@ const io = new Server(soocketPort, {
   cors: { corsOptions },
   pingInterval: 1000,
   pingTimeout: 1000,
-  maxPayload: 1000000,
+  maxPayload: 10000,
 });
 
 const wheelNamespacePub = io.of("/wheelpub");
@@ -113,7 +113,6 @@ wheelNamespace.use(async (socket, next) => {
   } else {
     await User.findById(user.id).then((res) => {
       if (res?.username) {
-        console.log(user.id);
         wheelNamespace.in(user.id).disconnectSockets(true);
         socket.userdata = res;
         socket.join(user.id);
@@ -415,15 +414,19 @@ const createWheelData = async () => {
   }, 15000);
 };
 const spin = () => {
+  const d = new Date();
+  let seconds = (wheel?.serverSec + 30) % 60;
+
+  wheel.serverSec = seconds;
   let newPrizeNumbern = getPrizePos(wheel);
+  wheel.number = newPrizeNumbern;
+  wheel.status = "Spin";
+
   Wheel.findByIdAndUpdate(wheel._id, {
     status: "Spin",
-
+    serverSec: seconds,
     number: newPrizeNumbern,
   }).then(() => {
-    wheel.number = newPrizeNumbern;
-
-    wheel.status = "Spin";
     wheelNamespacePub.emit("msg", {
       command: "update",
       data: wheel,

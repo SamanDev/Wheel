@@ -14,7 +14,7 @@ import {
 } from "../utils/include";
 import UserService from "../services/user.service";
 import $ from "jquery";
-import { useWheel, useUser, useBets } from "../hooks/user.hooks";
+import { useBets, useUser } from "../hooks/user.hooks";
 
 const getPosCount = (list, pos) => {
   var bets = 0;
@@ -132,8 +132,8 @@ const PrintBet = (prop) => {
 };
 
 function BetsWheel(prop) {
+  const wheel = prop.wheel;
   const [user] = useUser();
-  const [wheel] = useWheel();
   const [bets, list] = useBets();
 
   const [balance, setBalance] = useState(user?.balance2);

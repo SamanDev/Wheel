@@ -9,6 +9,7 @@ import ModLeader from "./modalleader";
 import ModMarket from "./modalmarket";
 import { useUser } from "../hooks/user.hooks";
 function BetsWheel(prop) {
+  const wheel = prop.wheel;
   const [user] = useUser();
   const [online, setOnline] = useState("");
   const [balance, setBalance] = useState(user?.balance2);
@@ -27,7 +28,7 @@ function BetsWheel(prop) {
   }, []);
   useEffect(() => {
     setBalance(user?.balance2);
-  }, [user]);
+  }, [user?.balance2]);
   if (!user?.accessToken) {
     return (
       <>
@@ -77,9 +78,9 @@ function BetsWheel(prop) {
         </span>
 
         <br />
-        <Mod />
+        <Mod {...prop} />
         <br />
-        <Modads />
+        <Modads {...prop} />
         <br />
         <ModLeader />
         <br />

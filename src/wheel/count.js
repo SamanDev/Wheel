@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
 import { segments, getcolor } from "../utils/include";
-import EventBus from "../common/EventBus";
+
 import ModalAds from "../modalvideofast";
-import { useWheel } from "../hooks/user.hooks";
+
 var timer;
 
 function checkbox() {
@@ -46,7 +46,7 @@ function CountWheel(prop) {
   const [time, setTime] = useState(1);
 
   const [openads, setOpenads] = useState(false);
-  const [wheel] = useWheel();
+  const wheel = prop.wheel;
 
   useEffect(() => {
     clearInterval(lighter);

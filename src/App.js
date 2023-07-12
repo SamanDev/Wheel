@@ -21,11 +21,12 @@ import Leaders from "./Leadersframe";
 import LastList from "./LastListfram";
 
 import EventBus from "./common/EventBus";
-import { useWheel, useUser, useBets } from "./hooks/user.hooks";
+import { useWheel } from "./hooks/user.hooks";
 const App = () => {
   //const [user] = useUser();
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [wheel] = useWheel();
 
   let location = useLocation();
   const [refresh, setRefresh] = useState(0);
@@ -40,8 +41,10 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    EventBus.dispatch("setuser", currentUser);
-  }, [currentUser]);
+    if (currentUser?.username) {
+      EventBus.dispatch("setuser", currentUser);
+    }
+  }, [currentUser?.username]);
   useEffect(() => {
     EventBus.on("logout", () => {
       logOut();
@@ -54,7 +57,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/play" element={<BoardUser />} />
+      <Route path="/play" element={<BoardUser wheel={wheel} />} />
 
       <Route path="/invite/*" element={<Invite />} />
       <Route path="/login/:u/:p" element={<BoardUser />} />
