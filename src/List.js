@@ -17,7 +17,7 @@ import {
 
 const TableExampleSingleLine = (prop) => {
   const [wheel, setWheel] = useState(prop.wheel);
-  const [userbets, setuserbets] = useState([]);
+  const [userbets, setuserbets] = useState(wheel.wheelusers);
   const [list, setList] = useState([]);
   const [user, setUser] = useState(prop.user);
 
@@ -71,34 +71,7 @@ const TableExampleSingleLine = (prop) => {
     console.log(stat);
     setList(stat);
   }, [userbets]);
-  useEffect(() => {
-    if (!prop.last) {
-      EventBus.on("wheel", (data) => {
-        setWheel(data);
-      });
-      EventBus.on("users", (data) => {
-        setuserbets(data);
-      });
-      EventBus.on("bets", (data) => {
-        if (data != []) {
-          setuserbets((current) => [...current, data]);
-        }
-      });
-      EventBus.on("resetusers", (data) => {
-        setuserbets([]);
-      });
-      EventBus.on("user", (data) => {
-        setUser(data);
-      });
-    }
-    return () => {
-      EventBus.remove("wheel");
-      EventBus.remove("user");
-      EventBus.remove("users");
-      EventBus.remove("bets");
-      EventBus.remove("resetusers");
-    };
-  }, []);
+
   return (
     <>
       <Table
@@ -127,7 +100,7 @@ const TableExampleSingleLine = (prop) => {
       <div className="tablelist">
         <Table unstackable inverted color="black" fixed>
           <Table.Body>
-            {userbets?.length > 0 && (
+            {userbets?.length > 0 ? (
               <>
                 {list.map((item, i) => (
                   <Table.Row
@@ -181,6 +154,12 @@ const TableExampleSingleLine = (prop) => {
                   </Table.Row>
                 ))}
               </>
+            ) : (
+              <Table.Row>
+                <Table.Cell>
+                  <b>Loading...</b>
+                </Table.Cell>
+              </Table.Row>
             )}
           </Table.Body>
         </Table>

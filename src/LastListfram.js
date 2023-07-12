@@ -43,7 +43,7 @@ const TableExampleSingleLine = (prop) => {
     >
       <Table.Body>
         {lastList.map((item) => {
-          var userBets = userBet(item, user?.username);
+          //var userBets = userBet(item, user?.username);
           return (
             <Table.Row key={item._id}>
               <Table.Cell>

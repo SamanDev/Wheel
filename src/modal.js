@@ -16,7 +16,7 @@ function ModalExampleModal(prop) {
   const item = prop.wheel;
   const [user, setUser] = useState(prop.user);
 
-  var userBets = userBet(wheel, user?.username);
+  var userBets = [];
   useEffect(() => {
     var sorted = $(".modals").sort(sortByZIndex);
     $("body").append(sorted[0]);
@@ -84,7 +84,7 @@ function ModalExampleModal(prop) {
               <Statistic.Value>{formatDollar(item.net)}</Statistic.Value>
               <Statistic.Label>Win</Statistic.Label>
             </Statistic>
-            <br />
+            {/* <br />
             <Statistic
               color={parseFloat(userBets[0]).toFixed(2) > 0 ? "orange" : "grey"}
               inverted
@@ -116,7 +116,7 @@ function ModalExampleModal(prop) {
             >
               <Statistic.Value>{formatDollar(userBets[1])}</Statistic.Value>
               <Statistic.Label>Win</Statistic.Label>
-            </Statistic>
+            </Statistic> */}
           </Segment>
 
           <Mywhell {...prop} wheel={wheel} last={true} />

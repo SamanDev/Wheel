@@ -5,6 +5,15 @@ import $ from "jquery";
 import { segments, getcolor, getcolortext } from "../utils/include";
 
 var _l = [];
+function checkbox() {
+  if ($("#cadr2:visible").length) {
+    $("#cadr").show();
+    $("#cadr2").hide();
+  } else {
+    $("#cadr2").show();
+    $("#cadr").hide();
+  }
+}
 const updateWheel = (wheel) => {
   if (!wheel?.status) return false;
   var colornum = getcolor(segments[wheel.number]);
@@ -30,18 +39,22 @@ segments.map((item, i) => {
 });
 function MNyWheel(prop) {
   const [wheel, setWheel] = useState(prop.wheel);
-  console.log("show");
+
   useEffect(() => {
+    setInterval(() => {
+      checkbox();
+    }, 1900);
     updateWheel(wheel);
   }, []);
   return (
     <>
       <div
         className="animate__animated  animate__rollIn showww"
-        style={{ height: 300 }}
+        style={{ height: 220 }}
       >
         <div className="countover">
-          <img src="/assets/cadr3.png" src2="/assets/cadr2.png" />
+          <img src="/assets/cadr3.png" alt="card1" id="cadr" />
+          <img src="/assets/cadr4.png" alt="card2" id="cadr2" />
         </div>
         <Wheel
           startingOptionIndex={wheel.number}

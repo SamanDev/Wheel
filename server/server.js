@@ -163,7 +163,12 @@ app.get("/lastlist", async (req, res) => {
       if (req.query.l == "winList") {
         sortig = { net: -1 };
       }
-      var users2 = await Wheel.find({ status: "Done" }).limit(10).sort(sortig);
+      var users2 = await Wheel.find(
+        { status: "Done" },
+        { number: 1, total: 1, net: 1, status: 1 }
+      )
+        .limit(10)
+        .sort(sortig);
     } else {
       var udata = [];
       const userswin = await db.userWheel
