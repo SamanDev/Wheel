@@ -19,8 +19,8 @@ segments.map((item, i) => {
   });
 });
 var Seconds_Between_Dates = 0.1;
-var myaudio = document.getElementById("backgroundMusic");
-myaudio.playbackRate = 0.5;
+//var myaudio = document.getElementById("backgroundMusic");
+//myaudio.playbackRate = 0.5;
 function MNyWheel(prop) {
   const wheel = prop.wheel;
   const [mustspin, setMustSpin] = useState(false);
