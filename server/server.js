@@ -308,10 +308,11 @@ app.post("/addbet", [authJwt.verifyToken], (req, res) => {
     }
 
     var data = req.body;
-    if (user.balance2 < data.bet) {
+    if (user.balance2 < data.bet || user.username != data.username) {
       res.json("no access");
       return;
     }
+
     wheelNamespacePub.emit("msg", { command: "bets", data: data });
     decuser(req, res, data);
   });

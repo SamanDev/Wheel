@@ -115,7 +115,7 @@ function ModalExampleModal(prop) {
       setuserbets(data);
     });
     EventBus.on("bets", (data) => {
-      if (data != []) {
+      if (data != [] && data?.username != user?.username) {
         setuserbets((current) => [...current, data]);
       }
     });
