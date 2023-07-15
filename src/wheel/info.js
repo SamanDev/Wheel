@@ -31,11 +31,11 @@ function BetsWheel(prop) {
         socket.connect();
       } else {
         console.log(socket.auth);
-        socket.disconnect();
+        //socket.disconnect();
       }
     });
     EventBus.on("disconnect", (data) => {
-      socket.disconnect();
+      //socket.disconnect();
       //socketpub.disconnect();
     });
 
@@ -48,7 +48,9 @@ function BetsWheel(prop) {
     EventBus.dispatch("setuser", currentUser);
   }, [currentUser]);
   useEffect(() => {
-    EventBus.dispatch("connectpub", user);
+    if (user?.accessToken) {
+      EventBus.dispatch("connectpub", user);
+    }
   }, [user]);
 
   useEffect(() => {

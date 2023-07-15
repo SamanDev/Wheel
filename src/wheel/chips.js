@@ -12,7 +12,8 @@ function BetsWheel(prop) {
   useEffect(() => {
     EventBus.on("balance", (data) => {
       try {
-        var newuser = user;
+        var newuser = JSON.parse(localStorage.getItem("user"));
+
         newuser.balance2 = data;
         localStorage.setItem("user", JSON.stringify(newuser));
         setBalance(data);

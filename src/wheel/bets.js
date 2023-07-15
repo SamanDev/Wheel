@@ -133,7 +133,7 @@ const PrintBet = (prop) => {
 
 function BetsWheel(prop) {
   const wheel = prop.wheel;
-  const user = prop.user;
+  const [user] = useUser();
   const [bets, list] = useBets();
 
   const [balance, setBalance] = useState(user?.balance2);

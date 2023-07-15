@@ -99,7 +99,7 @@ export const useBets = () => {
         ? JSON.parse(localStorage.getItem("user"))
         : {};
 
-      if (data?.username != user?.username) {
+      if (data?.username != user?.username || !user?.username) {
         setBets((current) => [...current, data]);
       }
     });
