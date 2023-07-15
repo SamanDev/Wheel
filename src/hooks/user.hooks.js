@@ -31,6 +31,7 @@ export const useUser = () => {
             } else {
               localStorage.removeItem("user");
               localStorage.removeItem("guser");
+              setLoginToken({});
             }
           }
         } catch (error) {
@@ -45,7 +46,7 @@ export const useUser = () => {
     EventBus.on("logout", (data) => {
       setLoginToken({});
       localStorage.removeItem("guser");
-      //localStorage.removeItem("user");
+      localStorage.removeItem("user");
     });
     return () => {
       EventBus.remove("setuser");

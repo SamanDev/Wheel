@@ -34,6 +34,9 @@ function BetsWheel(prop) {
         //socket.disconnect();
       }
     });
+    EventBus.on("logout", (data) => {
+      socket.disconnect();
+    });
     EventBus.on("disconnect", (data) => {
       socket.disconnect();
       //socketpub.disconnect();
