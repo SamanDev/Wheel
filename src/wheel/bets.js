@@ -133,7 +133,7 @@ const PrintBet = (prop) => {
 
 function BetsWheel(prop) {
   const wheel = prop.wheel;
-  const [user] = useUser();
+  const user = prop.user;
   const [bets, list] = useBets();
 
   const [balance, setBalance] = useState(user?.balance2);
@@ -151,10 +151,16 @@ function BetsWheel(prop) {
     EventBus.on("logout", (data) => {
       setCon(false);
     });
+    return () => {
+      //EventBus.remove("connect");
+
+      EventBus.remove("logout");
+    };
   }, []);
 
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
+    console.log(con);
     if (con) {
       var t1 = new Date(wheel?.date);
       var t2 = new Date();
@@ -167,7 +173,7 @@ function BetsWheel(prop) {
         if (parseInt(Seconds_Between_Dates) < 15) {
           setBalance((prev) => prev - _b);
           EventBus.dispatch("balance", balance - _b);
-          EventBus.dispatch("bets", {
+          EventBus.dispatch("mybets", {
             bet: parseInt(_b),
             position: parseInt(pos),
             username: user.username,
@@ -178,7 +184,9 @@ function BetsWheel(prop) {
             position: parseInt(pos),
             username: user.username,
             image: user.image,
-          }).then((response) => {});
+          })
+            .then((response) => {})
+            .catch((error) => EventBus.dispatch("logout"));
         }
       } else {
         $("#showadsmod").trigger("click");

@@ -15,24 +15,23 @@ const socket = io(URL, {
 });
 function onConnect() {
   socket.on("msg", ({ command, data }) => {
+    console.log(command, data);
     if (command == "user") {
       EventBus.dispatch("user", data);
     }
-    if (command == "bets") {
-      EventBus.dispatch("bets", data);
-    }
+
     if (command == "setuser") {
       EventBus.dispatch("connect", true);
       EventBus.dispatch("setuser", data);
     }
 
     if (command == "disconnect") {
-      //socket.disconnect();
+      socket.disconnect();
     }
   });
 }
 function onDisConnect() {
-  //EventBus.dispatch("disconnect");
+  EventBus.dispatch("disconnect");
 }
 socket.on("connect", onConnect);
 socket.on("disconnect", onDisConnect);

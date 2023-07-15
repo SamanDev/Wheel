@@ -6,11 +6,11 @@ import InfoWheel from "./wheel/info";
 function MNyWheel(prop) {
   return (
     <>
-      <InfoWheel {...prop} />
+      <InfoWheel wheel={prop.wheel} />
 
       <ShowWheel wheel={prop.wheel} />
 
-      <BottomWheel {...prop} />
+      <BottomWheel wheel={prop.wheel} />
     </>
   );
 }

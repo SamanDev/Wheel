@@ -141,6 +141,7 @@ wheelNamespace.on("connection", (socket) => {
       image: socket.userdata.image,
     };
     wheelNamespacePub.emit("msg", { command: "chat", data: _d });
+    socket.emit("msg", { command: "users", data: wheelusers });
   }
 
   // getLast(socket);

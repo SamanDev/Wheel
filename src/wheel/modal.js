@@ -21,6 +21,8 @@ import {
   groupByMultipleFields,
   formatDollar,
 } from "../utils/include";
+
+import { useBets } from "../hooks/user.hooks";
 const getDelts = (item, betx, tit, num) => {
   var outb = "black";
   if (betx == -1) {
@@ -105,55 +107,15 @@ function ModalExampleModal(prop) {
   const [bigbet, setBigBet] = useState([]);
   const wheel = prop.wheel;
   const user = prop.user;
+  const [bets, list] = useBets();
 
-  const [bets, setbets] = useState(userBet(wheel, user?.username));
-  const [userbets, setuserbets] = useState([]);
   const [userclass, setuserclass] = useState("");
-  const [list, setList] = useState(userbets);
-  useEffect(() => {
-    EventBus.on("users", (data) => {
-      setuserbets(data);
-    });
-    EventBus.on("bets", (data) => {
-      if (data != [] && data?.username != user?.username) {
-        setuserbets((current) => [...current, data]);
-      }
-    });
-    EventBus.on("resetusers", (data) => {
-      setuserbets([]);
-    });
-    return () => {
-      EventBus.remove("users");
-      EventBus.remove("bets");
-      EventBus.remove("resetusers");
-    };
-  }, []);
-  useEffect(() => {
-    var stat = [];
 
-    if (userbets?.length > 0) {
-      var _gmode = groupByMultipleFields(userbets, "username", "position");
-
-      for (const property in _gmode) {
-        for (const pos in _gmode[property]) {
-          stat.push({
-            bet: sumOfBet(_gmode[property][pos]),
-            image: _gmode[property][pos][0].image,
-            position: parseInt(pos),
-            username: property,
-          });
-        }
-      }
-    }
-
-    setList(stat);
-  }, [userbets]);
   useEffect(() => {
-    setbets(userBet(list, user?.username));
-    bigwin = bigWin(userbets);
+    bigwin = bigWin(bets);
     setBigBet(bigBet(list));
-    biglose = bigLose(userbets);
-  }, [list, userbets, wheel?.status]);
+    biglose = bigLose(bets);
+  }, [list, wheel?.status]);
   useEffect(() => {
     if (wheel?.status == "Pending") {
       setuserclass("animate__bounceIn animate__animated");
@@ -174,7 +136,7 @@ function ModalExampleModal(prop) {
   return (
     <div className="count">
       <div className={userclass}>
-        {sumOfWin(userbets) > 0 ? (
+        {sumOfWin(bets) > 0 ? (
           <>
             {bigwin?.username && (
               <>

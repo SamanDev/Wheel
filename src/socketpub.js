@@ -17,7 +17,7 @@ const socketpub = io(URL, {
 function onConnect() {
   //console.log(" con");
   socketpub.on("msg", ({ command, data }) => {
-    //console.log(command, data);
+    console.log(command, data);
     if (command == "update") {
       EventBus.dispatch("wheel", data);
     }

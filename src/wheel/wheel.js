@@ -96,7 +96,7 @@ function MNyWheel(prop) {
       }
       document.title = wheel.status + "...";
     }
-  }, [wheel.status]);
+  }, [wheel?.status]);
   if (!wheel?.status || !wheel?.date) {
     return (
       <div className="mainwheel mywhell">

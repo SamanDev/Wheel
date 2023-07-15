@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EventBus from "../common/EventBus";
+import { useDispatch, useSelector } from "react-redux";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 import { Jetton, UsersIcon, formatDollar } from "../utils/include";
 import { Link } from "react-router-dom";
@@ -8,11 +10,47 @@ import Modads from "./modalads";
 import ModLeader from "./modalleader";
 import ModMarket from "./modalmarket";
 import { useUser } from "../hooks/user.hooks";
+
+import socket from "../socket";
+import socketpub from "../socketpub";
+
 function BetsWheel(prop) {
+  const { user: currentUser } = useSelector((state) => state.auth);
   const wheel = prop.wheel;
   const [user] = useUser();
+
   const [online, setOnline] = useState("");
   const [balance, setBalance] = useState(user?.balance2);
+  useEffect(() => {
+    socketpub.connect();
+
+    EventBus.on("connectpub", (data) => {
+      if (data?.accessToken) {
+        socket.auth = data;
+
+        socket.connect();
+      } else {
+        console.log(socket.auth);
+        socket.disconnect();
+      }
+    });
+    EventBus.on("disconnect", (data) => {
+      socket.disconnect();
+      //socketpub.disconnect();
+    });
+
+    return () => {
+      EventBus.remove("connectpub");
+      EventBus.remove("disconnect");
+    };
+  }, []);
+  useEffect(() => {
+    EventBus.dispatch("setuser", currentUser);
+  }, [currentUser]);
+  useEffect(() => {
+    EventBus.dispatch("connectpub", user);
+  }, [user]);
+
   useEffect(() => {
     EventBus.on("balance", (data) => {
       setBalance(data);
@@ -78,9 +116,9 @@ function BetsWheel(prop) {
         </span>
 
         <br />
-        <Mod {...prop} />
+        <Mod wheel={prop.wheel} />
         <br />
-        <Modads {...prop} />
+        <Modads wheel={prop.wheel} />
         <br />
         <ModLeader />
         <br />

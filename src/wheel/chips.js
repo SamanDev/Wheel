@@ -4,11 +4,11 @@ import EventBus from "../common/EventBus";
 import { useBets, useUser } from "../hooks/user.hooks";
 function BetsWheel(prop) {
   const wheel = prop.wheel;
-  const [user] = useUser();
+  const user = prop.user;
   const [balance, setBalance] = useState(user?.balance2);
   useEffect(() => {
     setBalance(user?.balance2);
-  }, [user.balance2]);
+  }, [user?.balance2]);
   useEffect(() => {
     EventBus.on("balance", (data) => {
       try {

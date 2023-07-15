@@ -21,10 +21,8 @@ import Leaders from "./Leadersframe";
 import LastList from "./LastListfram";
 
 import EventBus from "./common/EventBus";
-import { useWheel } from "./hooks/user.hooks";
+import { useWheel, useUser } from "./hooks/user.hooks";
 const App = () => {
-  //const [user] = useUser();
-  const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [wheel] = useWheel();
 
@@ -40,11 +38,6 @@ const App = () => {
     dispatch(logout());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (currentUser?.username) {
-      EventBus.dispatch("setuser", currentUser);
-    }
-  }, [currentUser?.username]);
   useEffect(() => {
     EventBus.on("logout", () => {
       logOut();

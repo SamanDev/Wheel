@@ -8,14 +8,9 @@ import ChatWheel from "./chat";
 import SendChatWheel from "./sendchat";
 import { useUser } from "../hooks/user.hooks";
 const GridExampleDividedPhrase = (prop) => {
-  const [bet, setBet] = useState(
-    localStorage.getItem("setbet") ? localStorage.getItem("setbet") : 250
-  );
+  const [bet, setBet] = useState(250);
 
   const [user] = useUser();
-  useEffect(() => {
-    localStorage.setItem("setbet", bet);
-  }, [bet]);
   if (!user?.accessToken) {
     return (
       <>
@@ -49,13 +44,13 @@ const GridExampleDividedPhrase = (prop) => {
           </div>
           <Grid.Row style={{ margin: 0 }}>
             <Grid.Column style={{ padding: 0 }}>
-              <BetsWheel bet={bet} setBet={setBet} {...prop} />
+              <BetsWheel bet={bet} setBet={setBet} wheel={prop.wheel} />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
-              <ChatWheel {...prop} />
+              <ChatWheel />
             </Grid.Column>
             <Grid.Column style={{ padding: 0 }}>
-              <ChipsWheel bet={bet} setBet={setBet} {...prop} />
+              <ChipsWheel bet={bet} setBet={setBet} wheel={prop.wheel} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -68,13 +63,23 @@ const GridExampleDividedPhrase = (prop) => {
       <Grid columns="three">
         <Grid.Row style={{ margin: 0 }}>
           <Grid.Column style={{ padding: 0 }}>
-            <BetsWheel bet={bet} setBet={setBet} {...prop} />
+            <BetsWheel
+              bet={bet}
+              setBet={setBet}
+              wheel={prop.wheel}
+              user={user}
+            />
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>
-            <ChatWheel {...prop} />
+            <ChatWheel user={user} />
           </Grid.Column>
           <Grid.Column style={{ padding: 0 }}>
-            <ChipsWheel bet={bet} setBet={setBet} user={prop.user} {...prop} />
+            <ChipsWheel
+              bet={bet}
+              setBet={setBet}
+              wheel={prop.wheel}
+              user={user}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>

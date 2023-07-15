@@ -39,13 +39,13 @@ export const useUser = () => {
       }
     });
     EventBus.on("disconnect", (data) => {
-      //setLoginToken({});
+      setLoginToken({});
       localStorage.removeItem("guser");
     });
     EventBus.on("logout", (data) => {
       setLoginToken({});
       localStorage.removeItem("guser");
-      localStorage.removeItem("user");
+      //localStorage.removeItem("user");
     });
     return () => {
       EventBus.remove("setuser");
@@ -89,8 +89,17 @@ export const useBets = () => {
         setBets(data);
       }
     });
-    EventBus.on("bets", (data) => {
+    EventBus.on("mybets", (data) => {
       if (data != []) {
+        setBets((current) => [...current, data]);
+      }
+    });
+    EventBus.on("bets", (data) => {
+      const user = localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user"))
+        : {};
+
+      if (data?.username != user?.username) {
         setBets((current) => [...current, data]);
       }
     });
@@ -99,6 +108,7 @@ export const useBets = () => {
     });
     return () => {
       EventBus.remove("users");
+      EventBus.remove("mybets");
       EventBus.remove("bets");
       EventBus.remove("resetusers");
     };
