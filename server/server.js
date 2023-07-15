@@ -133,7 +133,15 @@ wheelNamespace.on("disconnect", (reason) => {
 });
 
 wheelNamespace.on("connection", (socket) => {
-  socket.emit("msg", { command: "setuser", data: socket.userdata });
+  if (socket.userdata) {
+    socket.emit("msg", { command: "setuser", data: socket.userdata });
+    var _d = {
+      txt: "is online now",
+      username: socket.userdata.username,
+      image: socket.userdata.image,
+    };
+    wheelNamespacePub.emit("msg", { command: "chat", data: _d });
+  }
 
   // getLast(socket);
 });

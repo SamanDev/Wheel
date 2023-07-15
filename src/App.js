@@ -57,6 +57,7 @@ const App = () => {
 
   return (
     <Routes>
+      <Route path="/" element={<BoardUser wheel={wheel} />} />
       <Route path="/play" element={<BoardUser wheel={wheel} />} />
 
       <Route path="/invite/*" element={<Invite />} />
