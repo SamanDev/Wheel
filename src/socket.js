@@ -15,7 +15,7 @@ const socket = io(URL, {
 });
 function onConnect() {
   socket.on("msg", ({ command, data }) => {
-    console.log(command, data);
+    //console.log(command, data);
     if (command == "user") {
       EventBus.dispatch("user", data);
     }

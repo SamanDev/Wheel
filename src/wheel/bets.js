@@ -152,7 +152,7 @@ function BetsWheel(prop) {
       setCon(false);
     });
     return () => {
-      //EventBus.remove("connect");
+      EventBus.remove("connect");
 
       EventBus.remove("logout");
     };
@@ -160,7 +160,7 @@ function BetsWheel(prop) {
 
   const addBet = (pos, bet) => {
     let _b = bet ? bet : bet;
-    console.log(con);
+    // console.log(con);
     if (con) {
       var t1 = new Date(wheel?.date);
       var t2 = new Date();

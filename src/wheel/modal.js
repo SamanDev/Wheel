@@ -22,7 +22,7 @@ import {
   formatDollar,
 } from "../utils/include";
 
-import { useBets } from "../hooks/user.hooks";
+import { useBets, useUser } from "../hooks/user.hooks";
 const getDelts = (item, betx, tit, num) => {
   var outb = "black";
   if (betx == -1) {
@@ -106,7 +106,7 @@ var bigwin, biglose, bigbet;
 function ModalExampleModal(prop) {
   const [bigbet, setBigBet] = useState([]);
   const wheel = prop.wheel;
-  const user = prop.user;
+
   const [bets, list] = useBets();
 
   const [userclass, setuserclass] = useState("");
@@ -115,7 +115,7 @@ function ModalExampleModal(prop) {
     bigwin = bigWin(bets);
     setBigBet(bigBet(list));
     biglose = bigLose(bets);
-  }, [list, wheel?.status]);
+  }, [list, bets, wheel?.status]);
   useEffect(() => {
     if (wheel?.status == "Pending") {
       setuserclass("animate__bounceIn animate__animated");

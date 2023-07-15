@@ -124,6 +124,7 @@ export const useBets = () => {
             bet: sumOfBet(_gmode[property][pos]),
             position: parseInt(pos),
             username: property,
+            image: _gmode[property][pos][0].image,
           });
         }
       }
