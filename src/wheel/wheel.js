@@ -18,7 +18,7 @@ segments.map((item, i) => {
     },
   });
 });
-var Seconds_Between_Dates = 0.1;
+var Seconds_Between_Dates = 0;
 //var myaudio = document.getElementById("backgroundMusic");
 //myaudio.playbackRate = 0.5;
 function MNyWheel(prop) {
@@ -45,13 +45,13 @@ function MNyWheel(prop) {
         var Seconds_from_T1_to_T2 = dif / 1000;
         Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-        Seconds_Between_Dates = 37 - Seconds_Between_Dates;
+        Seconds_Between_Dates = 38 - Seconds_Between_Dates;
 
         Seconds_Between_Dates = Seconds_Between_Dates / 10;
         Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(2);
         console.log(Seconds_Between_Dates);
-        if (Seconds_Between_Dates < 0.01) {
-          Seconds_Between_Dates = 0.02;
+        if (Seconds_Between_Dates < 0) {
+          Seconds_Between_Dates = 0;
         } else {
         }
         if (!mustspin) {
@@ -77,15 +77,15 @@ function MNyWheel(prop) {
             var Seconds_from_T1_to_T2 = dif / 1000;
             Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
 
-            Seconds_Between_Dates = 37 - Seconds_Between_Dates;
+            Seconds_Between_Dates = 38 - Seconds_Between_Dates;
 
             Seconds_Between_Dates = Seconds_Between_Dates / 10;
             Seconds_Between_Dates = parseFloat(Seconds_Between_Dates).toFixed(
               2
             );
             console.log(Seconds_Between_Dates);
-            if (Seconds_Between_Dates < 0.01) {
-              Seconds_Between_Dates = 0.02;
+            if (Seconds_Between_Dates < 0) {
+              Seconds_Between_Dates = 0;
             } else {
             }
             if (prizeNumber != wheel.number) {
@@ -117,7 +117,7 @@ function MNyWheel(prop) {
           <img src="/assets/cadr3.png" alt="card1" id="cadr" />
           <img src="/assets/cadr4.png" alt="card2" id="cadr2" />
         </div>
-        <div className="animate__animated  animate__rotateIn">
+        <div className="animate__animated  animate__fadeIn">
           <Wheel
             data={_l}
             mustStartSpinning={mustspin}

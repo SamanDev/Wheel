@@ -17,7 +17,7 @@ import SendChatWheel from "./sendchat";
 import { useUser } from "../hooks/user.hooks";
 const GridExampleDividedPhrase = (prop) => {
   const [bet, setBet] = useState(250);
-
+  const [open, setOpen] = useState(true);
   const [user] = useUser();
 
   return (
@@ -25,7 +25,11 @@ const GridExampleDividedPhrase = (prop) => {
       {!user?.accessToken && (
         <>
           <Modal
-            open={!user?.accessToken}
+            open={!user?.accessToken && open}
+            onClose={() => {
+              setOpen(false);
+            }}
+            onOpen={() => setOpen(true)}
             basic
             dimmer="blurring"
             size="mini"
@@ -61,7 +65,11 @@ const GridExampleDividedPhrase = (prop) => {
           </Modal>
         </>
       )}
-      <Grid columns="three" style={{ position: "relative" }}>
+      <Grid
+        columns="three"
+        style={{ position: "relative" }}
+        onClick={() => setOpen(true)}
+      >
         <Grid.Row style={{ margin: 0 }}>
           <Grid.Column style={{ padding: 0 }}>
             <BetsWheel bet={bet} setBet={setBet} wheel={prop.wheel} />

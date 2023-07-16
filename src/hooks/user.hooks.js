@@ -58,18 +58,21 @@ export const useUser = () => {
   return [loginToken];
 };
 export const useWheel = () => {
-  /* const [wheel, setWheel] = useState(
+  const [wheel, setWheel] = useState(
     localStorage.getItem("wheel")
       ? JSON.parse(localStorage.getItem("wheel"))
       : {}
-  ); */
-  const [wheel, setWheel] = useState({});
+  );
+  //s const [wheel, setWheel] = useState({});
 
   useEffect(() => {
     EventBus.on("wheel", (data) => {
       if (data?.status) {
-        localStorage.setItem("wheel", JSON.stringify(data));
-        setWheel(data);
+        var w = JSON.parse(localStorage.getItem("wheel"));
+        if (data?.status != w?.status || data?.date != w?.date) {
+          localStorage.setItem("wheel", JSON.stringify(data));
+          setWheel(data);
+        }
       }
     });
     return () => {

@@ -23,7 +23,6 @@ function BetsWheel(prop) {
   const [balance, setBalance] = useState(user?.balance2);
   useEffect(() => {
     socketpub.connect();
-
     EventBus.on("connectpub", (data) => {
       if (data?.accessToken) {
         socket.auth = data;
@@ -39,7 +38,7 @@ function BetsWheel(prop) {
     });
     EventBus.on("disconnect", (data) => {
       socket.disconnect();
-      //socketpub.disconnect();
+      socketpub.disconnect();
     });
 
     return () => {
@@ -53,6 +52,8 @@ function BetsWheel(prop) {
   useEffect(() => {
     if (user?.accessToken) {
       EventBus.dispatch("connectpub", user);
+    } else {
+      socketpub.connect();
     }
   }, [user]);
 
