@@ -40,7 +40,7 @@ export const useUser = () => {
       }
     });
     EventBus.on("disconnect", (data) => {
-      setLoginToken({});
+      //setLoginToken({});
       localStorage.removeItem("guser");
     });
     EventBus.on("logout", (data) => {
